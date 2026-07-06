@@ -1,0 +1,378 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBackground"
+    android:padding="20dp">
+
+    <!-- Header Navigation -->
+    <ImageButton
+        android:id="@+id/btn_status_back"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="Kembali"
+        app:srcCompat="@drawable/ic_arrow_back"
+        app:tint="@color/colorPrimaryDark"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_status_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Live Order Status"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/btn_status_back"
+        app:layout_constraintStart_toEndOf="@id/btn_status_back"
+        app:layout_constraintTop_toTopOf="@id/btn_status_back"
+        app:layout_constraintVertical_bias="0.5" />
+
+    <!-- Chef Illustration card -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card_illustration"
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:layout_marginTop="16dp"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="0dp"
+        app:strokeColor="@color/colorSelected"
+        app:strokeWidth="1dp"
+        app:cardBackgroundColor="@color/colorSelected"
+        app:layout_constraintTop_toBottomOf="@id/btn_status_back">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:padding="16dp">
+
+            <ImageView
+                android:layout_width="90dp"
+                android:layout_height="90dp"
+                android:src="@drawable/emot_home" />
+
+            <TextView
+                android:id="@+id/tv_chef_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Pesanan Sedang Disiapkan"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Terimakasih, Kami sedang menyiapkan camilan untukmu"
+                android:textColor="@color/colorTextDark"
+                android:textSize="11sp"
+                android:gravity="center" />
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- Order ID Card -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card_order_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="0dp"
+        app:strokeColor="@color/colorGrayLight"
+        app:strokeWidth="1dp"
+        app:cardBackgroundColor="@color/white"
+        app:layout_constraintTop_toBottomOf="@id/card_illustration">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="12dp">
+
+            <TextView
+                android:id="@+id/tv_order_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Order ID"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="12sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_order_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="#CML088228642625"
+                android:textColor="@color/colorTextDark"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:layout_marginTop="2dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_order_label" />
+
+            <TextView
+                android:id="@+id/btn_copy_order_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Salin"
+                android:textColor="@color/colorPrimary"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:padding="4dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- Timeline Tracking Frame -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card_timeline"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="16dp"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="0dp"
+        app:strokeColor="@color/colorSelected"
+        app:strokeWidth="1dp"
+        app:cardBackgroundColor="@color/colorSelected"
+        app:layout_constraintBottom_toTopOf="@id/card_eta"
+        app:layout_constraintTop_toBottomOf="@id/card_order_id">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="16dp">
+
+            <!-- Vertical Progress Line Background -->
+            <View
+                android:id="@+id/view_vertical_line_bg"
+                android:layout_width="2dp"
+                android:layout_height="0dp"
+                android:background="@color/colorGrayLight"
+                app:layout_constraintBottom_toBottomOf="@id/dot_arrived"
+                app:layout_constraintEnd_toEndOf="@id/dot_received"
+                app:layout_constraintStart_toStartOf="@id/dot_received"
+                app:layout_constraintTop_toTopOf="@id/dot_received" />
+
+            <!-- Active Vertical Progress Line -->
+            <View
+                android:id="@+id/view_vertical_line_active"
+                android:layout_width="2dp"
+                android:layout_height="0dp"
+                android:background="@color/colorPrimary"
+                app:layout_constraintEnd_toEndOf="@id/dot_received"
+                app:layout_constraintStart_toStartOf="@id/dot_received"
+                app:layout_constraintTop_toTopOf="@id/dot_received"
+                app:layout_constraintBottom_toTopOf="@id/dot_received"/>
+
+            <!-- Node 1: Received -->
+            <View
+                android:id="@+id/dot_received"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:background="@drawable/bg_rounded_rectangle_19"
+                android:backgroundTint="@color/colorPrimary"
+                app:layout_constraintBottom_toTopOf="@id/dot_preparing"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_chainStyle="spread" />
+
+            <TextView
+                android:id="@+id/tv_lbl_received"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:text="Pesanan Diterima"
+                android:textColor="@color/colorTextDark"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@id/dot_received"
+                app:layout_constraintStart_toEndOf="@id/dot_received"
+                app:layout_constraintTop_toTopOf="@id/dot_received" />
+
+            <TextView
+                android:id="@+id/tv_time_received"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="--:--"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="11sp"
+                app:layout_constraintBottom_toBottomOf="@id/dot_received"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/dot_received" />
+
+            <!-- Node 2: Preparing -->
+            <View
+                android:id="@+id/dot_preparing"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:background="@drawable/bg_rounded_rectangle_19"
+                android:backgroundTint="@color/colorGrayLight"
+                app:layout_constraintBottom_toTopOf="@id/dot_shipping"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/dot_received" />
+
+            <TextView
+                android:id="@+id/tv_lbl_preparing"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:text="Sedang Disiapkan"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="13sp"
+                app:layout_constraintBottom_toBottomOf="@id/dot_preparing"
+                app:layout_constraintStart_toEndOf="@id/dot_preparing"
+                app:layout_constraintTop_toTopOf="@id/dot_preparing" />
+
+            <TextView
+                android:id="@+id/tv_time_preparing"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="--:--"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="11sp"
+                app:layout_constraintBottom_toBottomOf="@id/dot_preparing"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/dot_preparing" />
+
+            <!-- Node 3: Shipping -->
+            <View
+                android:id="@+id/dot_shipping"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:background="@drawable/bg_rounded_rectangle_19"
+                android:backgroundTint="@color/colorGrayLight"
+                app:layout_constraintBottom_toTopOf="@id/dot_arrived"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/dot_preparing" />
+
+            <TextView
+                android:id="@+id/tv_lbl_shipping"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:text="Sedang Dikirim"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="13sp"
+                app:layout_constraintBottom_toBottomOf="@id/dot_shipping"
+                app:layout_constraintStart_toEndOf="@id/dot_shipping"
+                app:layout_constraintTop_toTopOf="@id/dot_shipping" />
+
+            <TextView
+                android:id="@+id/tv_time_shipping"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="--:--"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="11sp"
+                app:layout_constraintBottom_toBottomOf="@id/dot_shipping"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/dot_shipping" />
+
+            <!-- Node 4: Arrived -->
+            <View
+                android:id="@+id/dot_arrived"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:background="@drawable/bg_rounded_rectangle_19"
+                android:backgroundTint="@color/colorGrayLight"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/dot_shipping" />
+
+            <TextView
+                android:id="@+id/tv_lbl_arrived"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:text="Pesanan Tiba"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="13sp"
+                app:layout_constraintBottom_toBottomOf="@id/dot_arrived"
+                app:layout_constraintStart_toEndOf="@id/dot_arrived"
+                app:layout_constraintTop_toTopOf="@id/dot_arrived" />
+
+            <TextView
+                android:id="@+id/tv_time_arrived"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="--:--"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="11sp"
+                app:layout_constraintBottom_toBottomOf="@id/dot_arrived"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/dot_arrived" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- ETA Card -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card_eta"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="2dp"
+        app:strokeColor="@color/colorGrayLight"
+        app:strokeWidth="1dp"
+        app:cardBackgroundColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp">
+
+            <TextView
+                android:id="@+id/tv_eta_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Estimasi Tiba"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="12sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_eta_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="--:--"
+                android:textColor="@color/colorTextDark"
+                android:textSize="28sp"
+                android:textStyle="bold"
+                android:layout_marginTop="2dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_eta_label" />
+
+            <TextView
+                android:id="@+id/tv_eta_countdown"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Menunggu pembayaran..."
+                android:textColor="@color/colorPrimary"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:background="#FFF5EE"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="4dp"
+                app:layout_constraintBottom_toBottomOf="@id/tv_eta_time"
+                app:layout_constraintStart_toEndOf="@id/tv_eta_time"
+                android:layout_marginStart="16dp"
+                app:layout_constraintTop_toTopOf="@id/tv_eta_time" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

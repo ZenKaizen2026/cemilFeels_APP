@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.Cemil_feels">
+        
+        <!-- Welcome Splash Screen (Layar Utama yang Pertama Kali Dibuka) -->
+        <activity
+            android:name=".WelcomeActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- Welcome Home Screen -->
+        <activity
+            android:name=".HomeActivity"
+            android:exported="false" />
+
+        <!-- Login Authentication Screen -->
+        <activity
+            android:name=".LoginActivity"
+            android:exported="false" />
+
+        <!-- Venting & Mood Picker Screen (MainActivity) -->
+        <activity
+            android:name=".MainActivity"
+            android:exported="false" />
+
+        <!-- Mood-Based Recommendation Grid Screen -->
+        <activity
+            android:name=".RecommendationActivity"
+            android:exported="false" />
+        
+        <!-- Live Order Status Tracker Simulation Screen -->
+        <activity
+            android:name=".OrderStatusActivity"
+            android:exported="false" />
+
+        <!-- Shopping Cart Screen -->
+        <activity
+            android:name=".CartActivity"
+            android:exported="false" />
+
+        <!-- Checkout Screen -->
+        <activity
+            android:name=".CheckoutActivity"
+            android:exported="false" />
+
+        <!-- Payment Selection Screen -->
+        <activity
+            android:name=".PaymentActivity"
+            android:exported="false" />
+
+        <!-- QRIS Code Screen -->
+        <activity
+            android:name=".QrisActivity"
+            android:exported="false" />
+
+        <!-- Payment Confirmation Screen -->
+        <activity
+            android:name=".PaymentConfirmationActivity"
+            android:exported="false" />
+
+        <!-- Payment Success Screen -->
+        <activity
+            android:name=".SuccessActivity"
+            android:exported="false" />
+
+        <!-- Order Completed Screen -->
+        <activity
+            android:name=".OrderCompletedActivity"
+            android:exported="false" />
+            
+    </application>
+
+</manifest>

@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginHorizontal="4dp"
+    android:layout_marginVertical="8dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="2dp"
+    app:strokeColor="@color/colorGrayLight"
+    app:strokeWidth="1dp"
+    app:cardBackgroundColor="@color/white">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="12dp">
+
+        <!-- Snack Image -->
+        <ImageView
+            android:id="@+id/iv_snack_image"
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/basreng_stik"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="ContentDescription" />
+
+        <!-- Snack Name -->
+        <TextView
+            android:id="@+id/tv_snack_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="Basreng Stik"
+            android:textColor="@color/colorTextDark"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/iv_snack_image"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Rating (e.g., ⭐ 4.5) -->
+        <TextView
+            android:id="@+id/tv_snack_rating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="4dp"
+            android:text="⭐ 4.5"
+            android:textColor="#F39C12"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@id/iv_snack_image"
+            app:layout_constraintTop_toBottomOf="@id/tv_snack_name" />
+
+        <!-- Description -->
+        <TextView
+            android:id="@+id/tv_snack_description"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="4dp"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:text="Pedasnya basreng nagih, instan usir bad mood dan bikin happy!"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/iv_snack_image"
+            app:layout_constraintTop_toBottomOf="@id/tv_snack_rating" />
+
+        <!-- Price -->
+        <TextView
+            android:id="@+id/tv_snack_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="8dp"
+            android:text="Rp 16.000"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/iv_snack_image"
+            app:layout_constraintTop_toBottomOf="@id/tv_snack_description"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <!-- Add Button (+) -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_add_snack"
+            style="@style/Widget.Material3.Button.IconButton.Filled"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:backgroundTint="@color/colorPrimary"
+            android:padding="0dp"
+            app:icon="@android:drawable/ic_input_add"
+            app:iconSize="20dp"
+            app:iconTint="@android:color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_snack_description"
+            app:layout_constraintVertical_bias="1.0"
+            tools:ignore="ContentDescription" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>
