@@ -104,6 +104,14 @@ class CheckoutViewModel(
                 isSpiceVisible = snackName.equals("Basreng Stik", ignoreCase = true) ||
                         snackName.equals("Makaroni Bantet", ignoreCase = true)
                 spiceText = "Level: ${orderRepository.getLastOrderSpiceLevel()}"
+
+                // Dynamically sync order details with repository for success & dialog screens
+                orderRepository.saveOrderDetails(
+                    snackName = snackName,
+                    qty = qty,
+                    totalCost = grandTotal,
+                    spiceLevel = orderRepository.getLastOrderSpiceLevel()
+                )
             }
 
             val formatter = NumberFormat.getNumberInstance(Locale.forLanguageTag("id-ID"))

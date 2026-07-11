@@ -22,7 +22,7 @@ class PaymentConfirmationViewModel(
 
     fun startConfirmationTimer(intentTotal: Double, intentMethod: String?) {
         viewModelScope.launch {
-            delay(3000)
+            delay(1200)
             val finalTotal = if (intentTotal > 0) intentTotal else orderRepository.getLastOrderTotalCost()
             val finalMethod = intentMethod ?: orderRepository.getLastPaymentMethod()
             

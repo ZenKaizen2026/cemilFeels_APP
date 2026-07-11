@@ -76,7 +76,7 @@ class OrderRepositoryImpl : OrderRepository {
         )
         emit(state)
         
-        delay(4000)
+        delay(1500)
 
         // Step 2: PREPARING
         val timePrep = Calendar.getInstance()
@@ -89,7 +89,7 @@ class OrderRepositoryImpl : OrderRepository {
         )
         emit(state)
 
-        delay(4000)
+        delay(1500)
 
         // Step 3: SHIPPING
         val timeShip = Calendar.getInstance()
@@ -102,7 +102,7 @@ class OrderRepositoryImpl : OrderRepository {
         )
         emit(state)
 
-        delay(4000)
+        delay(1500)
 
         // Step 4: ARRIVED
         val timeArr = Calendar.getInstance()
@@ -115,7 +115,7 @@ class OrderRepositoryImpl : OrderRepository {
         )
         emit(state)
 
-        delay(2000)
+        delay(1000)
 
         // Step 5: COMPLETED
         state = state.copy(currentStep = OrderStep.COMPLETED, triggerNotification = null)
