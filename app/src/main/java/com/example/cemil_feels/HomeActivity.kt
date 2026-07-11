@@ -38,8 +38,8 @@ class HomeActivity : AppCompatActivity() {
             Toast.makeText(this, "Kotak Masuk Notifikasi.", Toast.LENGTH_SHORT).show()
         }
 
-        // Menghubungkan tombol pointer ke halaman Venting (MainActivity)
-        binding.btnPointer.setOnClickListener {
+        // Menghubungkan tombol pointer (start icon di search bar) ke halaman Venting (MainActivity)
+        binding.searchLayout.setStartIconOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }

@@ -9,4 +9,7 @@
     <color name="colorTextDark">#2C2C2C</color>
     <color name="colorGrayLight">#F0EFEA</color>
     <color name="colorSelected">#FFE0B2</color>
+    <color name="surfaceColor">#FFFFFF</color>
+    <color name="textPrimary">#2C2C2C</color>
+    <color name="textSecondary">#757575</color>
 </resources>
