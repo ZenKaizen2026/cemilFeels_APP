@@ -6,16 +6,10 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cemil_feels.databinding.ItemCartBinding
+import com.example.cemil_feels.data.model.CartItem
+import com.example.cemil_feels.data.model.Snack
 import java.text.NumberFormat
 import java.util.Locale
-
-/**
- * Representasi item belanja di dalam keranjang belanja.
- */
-data class CartItem(
-    val snack: Snack,
-    val qty: Int
-)
 
 /**
  * Adapter untuk RecyclerView yang menampilkan daftar item belanja di keranjang.

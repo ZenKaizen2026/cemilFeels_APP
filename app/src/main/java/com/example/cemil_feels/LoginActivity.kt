@@ -4,18 +4,29 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.lifecycleScope
 import com.example.cemil_feels.databinding.ActivityLoginBinding
+import com.example.cemil_feels.di.ServiceLocator
+import com.example.cemil_feels.viewmodel.LoginViewModel
+import com.example.cemil_feels.viewmodel.ViewModelFactory
+import kotlinx.coroutines.launch
 
 /**
  * Aktivitas Authentication Screen (Page 2).
  * Halaman Login dengan input Email & Password, atau opsi login Google.
+ * Refactored to follow MVVM architecture.
  */
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityLoginBinding
+    
+    private val viewModel: LoginViewModel by viewModels {
+        ViewModelFactory(ServiceLocator.container)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,41 +41,44 @@ class LoginActivity : AppCompatActivity() {
             insets
         }
 
+        setupObservers()
+
         // Ketika tombol Log In diklik
         binding.btnLogin.setOnClickListener {
-            val email = binding.etLoginEmail.text?.toString()?.trim()
+            val email = binding.etLoginEmail.text?.toString()
             val password = binding.etLoginPassword.text?.toString()
-
-            if (email.isNullOrEmpty() || password.isNullOrEmpty()) {
-                Toast.makeText(this, "Email dan Password tidak boleh kosong!", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-
-            if (!email.contains("@")) {
-                Toast.makeText(this, "Format email tidak valid!", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-
-            // Simpan ke AppState (State Retention)
-            AppState.loggedInEmail = email
-            AppState.loggedInPassword = password
-
-            // Sukses login -> Berpindah ke MainActivity (Venting Space)
-            Toast.makeText(this, "Selamat datang, ${AppState.USER_NICKNAME}!", Toast.LENGTH_SHORT).show()
-            goToMainActivity()
+            viewModel.login(email, password)
         }
 
         // Login dengan Google (Mock)
         binding.btnLoginGoogle.setOnClickListener {
-            AppState.loggedInEmail = "cemil.user@gmail.com"
-            AppState.loggedInPassword = "google-oauth-password"
-            Toast.makeText(this, "Login Google Berhasil!", Toast.LENGTH_SHORT).show()
-            goToMainActivity()
+            viewModel.loginWithGoogle()
         }
 
         // Tautan Sign Up (Mock)
         binding.tvBtnSignup.setOnClickListener {
             Toast.makeText(this, "Fitur Registrasi belum tersedia secara lokal.", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun setupObservers() {
+        lifecycleScope.launch {
+            viewModel.eventFlow.collect { event ->
+                when (event) {
+                    is LoginViewModel.LoginEvent.Success -> {
+                        // Sync with legacy AppState for full backwards compatibility
+                        val userRepository = ServiceLocator.container.userRepository
+                        AppState.loggedInEmail = userRepository.getLoggedInEmail()
+                        AppState.loggedInPassword = userRepository.getLoggedInPassword()
+                        
+                        Toast.makeText(this@LoginActivity, "Selamat datang, ${event.nickname}!", Toast.LENGTH_SHORT).show()
+                        goToMainActivity()
+                    }
+                    is LoginViewModel.LoginEvent.Error -> {
+                        Toast.makeText(this@LoginActivity, event.message, Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
         }
     }
 

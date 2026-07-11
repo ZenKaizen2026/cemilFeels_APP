@@ -2,27 +2,36 @@ package com.example.cemil_feels
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Button
 import android.widget.ImageButton
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.example.cemil_feels.databinding.ActivityOrderCompletedBinding
+import com.example.cemil_feels.di.ServiceLocator
+import com.example.cemil_feels.viewmodel.OrderCompletedViewModel
+import com.example.cemil_feels.viewmodel.ViewModelFactory
 
 /**
  * Aktivitas Order Completed Screen (Page 13).
  * Menyajikan halaman pesanan selesai, rating kepuasan pelanggan, dan rincian detail transaksi.
+ * Refactored to follow MVVM architecture.
  */
 class OrderCompletedActivity : AppCompatActivity() {
 
-    private lateinit var binding: com.example.cemil_feels.databinding.ActivityOrderCompletedBinding
+    private lateinit var binding: ActivityOrderCompletedBinding
+
+    private val viewModel: OrderCompletedViewModel by viewModels {
+        ViewModelFactory(ServiceLocator.container)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-        binding = com.example.cemil_feels.databinding.ActivityOrderCompletedBinding.inflate(layoutInflater)
+        binding = ActivityOrderCompletedBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, insets ->
@@ -77,20 +86,13 @@ class OrderCompletedActivity : AppCompatActivity() {
         val tvTime = dialogView.findViewById<android.widget.TextView>(R.id.tv_val_time)
         val tvDate = dialogView.findViewById<android.widget.TextView>(R.id.tv_val_date)
 
-        // Set value dinamis dari AppState
-        tvPayMethod?.text = AppState.lastPaymentMethod
-        tvQty?.text = "${AppState.lastOrderQty} (100gr)"
-        tvSnackName?.text = AppState.lastOrderSnackName
-
-        val formatter = java.text.NumberFormat.getNumberInstance(java.util.Locale.forLanguageTag("id-ID"))
-        tvTotal?.text = "Rp. " + formatter.format(AppState.lastOrderTotalCost.toInt())
-
-        // Set waktu & tanggal secara real-time
-        val sdfTime = java.text.SimpleDateFormat("HH:mm", java.util.Locale.forLanguageTag("id-ID"))
-        val sdfDate = java.text.SimpleDateFormat("dd MMMM yyyy", java.util.Locale.forLanguageTag("id-ID"))
-        val now = java.util.Calendar.getInstance().time
-        tvTime?.text = sdfTime.format(now)
-        tvDate?.text = sdfDate.format(now)
+        // Set value dinamis dari ViewModel
+        tvPayMethod?.text = viewModel.getPaymentMethod()
+        tvQty?.text = viewModel.getFormattedQuantity()
+        tvSnackName?.text = viewModel.getSnackName()
+        tvTotal?.text = viewModel.getFormattedTotalCost()
+        tvTime?.text = viewModel.getFormattedTime()
+        tvDate?.text = viewModel.getFormattedDate()
 
         val btnClose = dialogView.findViewById<ImageButton>(R.id.btn_close_detail)
         btnClose?.setOnClickListener {

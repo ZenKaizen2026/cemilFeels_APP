@@ -2,23 +2,32 @@ package com.example.cemil_feels
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Button
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.lifecycleScope
 import com.example.cemil_feels.databinding.ActivityPaymentBinding
+import com.example.cemil_feels.di.ServiceLocator
+import com.example.cemil_feels.viewmodel.PaymentViewModel
+import com.example.cemil_feels.viewmodel.ViewModelFactory
+import kotlinx.coroutines.launch
 
 /**
  * Aktivitas Payment Selection Screen (Page 8).
  * Menangani pemilihan metode pembayaran (Bank, E-Wallet, atau QRIS) dan mengecek keberadaan aplikasi E-Wallet.
+ * Refactored to follow MVVM architecture.
  */
 class PaymentActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityPaymentBinding
     private var totalPayment = 23000.0
-    private var selectedMethod = "ShopeePay"
+
+    private val viewModel: PaymentViewModel by viewModels {
+        ViewModelFactory(ServiceLocator.container)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,48 +50,51 @@ class PaymentActivity : AppCompatActivity() {
 
         // Setup E-Wallet Click Listeners
         binding.btnWalletShopee.setOnClickListener {
-            selectedMethod = "ShopeePay"
-            binding.btnActionPay.text = "Bayar Dengan Shopee Pay"
+            viewModel.selectMethod("ShopeePay")
             Toast.makeText(this, "ShopeePay Terpilih", Toast.LENGTH_SHORT).show()
         }
 
         binding.btnWalletGopay.setOnClickListener {
-            selectedMethod = "GoPay"
-            binding.btnActionPay.text = "Bayar Dengan GoPay"
+            viewModel.selectMethod("GoPay")
             Toast.makeText(this, "GoPay Terpilih", Toast.LENGTH_SHORT).show()
         }
 
         binding.btnWalletDana.setOnClickListener {
-            selectedMethod = "DANA"
-            binding.btnActionPay.text = "Bayar Dengan DANA"
+            viewModel.selectMethod("DANA")
             Toast.makeText(this, "DANA Terpilih", Toast.LENGTH_SHORT).show()
         }
 
         binding.btnWalletOvo.setOnClickListener {
-            selectedMethod = "OVO"
-            binding.btnActionPay.text = "Bayar Dengan OVO"
+            viewModel.selectMethod("OVO")
             Toast.makeText(this, "OVO Terpilih", Toast.LENGTH_SHORT).show()
         }
 
         // Tombol QRIS bulat
         binding.btnPaymentQris.setOnClickListener {
+            viewModel.selectMethod("QRIS")
             goToQrisScreen()
         }
 
         // Tombol aksi di bawah: "Bayar Dengan ..."
         binding.btnActionPay.setOnClickListener {
-            val packageName = when (selectedMethod) {
-                "ShopeePay" -> "com.shopee.id"
-                "GoPay" -> "com.gojek.app"
-                "DANA" -> "id.dana"
-                "OVO" -> "id.ovo"
-                else -> ""
-            }
-
+            viewModel.savePaymentMethod()
+            syncOrderToLegacyAppState()
+            
+            val packageName = viewModel.getTargetPackageName()
             if (packageName.isNotEmpty()) {
                 checkAndProcessWallet(packageName)
             } else {
                 goToQrisScreen()
+            }
+        }
+
+        setupObservers()
+    }
+
+    private fun setupObservers() {
+        lifecycleScope.launch {
+            viewModel.selectedMethod.collect { method ->
+                binding.btnActionPay.text = "Bayar Dengan $method"
             }
         }
     }
@@ -103,7 +115,7 @@ class PaymentActivity : AppCompatActivity() {
     private fun goToConfirmationScreen() {
         val intent = Intent(this, PaymentConfirmationActivity::class.java).apply {
             putExtra("TOTAL_PAYMENT_EXTRA", totalPayment)
-            putExtra("PAYMENT_METHOD_EXTRA", selectedMethod)
+            putExtra("PAYMENT_METHOD_EXTRA", viewModel.selectedMethod.value)
         }
         startActivity(intent)
     }
@@ -113,5 +125,10 @@ class PaymentActivity : AppCompatActivity() {
             putExtra("TOTAL_PAYMENT_EXTRA", totalPayment)
         }
         startActivity(intent)
+    }
+
+    private fun syncOrderToLegacyAppState() {
+        val orderRepository = ServiceLocator.container.orderRepository
+        AppState.lastPaymentMethod = orderRepository.getLastPaymentMethod()
     }
 }

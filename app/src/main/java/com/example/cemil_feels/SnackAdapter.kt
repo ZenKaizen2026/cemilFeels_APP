@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cemil_feels.databinding.ItemSnackBinding
+import com.example.cemil_feels.data.model.Snack
 import java.text.NumberFormat
 import java.util.Locale
 

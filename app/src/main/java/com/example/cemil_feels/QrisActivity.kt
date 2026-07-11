@@ -4,26 +4,29 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import com.example.cemil_feels.databinding.ActivityQrisBinding
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
+import com.example.cemil_feels.di.ServiceLocator
+import com.example.cemil_feels.viewmodel.QrisViewModel
+import com.example.cemil_feels.viewmodel.ViewModelFactory
 import kotlinx.coroutines.launch
-import java.text.NumberFormat
-import java.util.Locale
 
 /**
  * Aktivitas QRIS Screen (Page 12).
  * Menampilkan barcode QRIS dinamis berbasis total biaya dari checkout.
+ * Refactored to follow MVVM architecture.
  */
 class QrisActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityQrisBinding
-    private var totalPayment = 23000.0
-    private var countdownJob: Job? = null
+
+    private val viewModel: QrisViewModel by viewModels {
+        ViewModelFactory(ServiceLocator.container)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,63 +45,65 @@ class QrisActivity : AppCompatActivity() {
             finish()
         }
 
-        // Baca Grand Total dari checkout
-        totalPayment = AppState.lastOrderTotalCost
-
-        val formatter = NumberFormat.getNumberInstance(Locale.forLanguageTag("id-ID"))
-        binding.tvQrisTotalAmount.text = "Rp. " + formatter.format(totalPayment.toInt())
-
         binding.btnQrisDownload.setOnClickListener {
-            // Hentikan timer karena pembayaran telah dilanjutkan
-            countdownJob?.cancel()
-            
-            Toast.makeText(this, "QR Code Berhasil Diunduh!", Toast.LENGTH_SHORT).show()
-            // Setelah download, mock proses konfirmasi pembayaran otomatis (Page 9)
-            val intent = Intent(this, PaymentConfirmationActivity::class.java).apply {
-                putExtra("TOTAL_PAYMENT_EXTRA", totalPayment)
-                putExtra("PAYMENT_METHOD_EXTRA", "QRIS")
-            }
-            startActivity(intent)
+            viewModel.onDownloadQris()
         }
 
         binding.btnQrisHome.setOnClickListener {
-            countdownJob?.cancel()
-            // Kembali ke Dashboard Home (Page 3)
-            val intent = Intent(this, HomeActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
-            startActivity(intent)
-            finish()
+            viewModel.onHomeClicked()
         }
 
-        // Mulai hitung mundur 15 detik
-        startCountdownTimer()
+        setupObservers()
     }
 
-    private fun startCountdownTimer() {
-        countdownJob = lifecycleScope.launch {
-            for (seconds in 15 downTo 0) {
-                val formattedTime = String.format(Locale.getDefault(), "00:00:%02d", seconds)
-                binding.tvQrisTimer.text = formattedTime
+    private fun setupObservers() {
+        lifecycleScope.launch {
+            viewModel.totalPaymentText.collect { amountText ->
+                binding.tvQrisTotalAmount.text = amountText
+            }
+        }
+
+        lifecycleScope.launch {
+            viewModel.formattedTime.collect { timeText ->
+                binding.tvQrisTimer.text = timeText
+            }
+        }
+
+        lifecycleScope.launch {
+            viewModel.eventFlow.collect { event ->
+                // Sync legacy AppState before navigating
+                syncOrderAndCartToLegacyAppState()
                 
-                if (seconds == 0) {
-                    // 1. Kosongkan keranjang belanja global
-                    AppState.cart.clear()
-                    
-                    Toast.makeText(this@QrisActivity, "Waktu pembayaran QRIS habis! Keranjang dikosongkan.", Toast.LENGTH_LONG).show()
-                    
-                    // 2. Alihkan kembali ke halaman pemilihan pembayaran
-                    val intent = Intent(this@QrisActivity, PaymentActivity::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
-                    startActivity(intent)
-                    finish()
+                when (event) {
+                    is QrisViewModel.QrisEvent.Timeout -> {
+                        Toast.makeText(this@QrisActivity, "Waktu pembayaran QRIS habis! Keranjang dikosongkan.", Toast.LENGTH_LONG).show()
+                        val intent = Intent(this@QrisActivity, PaymentActivity::class.java)
+                        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+                        startActivity(intent)
+                        finish()
+                    }
+                    is QrisViewModel.QrisEvent.NavigateToConfirmation -> {
+                        Toast.makeText(this@QrisActivity, "QR Code Berhasil Diunduh!", Toast.LENGTH_SHORT).show()
+                        val intent = Intent(this@QrisActivity, PaymentConfirmationActivity::class.java).apply {
+                            putExtra("TOTAL_PAYMENT_EXTRA", ServiceLocator.container.orderRepository.getLastOrderTotalCost())
+                            putExtra("PAYMENT_METHOD_EXTRA", "QRIS")
+                        }
+                        startActivity(intent)
+                    }
+                    is QrisViewModel.QrisEvent.NavigateToHome -> {
+                        val intent = Intent(this@QrisActivity, HomeActivity::class.java)
+                        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+                        startActivity(intent)
+                        finish()
+                    }
                 }
-                delay(1000)
             }
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        countdownJob?.cancel()
+    private fun syncOrderAndCartToLegacyAppState() {
+        AppState.cart.clear()
+        AppState.cart.putAll(ServiceLocator.container.cartRepository.getCartMap())
+        AppState.lastPaymentMethod = ServiceLocator.container.orderRepository.getLastPaymentMethod()
     }
 }

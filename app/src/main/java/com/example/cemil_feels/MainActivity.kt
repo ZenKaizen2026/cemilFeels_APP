@@ -7,26 +7,35 @@ import android.text.TextWatcher
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.lifecycleScope
 import com.example.cemil_feels.databinding.ActivityVentingBinding
+import com.example.cemil_feels.di.ServiceLocator
+import com.example.cemil_feels.viewmodel.VentingViewModel
+import com.example.cemil_feels.viewmodel.ViewModelFactory
+import kotlinx.coroutines.launch
 
 /**
  * Aktivitas Venting / Mood Selection Screen (Page 4).
  * Tempat pengguna memilih emotikon dan menuliskan keluh kesah sebelum mencari camilan.
+ * Refactored to follow MVVM architecture.
  */
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityVentingBinding
-    private var selectedMood: String? = null
+    
+    private val viewModel: VentingViewModel by viewModels {
+        ViewModelFactory(ServiceLocator.container)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-        // Menggunakan View Binding dengan layout activity_venting
         binding = ActivityVentingBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -36,22 +45,18 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
-        // Tombol kembali ke LoginActivity
         binding.btnBack.setOnClickListener {
             val intent = Intent(this, HomeActivity::class.java)
             startActivity(intent)
             finish()
         }
 
-        // Setup fungsionalitas UI
         setupMoodSelection()
         setupTextWatcher()
         setupSubmitButton()
+        setupObservers()
     }
 
-    /**
-     * Menangani pemilihan emotikon mood (Bahagia, Sedih, Biasa aja, Cemas, Marah).
-     */
     private fun setupMoodSelection() {
         val moodPickers = mapOf(
             "Bahagia" to binding.pickerBahagia,
@@ -63,63 +68,73 @@ class MainActivity : AppCompatActivity() {
 
         moodPickers.forEach { (moodName, pickerLayout) ->
             pickerLayout.setOnClickListener {
-                // Toggle pilihan mood
-                selectedMood = if (selectedMood == moodName) null else moodName
-                updateMoodPickersUI(moodPickers)
+                viewModel.toggleMood(moodName)
             }
         }
-
-        updateMoodPickersUI(moodPickers)
     }
 
-    /**
-     * Memperbarui visual background untuk menyorot emotikon mood yang dipilih.
-     */
-    private fun updateMoodPickersUI(moodPickers: Map<String, LinearLayout>) {
+    private fun updateMoodPickersUI(selectedMood: String?) {
+        val moodPickers = mapOf(
+            "Bahagia" to binding.pickerBahagia,
+            "Sedih" to binding.pickerSedih,
+            "Biasa aja" to binding.pickerBiasa,
+            "Cemas" to binding.pickerCemas,
+            "Marah" to binding.pickerMarah
+        )
+
         moodPickers.forEach { (moodName, pickerLayout) ->
             if (moodName == selectedMood) {
-                // Di-highlight dengan warna orange salem
                 pickerLayout.setBackgroundColor(ContextCompat.getColor(this, R.color.colorSelected))
             } else {
-                // Transparan jika tidak dipilih
                 pickerLayout.setBackgroundColor(ContextCompat.getColor(this, android.R.color.transparent))
             }
         }
     }
 
-    /**
-     * Memantau panjang karakter teks cerita secara dinamis (0/1000).
-     */
     private fun setupTextWatcher() {
         binding.etStoryInput.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                val length = s?.length ?: 0
-                binding.tvCharCounter.text = "$length/1000"
+                viewModel.onStoryTextChanged(s?.toString() ?: "")
             }
             override fun afterTextChanged(s: Editable?) {}
         })
     }
 
-    /**
-     * Menghubungkan tombol "Siap, cari camilan!" untuk beralih ke halaman rekomendasi.
-     */
     private fun setupSubmitButton() {
         binding.btnSubmitMood.setOnClickListener {
-            val storyText = binding.etStoryInput.text?.toString()?.trim()
+            viewModel.submitMood()
+        }
+    }
 
-            // Validasi: Pengguna harus mengisi cerita ATAU memilih mood
-            if (storyText.isNullOrEmpty() && selectedMood == null) {
-                Toast.makeText(this, "Silakan pilih perasaanmu atau tulis ceritamu terlebih dahulu!", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
+    private fun setupObservers() {
+        lifecycleScope.launch {
+            viewModel.selectedMood.collect { mood ->
+                updateMoodPickersUI(mood)
             }
+        }
 
-            // Pindah ke RecommendationActivity sambil membawa parameter mood & keluhan
-            val intent = Intent(this, RecommendationActivity::class.java).apply {
-                putExtra("STORY_EXTRA", storyText)
-                putExtra("MOOD_EXTRA", selectedMood)
+        lifecycleScope.launch {
+            viewModel.charCounter.collect { countText ->
+                binding.tvCharCounter.text = countText
             }
-            startActivity(intent)
+        }
+
+        lifecycleScope.launch {
+            viewModel.eventFlow.collect { event ->
+                when (event) {
+                    is VentingViewModel.VentingEvent.ShowValidationToast -> {
+                        Toast.makeText(this@MainActivity, event.message, Toast.LENGTH_SHORT).show()
+                    }
+                    is VentingViewModel.VentingEvent.NavigateToRecommendations -> {
+                        val intent = Intent(this@MainActivity, RecommendationActivity::class.java).apply {
+                            putExtra("STORY_EXTRA", event.story)
+                            putExtra("MOOD_EXTRA", event.mood)
+                        }
+                        startActivity(intent)
+                    }
+                }
+            }
         }
     }
 }
