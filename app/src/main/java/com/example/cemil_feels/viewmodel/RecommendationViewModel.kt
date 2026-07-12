@@ -36,15 +36,11 @@ class RecommendationViewModel(
             combine(snackRepository.getSnacks(), _processedMood) { allSnacks, mood ->
                 val m = mood.lowercase(java.util.Locale.ROOT)
                 val filtered = when {
-                    m == "marah" || m == "cemas" -> allSnacks.filter { it.name == "Basreng Stik" || it.name == "Makaroni Bantet" }
-                    m == "bahagia" -> allSnacks.filter { it.name == "Cireng Sambal Rujak" || it.name == "Tahu Walik" }
+                    m == "marah" || m == "cemas" -> allSnacks.filter { it.name == "Basreng Stik" || it.name == "Tahu Walik" }
                     m == "sedih" -> allSnacks.filter { it.name == "Piscok Lumer Coklat" || it.name == "Bola Bola Coklat" }
-                    m == "biasa aja" -> {
-                        val p1 = allSnacks.find { it.name == "Kerupuk Pangsit" }
-                        val p2 = allSnacks.find { it.name == "Kulpi Balado" }
-                        listOfNotNull(p1, p2)
-                    }
-                    else -> allSnacks.take(2)
+                    m == "senang" || m == "bahagia" -> allSnacks.filter { it.name == "Cireng Sambal Rujak" || it.name == "Kerupuk Pangsit" }
+                    m == "bosan" || m == "biasa aja" -> allSnacks.filter { it.name == "Kulpi Balado" || it.name == "Makaroni Bantet" }
+                    else -> allSnacks.filter { it.name == "Kulpi Balado" || it.name == "Makaroni Bantet" }
                 }
                 filtered.take(2)
             }.collect {
@@ -57,7 +53,7 @@ class RecommendationViewModel(
     val isSpiceSelectorVisible: StateFlow<Boolean> = MutableStateFlow(false).apply {
         viewModelScope.launch {
             _processedMood.collect { mood ->
-                value = mood.equals("Marah", ignoreCase = true)
+                value = mood.equals("Marah", ignoreCase = true) || mood.equals("Cemas", ignoreCase = true)
             }
         }
     }
@@ -101,7 +97,10 @@ class RecommendationViewModel(
             
             normalizedStory.contains("bahagia") || normalizedStory.contains("senang") ||
             normalizedStory.contains("gembira") || normalizedStory.contains("ceria") ||
-            normalizedStory.contains("bersyukur") -> "Bahagia"
+            normalizedStory.contains("bersyukur") -> "Senang"
+            
+            normalizedStory.contains("bosan") || normalizedStory.contains("jenuh") ||
+            normalizedStory.contains("penat") -> "Bosan"
             
             else -> selectedMood ?: "Biasa aja"
         }

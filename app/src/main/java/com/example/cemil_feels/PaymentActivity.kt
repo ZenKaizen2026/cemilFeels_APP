@@ -103,19 +103,38 @@ class PaymentActivity : AppCompatActivity() {
     }
 
     private fun checkAndProcessWallet(targetPackage: String) {
-        val launchIntent = packageManager.getLaunchIntentForPackage(targetPackage)
-        if (launchIntent != null) {
-            // Aplikasi terinstal -> Buka otomatis (Concept of Implicit Intent target)
-            Toast.makeText(this, "Membuka aplikasi e-wallet...", Toast.LENGTH_SHORT).show()
+        // Create an implicit intent to launch the payment app or web fallback URL
+        val uriString = when (viewModel.selectedMethod.value) {
+            "ShopeePay" -> "https://shopee.co.id"
+            "GoPay" -> "https://gopay.co.id"
+            "DANA" -> "https://www.dana.id"
+            "OVO" -> "https://www.ovo.id"
+            else -> null
+        }
+
+        if (uriString != null) {
+            val intent = Intent(Intent.ACTION_VIEW, android.net.Uri.parse(uriString))
+            
+            // Check package visibility or if the app can handle this URL directly
+            val resolvedActivities = packageManager.queryIntentActivities(intent, 0)
+            val isAppInstalled = resolvedActivities.any { it.activityInfo.packageName == targetPackage }
+
+            if (isAppInstalled) {
+                // If the app is installed, configure the intent to open the app directly
+                intent.setPackage(targetPackage)
+                Toast.makeText(this, "Membuka aplikasi ${viewModel.selectedMethod.value}...", Toast.LENGTH_SHORT).show()
+            } else {
+                // Otherwise open via default browser
+                Toast.makeText(this, "Aplikasi tidak ditemukan. Membuka di browser...", Toast.LENGTH_LONG).show()
+            }
+
             try {
-                startActivity(launchIntent)
+                startActivity(intent)
                 goToConfirmationScreen()
             } catch (e: Exception) {
                 showQrisDialog()
             }
         } else {
-            // Aplikasi TIDAK terinstal -> Fallback ke QRIS Dialog
-            Toast.makeText(this, "Aplikasi E-Wallet tidak ditemukan. Menampilkan QRIS.", Toast.LENGTH_LONG).show()
             showQrisDialog()
         }
     }
