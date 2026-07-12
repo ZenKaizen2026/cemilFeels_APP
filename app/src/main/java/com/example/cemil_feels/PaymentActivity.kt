@@ -1,6 +1,9 @@
 package com.example.cemil_feels
 
+import android.app.Dialog
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -72,7 +75,7 @@ class PaymentActivity : AppCompatActivity() {
         // Tombol QRIS bulat
         binding.btnPaymentQris.setOnClickListener {
             viewModel.selectMethod("QRIS")
-            goToQrisScreen()
+            showQrisDialog()
         }
 
         // Tombol aksi di bawah: "Bayar Dengan ..."
@@ -84,7 +87,7 @@ class PaymentActivity : AppCompatActivity() {
             if (packageName.isNotEmpty()) {
                 checkAndProcessWallet(packageName)
             } else {
-                goToQrisScreen()
+                showQrisDialog()
             }
         }
 
@@ -102,14 +105,35 @@ class PaymentActivity : AppCompatActivity() {
     private fun checkAndProcessWallet(targetPackage: String) {
         val launchIntent = packageManager.getLaunchIntentForPackage(targetPackage)
         if (launchIntent != null) {
-            // Aplikasi terinstal -> Mock buka e-wallet dan berpindah ke Konfirmasi
-            Toast.makeText(this, "Membuka aplikasi E-Wallet...", Toast.LENGTH_SHORT).show()
-            goToConfirmationScreen()
+            // Aplikasi terinstal -> Buka otomatis (Concept of Implicit Intent target)
+            Toast.makeText(this, "Membuka aplikasi e-wallet...", Toast.LENGTH_SHORT).show()
+            try {
+                startActivity(launchIntent)
+                goToConfirmationScreen()
+            } catch (e: Exception) {
+                showQrisDialog()
+            }
         } else {
-            // Aplikasi TIDAK terinstal -> Alihkan ke QRIS
-            Toast.makeText(this, "Aplikasi E-Wallet tidak ditemukan secara lokal. Beralih ke QRIS.", Toast.LENGTH_LONG).show()
-            goToQrisScreen()
+            // Aplikasi TIDAK terinstal -> Fallback ke QRIS Dialog
+            Toast.makeText(this, "Aplikasi E-Wallet tidak ditemukan. Menampilkan QRIS.", Toast.LENGTH_LONG).show()
+            showQrisDialog()
         }
+    }
+
+    private fun showQrisDialog() {
+        val dialog = Dialog(this)
+        dialog.setContentView(R.layout.dialog_qris)
+        
+        // Make background transparent to show the card's rounded corners
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        
+        val btnClose = dialog.findViewById<com.google.android.material.button.MaterialButton>(R.id.btn_close_qris)
+        btnClose.setOnClickListener {
+            dialog.dismiss()
+            goToConfirmationScreen()
+        }
+        
+        dialog.show()
     }
 
     private fun goToConfirmationScreen() {
