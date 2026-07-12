@@ -4,17 +4,16 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="16dp"
-    app:cardCornerRadius="20dp"
-    app:cardElevation="4dp"
-    app:cardBackgroundColor="@color/colorBackground"
-    app:strokeColor="@color/colorPrimary"
-    app:strokeWidth="1dp">
+    app:cardCornerRadius="24dp"
+    app:cardElevation="8dp"
+    app:cardBackgroundColor="#FFFFFF"
+    app:strokeWidth="0dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="20dp"
+        android:padding="24dp"
         android:gravity="center">
 
         <!-- Title -->
@@ -22,8 +21,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="QRIS"
-            android:textColor="@color/colorPrimaryDark"
-            android:textSize="20sp"
+            android:textColor="#212121"
+            android:textSize="22sp"
             android:textStyle="bold"
             android:layout_marginBottom="8dp" />
 
@@ -31,26 +30,26 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Pindai kode QR untuk melakukan pembayaran"
-            android:textColor="@color/colorTextDark"
-            android:textSize="12sp"
+            android:textColor="#757575"
+            android:textSize="14sp"
             android:gravity="center"
-            android:layout_marginBottom="16dp" />
+            android:layout_marginBottom="24dp" />
 
         <!-- Mock QR Code Image -->
         <com.google.android.material.card.MaterialCardView
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            app:cardCornerRadius="16dp"
+            android:layout_width="220dp"
+            android:layout_height="220dp"
+            app:cardCornerRadius="20dp"
             app:cardElevation="0dp"
-            app:strokeColor="@color/colorGrayLight"
+            app:strokeColor="#EEEEEE"
             app:strokeWidth="1dp"
-            android:layout_marginBottom="16dp">
+            android:layout_marginBottom="24dp">
 
             <ImageView
                 android:id="@+id/iv_qris_barcode"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:padding="16dp"
+                android:padding="20dp"
                 android:scaleType="fitCenter"
                 android:src="@drawable/logo_cemil_feels" /> <!-- Logo/QR placeholder -->
         </com.google.android.material.card.MaterialCardView>
@@ -60,22 +59,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="NMID: ID12345678901234556789"
-            android:textColor="@color/colorTextDark"
-            android:textSize="12sp"
+            android:textColor="#757575"
+            android:textSize="13sp"
             android:textStyle="bold"
-            android:layout_marginBottom="24dp" />
+            android:layout_marginBottom="28dp" />
 
         <!-- Close Button -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_close_qris"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:backgroundTint="@color/colorPrimary"
-            android:text="Kembali ke Beranda"
+            android:layout_height="56dp"
+            android:backgroundTint="#FF7A1A"
+            android:text="Tutup"
             android:textColor="@android:color/white"
-            android:textSize="14sp"
+            android:textSize="16sp"
             android:textStyle="bold"
-            app:cornerRadius="12dp" />
+            app:cornerRadius="28dp" />
 
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

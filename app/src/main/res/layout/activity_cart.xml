@@ -182,7 +182,7 @@
                     android:id="@+id/tv_tax_info"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Sudah termasuk biaya layanan"
+                    android:text="Belum termasuk biaya layanan"
                     android:textColor="#9E9E9E"
                     android:textSize="10sp"
                     android:layout_marginTop="2dp" />

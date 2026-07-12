@@ -1,32 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_welcome"
+    android:background="#FFF9F5"
     android:padding="24dp">
 
     <!-- Logo Card -->
-
-    <!-- App Name -->
-
-    <!-- Subtitle -->
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardLogo"
         android:layout_width="180dp"
         android:layout_height="180dp"
-        app:cardBackgroundColor="@color/surfaceColor"
+        app:cardBackgroundColor="#FFFFFF"
         app:cardCornerRadius="32dp"
         app:cardElevation="8dp"
+        app:strokeWidth="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintVertical_bias="0.15">
 
         <ImageView
             android:layout_width="130dp"
@@ -34,27 +29,36 @@
             android:layout_gravity="center"
             android:scaleType="fitCenter"
             android:src="@drawable/logo_cemil_feels" />
-
     </com.google.android.material.card.MaterialCardView>
 
-    <!-- Description -->
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="Your snacks affect your mood."
+        android:textColor="#212121"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardLogo" />
 
-    <!-- Feature Chips -->
+    <!-- Subtitle -->
     <TextView
         android:id="@+id/txtSubtitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Snack Recommendation App"
-        android:textColor="@color/colorPrimary"
-        android:textSize="18sp"
+        android:textColor="#FF7A1A"
+        android:textSize="16sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
-        app:layout_constraintVertical_bias="0.061" />
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
 
+    <!-- Description -->
     <TextView
         android:id="@+id/txtDescription"
         android:layout_width="0dp"
@@ -64,33 +68,33 @@
         android:gravity="center"
         android:lineSpacingExtra="4dp"
         android:text="Discover delicious snacks that match your mood. Explore recommendations curated just for you."
-        android:textColor="@color/colorPrimary"
-        android:textSize="15sp"
-        android:textStyle="bold"
+        android:textColor="#757575"
+        android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.25"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/txtSubtitle" />
 
-    <!-- Get Started Button -->
+    <!-- Feature Chips -->
     <LinearLayout
         android:id="@+id/layoutFeature"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="24dp"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.485"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/txtDescription"
-        app:layout_constraintVertical_bias="0.068">
+        app:layout_constraintTop_toBottomOf="@id/txtDescription">
 
         <com.google.android.material.chip.Chip
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Fresh"
+            style="@style/Widget.Material3.Chip.Assist"
+            app:chipBackgroundColor="#FFFFFF"
+            app:chipStrokeColor="#EEEEEE"
             app:chipIcon="@drawable/ic_star"
+            app:chipIconTint="#FF7A1A"
+            android:textColor="#212121"
             app:chipIconVisible="true" />
 
         <com.google.android.material.chip.Chip
@@ -98,7 +102,12 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:text="Tasty"
+            style="@style/Widget.Material3.Chip.Assist"
+            app:chipBackgroundColor="#FFFFFF"
+            app:chipStrokeColor="#EEEEEE"
             app:chipIcon="@drawable/ic_chili"
+            app:chipIconTint="#FF7A1A"
+            android:textColor="#212121"
             app:chipIconVisible="true" />
 
         <com.google.android.material.chip.Chip
@@ -106,24 +115,28 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:text="Recommended"
+            style="@style/Widget.Material3.Chip.Assist"
+            app:chipBackgroundColor="#FFFFFF"
+            app:chipStrokeColor="#EEEEEE"
             app:chipIcon="@drawable/ic_star"
+            app:chipIconTint="#FF7A1A"
+            android:textColor="#212121"
             app:chipIconVisible="true" />
-
     </LinearLayout>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_start"
-        android:layout_width="0dp"
-        android:layout_height="58dp"
-        android:layout_marginHorizontal="12dp"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginHorizontal="16dp"
         android:layout_marginBottom="32dp"
         android:text="Get Started"
         android:textAllCaps="false"
         android:textColor="@android:color/white"
-        android:textSize="17sp"
+        android:textSize="18sp"
         android:textStyle="bold"
-        android:backgroundTint="@color/colorPrimary"
-        app:cornerRadius="18dp"
+        android:backgroundTint="#FF7A1A"
+        app:cornerRadius="30dp"
         app:icon="@drawable/ic_pointer"
         app:iconGravity="textEnd"
         app:iconPadding="12dp"
@@ -138,24 +151,10 @@
         android:layout_height="wrap_content"
         android:text="Version 1.0"
         android:textSize="12sp"
+        android:textColor="#BDBDBD"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginBottom="12dp"/>
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="35dp"
-        android:text="Your snacks affect your mood."
-        android:textColor="#2C2C2C"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardLogo"
-        app:layout_constraintVertical_bias="0.0" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

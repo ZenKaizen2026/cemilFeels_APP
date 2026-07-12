@@ -35,13 +35,24 @@ class HomeActivity : AppCompatActivity() {
         }
 
         binding.btnNotification.setOnClickListener {
-            Toast.makeText(this, "Kotak Masuk Notifikasi.", Toast.LENGTH_SHORT).show()
+            val intent = Intent(this, NotificationHistoryActivity::class.java)
+            startActivity(intent)
         }
 
-        // Menghubungkan tombol pointer (start icon di search bar) ke halaman Venting (MainActivity)
-        binding.searchLayout.setStartIconOnClickListener {
+        // Menghubungkan tombol pointer (btn_search_snack) ke halaman Venting
+        binding.btnSearchSnack.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }
+
+        binding.chipHappy.setOnClickListener { navigateToRecommendation() }
+        binding.chipSad.setOnClickListener { navigateToRecommendation() }
+        binding.chipAngry.setOnClickListener { navigateToRecommendation() }
+        binding.chipBored.setOnClickListener { navigateToRecommendation() }
+    }
+
+    private fun navigateToRecommendation() {
+        val intent = Intent(this, RecommendationActivity::class.java)
+        startActivity(intent)
     }
 }

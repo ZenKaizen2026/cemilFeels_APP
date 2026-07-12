@@ -180,7 +180,7 @@ class OrderStatusActivity : AppCompatActivity() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val name = "Status Pesanan CemilFeels"
             val descriptionText = "Notifikasi status pelacakan pesanan makanan"
-            val importance = NotificationManager.IMPORTANCE_DEFAULT
+            val importance = NotificationManager.IMPORTANCE_HIGH
             val channel = NotificationChannel(channelId, name, importance).apply {
                 description = descriptionText
             }
@@ -194,12 +194,26 @@ class OrderStatusActivity : AppCompatActivity() {
             .setSmallIcon(android.R.drawable.ic_dialog_info)
             .setContentTitle(title)
             .setContentText(message)
-            .setPriority(androidx.core.app.NotificationCompat.PRIORITY_DEFAULT)
+            .setPriority(androidx.core.app.NotificationCompat.PRIORITY_HIGH)
+            .setDefaults(androidx.core.app.NotificationCompat.DEFAULT_ALL)
             .setAutoCancel(true)
 
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         try {
             notificationManager.notify((System.currentTimeMillis() % 10000).toInt(), builder.build())
+            
+            // Save to Notification History (SharedPreferences)
+            val sharedPrefs = getSharedPreferences("CemilFeelsPrefs", Context.MODE_PRIVATE)
+            val currentHistory = sharedPrefs.getString("notification_history", "") ?: ""
+            
+            val timeFormatter = java.text.SimpleDateFormat("dd MMM yyyy, HH:mm", java.util.Locale.getDefault())
+            val timeStr = timeFormatter.format(java.util.Date())
+            
+            val newNotif = "$title;;$message;;$timeStr"
+            val updatedHistory = if (currentHistory.isEmpty()) newNotif else "$currentHistory||$newNotif"
+            
+            sharedPrefs.edit().putString("notification_history", updatedHistory).apply()
+            
         } catch (e: SecurityException) {
             // Permission not granted
         }

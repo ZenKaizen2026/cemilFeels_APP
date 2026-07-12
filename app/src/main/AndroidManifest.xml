@@ -34,6 +34,16 @@
             android:name=".LoginActivity"
             android:exported="false" />
 
+        <!-- Register Account Screen -->
+        <activity
+            android:name=".RegisterActivity"
+            android:exported="false" />
+            
+        <!-- Notification History Screen -->
+        <activity
+            android:name=".NotificationHistoryActivity"
+            android:exported="false" />
+
         <!-- Venting & Mood Picker Screen (MainActivity) -->
         <activity
             android:name=".MainActivity"

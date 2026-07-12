@@ -59,10 +59,9 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupMoodSelection() {
         val moodPickers = mapOf(
-            "Bahagia" to binding.pickerBahagia,
+            "Senang" to binding.pickerSenang,
             "Sedih" to binding.pickerSedih,
-            "Biasa aja" to binding.pickerBiasa,
-            "Cemas" to binding.pickerCemas,
+            "Bosan" to binding.pickerBosan,
             "Marah" to binding.pickerMarah
         )
 
@@ -75,10 +74,9 @@ class MainActivity : AppCompatActivity() {
 
     private fun updateMoodPickersUI(selectedMood: String?) {
         val moodPickers = mapOf(
-            "Bahagia" to binding.pickerBahagia,
+            "Senang" to binding.pickerSenang,
             "Sedih" to binding.pickerSedih,
-            "Biasa aja" to binding.pickerBiasa,
-            "Cemas" to binding.pickerCemas,
+            "Bosan" to binding.pickerBosan,
             "Marah" to binding.pickerMarah
         )
 

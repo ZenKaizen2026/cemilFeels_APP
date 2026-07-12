@@ -1,5 +1,6 @@
 package com.example.cemil_feels
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
@@ -45,9 +46,22 @@ class LoginActivity : AppCompatActivity() {
 
         // Ketika tombol Log In diklik
         binding.btnLogin.setOnClickListener {
-            val email = binding.etLoginEmail.text?.toString()
-            val password = binding.etLoginPassword.text?.toString()
-            viewModel.login(email, password)
+            val email = binding.etLoginEmail.text?.toString() ?: ""
+            val password = binding.etLoginPassword.text?.toString() ?: ""
+            
+            val sharedPrefs = getSharedPreferences("CemilFeelsPrefs", Context.MODE_PRIVATE)
+            val regEmail = sharedPrefs.getString("registered_email", "")
+            val regPass = sharedPrefs.getString("registered_password", "")
+
+            if (regEmail?.isNotEmpty() == true && regPass?.isNotEmpty() == true) {
+                if (email == regEmail && password == regPass) {
+                    viewModel.login(email, password)
+                } else {
+                    Toast.makeText(this, "Email atau Password salah!", Toast.LENGTH_SHORT).show()
+                }
+            } else {
+                viewModel.login(email, password)
+            }
         }
 
         // Login dengan Google (Mock)
@@ -55,9 +69,10 @@ class LoginActivity : AppCompatActivity() {
             viewModel.loginWithGoogle()
         }
 
-        // Tautan Sign Up (Mock)
+        // Tautan Sign Up
         binding.tvBtnSignup.setOnClickListener {
-            Toast.makeText(this, "Fitur Registrasi belum tersedia secara lokal.", Toast.LENGTH_SHORT).show()
+            val intent = Intent(this, RegisterActivity::class.java)
+            startActivity(intent)
         }
     }
 

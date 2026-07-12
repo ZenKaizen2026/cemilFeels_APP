@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorBackground"
+    android:background="#FFF9F5"
     android:padding="24dp">
 
     <!-- Header -->
@@ -12,8 +12,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Pembayaran"
-        android:textColor="@color/colorPrimaryDark"
-        android:textSize="20sp"
+        android:textColor="#212121"
+        android:textSize="22sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -26,27 +26,26 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         app:cardCornerRadius="24dp"
-        app:cardElevation="0dp"
-        app:strokeColor="#C2E0C6"
-        app:strokeWidth="1.5dp"
-        app:cardBackgroundColor="#E8F5E9"
+        app:cardElevation="4dp"
+        app:strokeWidth="0dp"
+        app:cardBackgroundColor="#FFFFFF"
         app:layout_constraintTop_toBottomOf="@id/tv_success_header">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="20dp"
+            android:padding="24dp"
             android:gravity="center">
 
             <!-- Checkmark circle -->
             <com.google.android.material.card.MaterialCardView
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                app:cardCornerRadius="30dp"
+                android:layout_width="72dp"
+                android:layout_height="72dp"
+                app:cardCornerRadius="36dp"
                 app:cardElevation="0dp"
                 app:cardBackgroundColor="#4CAF50"
-                android:layout_marginBottom="12dp">
+                android:layout_marginBottom="16dp">
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -56,7 +55,7 @@
                         android:layout_height="wrap_content"
                         android:text="✓"
                         android:textColor="@color/white"
-                        android:textSize="32sp"
+                        android:textSize="36sp"
                         android:textStyle="bold" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
@@ -66,7 +65,7 @@
                 android:layout_height="wrap_content"
                 android:text="Pembayaran Berhasil"
                 android:textColor="#2E7D32"
-                android:textSize="18sp"
+                android:textSize="20sp"
                 android:textStyle="bold"
                 android:layout_marginBottom="4dp"/>
 
@@ -74,10 +73,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Terimakasih, Pembayaranmu telah\nkami terima"
-                android:textColor="@color/colorTextDark"
-                android:textSize="12sp"
+                android:textColor="#757575"
+                android:textSize="14sp"
                 android:gravity="center"
-                android:layout_marginBottom="16dp" />
+                android:layout_marginBottom="24dp" />
 
             <!-- Receipt Info Box -->
             <com.google.android.material.card.MaterialCardView
@@ -85,30 +84,30 @@
                 android:layout_height="wrap_content"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="0dp"
-                app:strokeColor="@color/colorGrayLight"
+                app:strokeColor="#EEEEEE"
                 app:strokeWidth="1dp"
-                app:cardBackgroundColor="@color/white">
+                app:cardBackgroundColor="#FAFAFA">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="16dp">
+                    android:padding="20dp">
 
                     <!-- Total Paid Row -->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Total Pembayaran"
-                        android:textColor="@android:color/darker_gray"
-                        android:textSize="11sp"/>
+                        android:textColor="#9E9E9E"
+                        android:textSize="12sp"/>
                     <TextView
                         android:id="@+id/tv_success_total"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Rp. 23.000"
-                        android:textColor="@color/colorTextDark"
-                        android:textSize="15sp"
+                        android:textColor="#212121"
+                        android:textSize="16sp"
                         android:textStyle="bold"
                         android:layout_marginTop="2dp"
                         android:layout_marginBottom="12dp" />
@@ -118,15 +117,15 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Metode Pembayaran"
-                        android:textColor="@android:color/darker_gray"
-                        android:textSize="11sp"/>
+                        android:textColor="#9E9E9E"
+                        android:textSize="12sp"/>
                     <TextView
                         android:id="@+id/tv_success_method"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Shopee Pay"
-                        android:textColor="@color/colorTextDark"
-                        android:textSize="14sp"
+                        android:textColor="#212121"
+                        android:textSize="15sp"
                         android:textStyle="bold"
                         android:layout_marginTop="2dp"
                         android:layout_marginBottom="12dp" />
@@ -136,15 +135,15 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Waktu"
-                        android:textColor="@android:color/darker_gray"
-                        android:textSize="11sp"/>
+                        android:textColor="#9E9E9E"
+                        android:textSize="12sp"/>
                     <TextView
                         android:id="@+id/tv_success_time"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="14 Juni 2026, 17.42"
-                        android:textColor="@color/colorTextDark"
-                        android:textSize="13sp"
+                        android:textColor="#212121"
+                        android:textSize="14sp"
                         android:textStyle="bold"
                         android:layout_marginTop="2dp" />
 
@@ -165,27 +164,27 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_success_view_order"
             android:layout_width="match_parent"
-            android:layout_height="54dp"
-            android:backgroundTint="@color/colorPrimary"
+            android:layout_height="56dp"
+            android:backgroundTint="#FF7A1A"
             android:text="Lihat Pesanan Saya"
             android:textColor="@color/white"
-            android:textSize="15sp"
+            android:textSize="16sp"
             android:textStyle="bold"
-            app:cornerRadius="12dp"
+            app:cornerRadius="28dp"
             android:layout_marginBottom="12dp" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_success_home"
             android:layout_width="match_parent"
-            android:layout_height="54dp"
-            android:backgroundTint="@color/white"
+            android:layout_height="56dp"
+            android:backgroundTint="#FFF9F5"
             android:text="Kembali Ke Beranda"
-            android:textColor="@color/colorPrimaryDark"
-            android:textSize="15sp"
+            android:textColor="#212121"
+            android:textSize="16sp"
             android:textStyle="bold"
-            app:cornerRadius="12dp"
-            app:strokeColor="@color/colorPrimary"
-            app:strokeWidth="2dp" />
+            app:cornerRadius="28dp"
+            app:strokeColor="#DDDDDD"
+            app:strokeWidth="1dp" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
