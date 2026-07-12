@@ -8,6 +8,10 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import java.text.NumberFormat
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
 
 class OrderStatusViewModel(
     private val orderRepository: OrderRepository
@@ -26,5 +30,27 @@ class OrderStatusViewModel(
                 _simulationState.value = state
             }
         }
+    }
+
+    fun getPaymentMethod(): String = orderRepository.getLastPaymentMethod()
+
+    fun getFormattedQuantity(): String = "${orderRepository.getLastOrderQty()} (100gr)"
+
+    fun getSnackName(): String = orderRepository.getLastOrderSnackName()
+
+    fun getFormattedTotalCost(): String {
+        val cost = orderRepository.getLastOrderTotalCost()
+        val formatter = NumberFormat.getNumberInstance(Locale.forLanguageTag("id-ID"))
+        return "Rp. " + formatter.format(cost.toInt())
+    }
+
+    fun getFormattedTime(): String {
+        val sdfTime = SimpleDateFormat("HH:mm", Locale.forLanguageTag("id-ID"))
+        return sdfTime.format(Calendar.getInstance().time)
+    }
+
+    fun getFormattedDate(): String {
+        val sdfDate = SimpleDateFormat("dd MMMM yyyy", Locale.forLanguageTag("id-ID"))
+        return sdfDate.format(Calendar.getInstance().time)
     }
 }

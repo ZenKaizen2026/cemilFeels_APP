@@ -167,6 +167,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
+            app:chipSpacingHorizontal="12dp"
             app:singleSelection="true">
 
             <com.google.android.material.chip.Chip
@@ -177,7 +178,11 @@
                 app:chipBackgroundColor="#FFFFFF"
                 app:chipStrokeColor="#EEEEEE"
                 android:textColor="#212121"
-                android:text="😊 Happy" />
+                android:text="Happy"
+                app:chipIcon="@drawable/hpy"
+                app:chipIconVisible="true"
+                app:chipIconSize="56dp"
+                app:chipIconTint="@null" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/chipSad"
@@ -187,7 +192,11 @@
                 app:chipBackgroundColor="#FFFFFF"
                 app:chipStrokeColor="#EEEEEE"
                 android:textColor="#212121"
-                android:text="😢 Sad" />
+                android:text="Sad"
+                app:chipIcon="@drawable/sad"
+                app:chipIconVisible="true"
+                app:chipIconSize="56dp"
+                app:chipIconTint="@null" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/chipAngry"
@@ -197,7 +206,11 @@
                 app:chipBackgroundColor="#FFFFFF"
                 app:chipStrokeColor="#EEEEEE"
                 android:textColor="#212121"
-                android:text="😡 Angry" />
+                android:text="Angry"
+                app:chipIcon="@drawable/mad"
+                app:chipIconVisible="true"
+                app:chipIconSize="56dp"
+                app:chipIconTint="@null" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/chipBored"
@@ -207,7 +220,11 @@
                 app:chipBackgroundColor="#FFFFFF"
                 app:chipStrokeColor="#EEEEEE"
                 android:textColor="#212121"
-                android:text="😴 Bored" />
+                android:text="Bored"
+                app:chipIcon="@drawable/brng"
+                app:chipIconVisible="true"
+                app:chipIconSize="56dp"
+                app:chipIconTint="@null" />
 
         </com.google.android.material.chip.ChipGroup>
 

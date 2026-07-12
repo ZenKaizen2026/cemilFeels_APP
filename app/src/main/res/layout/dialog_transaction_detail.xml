@@ -1,29 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-     Trik FrameLayout Transparan:
-     Mencegah sudut berwarna putih (bocor) saat file ini
-     dipanggil sebagai Pop-up / Bottom Sheet Dialog.
--->
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@android:color/transparent"
-    android:padding="24dp">
+    android:background="@android:color/transparent">
 
-    <!-- Card Utama bergaya Premium Bottom Sheet -->
+    <!-- Card Utama with fixed margins and corner handling -->
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="16dp"
         app:cardBackgroundColor="#FFFFFF"
         app:cardCornerRadius="24dp"
         app:cardElevation="8dp"
+        app:cardPreventCornerOverlap="false"
         app:strokeWidth="0dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingHorizontal="24dp"
+            android:paddingHorizontal="20dp"
             android:paddingVertical="24dp">
 
             <!-- Header Area -->
@@ -33,7 +29,7 @@
                 android:layout_height="wrap_content"
                 android:text="Rincian Transaksi"
                 android:textColor="#222222"
-                android:textSize="22sp"
+                android:textSize="20sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -44,15 +40,15 @@
                 android:layout_height="wrap_content"
                 android:text="Detail pembayaran dan pesanan"
                 android:textColor="#757575"
-                android:textSize="13sp"
-                android:layout_marginTop="4dp"
+                android:textSize="12sp"
+                android:layout_marginTop="2dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_detail_title" />
 
             <ImageButton
                 android:id="@+id/btn_close_detail"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 app:srcCompat="@android:drawable/ic_menu_close_clear_cancel"
                 app:tint="#757575"
@@ -66,10 +62,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginTop="16dp"
-                android:background="#EAEAEA"
+                android:background="#F0F0F0"
                 app:layout_constraintTop_toBottomOf="@id/tv_detail_subtitle" />
 
-            <!-- Informasi Status (Menggunakan Ikon) -->
+            <!-- Row: Status -->
             <TextView
                 android:id="@+id/tv_lbl_status"
                 android:layout_width="wrap_content"
@@ -77,38 +73,35 @@
                 android:layout_marginTop="20dp"
                 android:text="Status"
                 android:textColor="#757575"
-                android:textSize="14sp"
+                android:textSize="13sp"
                 android:drawablePadding="8dp"
                 app:drawableStartCompat="@drawable/ic_check_circle"
                 app:drawableTint="#9E9E9E"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/divider_detail_top" />
 
-            <!-- Status Badge: Dibungkus CardView khusus agar berbentuk Pill tanpa merusak ID tv_val_status -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:cardBackgroundColor="#E8F5E9"
-                app:cardCornerRadius="16dp"
+                app:cardCornerRadius="12dp"
                 app:cardElevation="0dp"
-                app:strokeWidth="0dp"
                 app:layout_constraintBottom_toBottomOf="@id/tv_lbl_status"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/tv_lbl_status">
-
                 <TextView
                     android:id="@+id/tv_val_status"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingHorizontal="12dp"
+                    android:paddingHorizontal="10dp"
                     android:paddingVertical="4dp"
                     android:text="✔ Selesai"
                     android:textColor="#2E7D32"
-                    android:textSize="13sp"
+                    android:textSize="12sp"
                     android:textStyle="bold" />
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Metode Pembayaran -->
+            <!-- Row: Metode Pembayaran -->
             <TextView
                 android:id="@+id/tv_lbl_pay_method"
                 android:layout_width="wrap_content"
@@ -116,7 +109,7 @@
                 android:layout_marginTop="16dp"
                 android:text="Metode Pembayaran"
                 android:textColor="#757575"
-                android:textSize="14sp"
+                android:textSize="13sp"
                 android:drawablePadding="8dp"
                 app:drawableStartCompat="@drawable/ic_wallet"
                 app:drawableTint="#9E9E9E"
@@ -127,15 +120,15 @@
                 android:id="@+id/tv_val_pay_method"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Shopee Pay"
+                android:text="QRIS"
                 android:textColor="#222222"
-                android:textSize="14sp"
+                android:textSize="13sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="@id/tv_lbl_pay_method"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/tv_lbl_pay_method" />
 
-            <!-- Waktu -->
+            <!-- Row: Waktu -->
             <TextView
                 android:id="@+id/tv_lbl_time"
                 android:layout_width="wrap_content"
@@ -143,7 +136,7 @@
                 android:layout_marginTop="16dp"
                 android:text="Waktu"
                 android:textColor="#757575"
-                android:textSize="14sp"
+                android:textSize="13sp"
                 android:drawablePadding="8dp"
                 app:drawableStartCompat="@drawable/ic_access_time"
                 app:drawableTint="#9E9E9E"
@@ -156,13 +149,13 @@
                 android:layout_height="wrap_content"
                 android:text="18:00"
                 android:textColor="#222222"
-                android:textSize="14sp"
+                android:textSize="13sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="@id/tv_lbl_time"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/tv_lbl_time" />
 
-            <!-- Tanggal -->
+            <!-- Row: Tanggal -->
             <TextView
                 android:id="@+id/tv_lbl_date"
                 android:layout_width="wrap_content"
@@ -170,7 +163,7 @@
                 android:layout_marginTop="16dp"
                 android:text="Tanggal"
                 android:textColor="#757575"
-                android:textSize="14sp"
+                android:textSize="13sp"
                 android:drawablePadding="8dp"
                 app:drawableStartCompat="@drawable/ic_calendar_today"
                 app:drawableTint="#9E9E9E"
@@ -183,13 +176,13 @@
                 android:layout_height="wrap_content"
                 android:text="15 Juni 2026"
                 android:textColor="#222222"
-                android:textSize="14sp"
+                android:textSize="13sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="@id/tv_lbl_date"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/tv_lbl_date" />
 
-            <!-- Nama Toko -->
+            <!-- Row: Nama Toko -->
             <TextView
                 android:id="@+id/tv_lbl_store"
                 android:layout_width="wrap_content"
@@ -197,7 +190,7 @@
                 android:layout_marginTop="16dp"
                 android:text="Nama Toko"
                 android:textColor="#757575"
-                android:textSize="14sp"
+                android:textSize="13sp"
                 android:drawablePadding="8dp"
                 app:drawableStartCompat="@drawable/ic_store"
                 app:drawableTint="#9E9E9E"
@@ -210,13 +203,13 @@
                 android:layout_height="wrap_content"
                 android:text="CemilJog"
                 android:textColor="#222222"
-                android:textSize="14sp"
+                android:textSize="13sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="@id/tv_lbl_store"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/tv_lbl_store" />
 
-            <!-- QTY -->
+            <!-- Row: QTY -->
             <TextView
                 android:id="@+id/tv_lbl_qty"
                 android:layout_width="wrap_content"
@@ -224,7 +217,7 @@
                 android:layout_marginTop="16dp"
                 android:text="QTY"
                 android:textColor="#757575"
-                android:textSize="14sp"
+                android:textSize="13sp"
                 android:drawablePadding="8dp"
                 app:drawableStartCompat="@drawable/ic_inventory"
                 app:drawableTint="#9E9E9E"
@@ -237,13 +230,13 @@
                 android:layout_height="wrap_content"
                 android:text="1 (100gr)"
                 android:textColor="#222222"
-                android:textSize="14sp"
+                android:textSize="13sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="@id/tv_lbl_qty"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/tv_lbl_qty" />
 
-            <!-- Cemilan -->
+            <!-- Row: Produk -->
             <TextView
                 android:id="@+id/tv_lbl_snack_name"
                 android:layout_width="wrap_content"
@@ -251,7 +244,7 @@
                 android:layout_marginTop="16dp"
                 android:text="Produk"
                 android:textColor="#757575"
-                android:textSize="14sp"
+                android:textSize="13sp"
                 android:drawablePadding="8dp"
                 app:drawableStartCompat="@drawable/ic_fastfood"
                 app:drawableTint="#9E9E9E"
@@ -264,13 +257,13 @@
                 android:layout_height="wrap_content"
                 android:text="Basreng Stik"
                 android:textColor="#222222"
-                android:textSize="14sp"
+                android:textSize="13sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="@id/tv_lbl_snack_name"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/tv_lbl_snack_name" />
 
-            <!-- Alamat -->
+            <!-- Row: Alamat -->
             <TextView
                 android:id="@+id/tv_lbl_detail_addr"
                 android:layout_width="wrap_content"
@@ -278,7 +271,7 @@
                 android:layout_marginTop="16dp"
                 android:text="Alamat"
                 android:textColor="#757575"
-                android:textSize="14sp"
+                android:textSize="13sp"
                 android:drawablePadding="8dp"
                 app:drawableStartCompat="@drawable/ic_location_on"
                 app:drawableTint="#9E9E9E"
@@ -291,25 +284,23 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:gravity="end"
-                android:text="ConCat"
+                android:text="ConCat, Sleman, Yogyakarta"
                 android:textColor="#222222"
-                android:textSize="14sp"
+                android:textSize="13sp"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="@id/tv_lbl_detail_addr"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/tv_lbl_detail_addr"
                 app:layout_constraintTop_toTopOf="@id/tv_lbl_detail_addr" />
 
-            <!-- Garis Pemisah Total -->
             <View
                 android:id="@+id/divider_detail_bottom"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginTop="24dp"
-                android:background="#EAEAEA"
-                app:layout_constraintTop_toBottomOf="@id/tv_lbl_detail_addr" />
+                android:background="#F0F0F0"
+                app:layout_constraintTop_toBottomOf="@id/tv_val_detail_addr" />
 
-            <!-- Total Transaksi -->
+            <!-- Row: Total Transaksi Fixed -->
             <TextView
                 android:id="@+id/tv_lbl_trans_total"
                 android:layout_width="wrap_content"
@@ -317,7 +308,7 @@
                 android:layout_marginTop="20dp"
                 android:text="Total Pembayaran"
                 android:textColor="#222222"
-                android:textSize="16sp"
+                android:textSize="15sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -325,14 +316,17 @@
 
             <TextView
                 android:id="@+id/tv_val_trans_total"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Rp 23.000"
+                android:gravity="end"
+                android:text="Rp 65.000"
                 android:textColor="#FF7A1A"
-                android:textSize="22sp"
+                android:textSize="18sp"
                 android:textStyle="bold"
+                android:layout_marginStart="8dp"
                 app:layout_constraintBottom_toBottomOf="@id/tv_lbl_trans_total"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/tv_lbl_trans_total"
                 app:layout_constraintTop_toTopOf="@id/tv_lbl_trans_total" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

@@ -14,6 +14,9 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
+import androidx.viewpager2.widget.CompositePageTransformer
+import androidx.viewpager2.widget.MarginPageTransformer
+import androidx.viewpager2.widget.ViewPager2
 import com.example.cemil_feels.databinding.ActivityRecommendationBinding
 import com.example.cemil_feels.di.ServiceLocator
 import com.example.cemil_feels.data.model.Snack
@@ -151,6 +154,65 @@ class RecommendationActivity : AppCompatActivity() {
             }
         )
         binding.vpSnacksCarousel.adapter = snackAdapter
+        
+        binding.vpSnacksCarousel.offscreenPageLimit = 3
+        binding.vpSnacksCarousel.getChildAt(0).overScrollMode = View.OVER_SCROLL_NEVER
+
+        val compositePageTransformer = CompositePageTransformer()
+        compositePageTransformer.addTransformer(MarginPageTransformer(resources.getDimensionPixelOffset(R.dimen.carousel_margin)))
+        compositePageTransformer.addTransformer { page, position ->
+            val r = 1 - kotlin.math.abs(position)
+            page.scaleY = 0.85f + r * 0.15f
+            page.alpha = 0.5f + r * 0.5f
+        }
+        binding.vpSnacksCarousel.setPageTransformer(compositePageTransformer)
+
+        binding.vpSnacksCarousel.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                updateDotsIndicator(position)
+            }
+        })
+    }
+
+    private fun setupDotsIndicator(count: Int) {
+        binding.layoutDotsIndicator.removeAllViews()
+        val dotsCount = if (count > 2) 2 else count
+        val dots = arrayOfNulls<android.widget.ImageView>(dotsCount)
+        val params = LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.WRAP_CONTENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT
+        )
+        params.setMargins(8, 0, 8, 0)
+
+        for (i in 0 until dotsCount) {
+            dots[i] = android.widget.ImageView(this)
+            dots[i]?.setImageDrawable(
+                ContextCompat.getDrawable(
+                    this,
+                    if (i == 0) R.drawable.dot_active else R.drawable.dot_inactive
+                )
+            )
+            binding.layoutDotsIndicator.addView(dots[i], params)
+        }
+    }
+
+    private fun updateDotsIndicator(position: Int) {
+        val childCount = binding.layoutDotsIndicator.childCount
+        if (childCount == 0) return
+        
+        // Map carousel position to dot index (0 or 1)
+        val dotIndex = if (position >= childCount) childCount - 1 else position
+        
+        for (i in 0 until childCount) {
+            val imageView = binding.layoutDotsIndicator.getChildAt(i) as android.widget.ImageView
+            imageView.setImageDrawable(
+                ContextCompat.getDrawable(
+                    this,
+                    if (i == dotIndex) R.drawable.dot_active else R.drawable.dot_inactive
+                )
+            )
+        }
     }
 
     private fun setupSpiceSelector() {
@@ -217,6 +279,7 @@ class RecommendationActivity : AppCompatActivity() {
         lifecycleScope.launch {
             viewModel.filteredSnacksState.collect { filteredSnacks ->
                 snackAdapter.submitList(filteredSnacks)
+                setupDotsIndicator(filteredSnacks.size)
             }
         }
 

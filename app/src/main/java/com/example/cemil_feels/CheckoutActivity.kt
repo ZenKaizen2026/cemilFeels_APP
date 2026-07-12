@@ -67,20 +67,32 @@ class CheckoutActivity : AppCompatActivity() {
             viewModel.uiState.collect { state ->
                 binding.tvCheckoutSubtotal.text = state.subtotalText
                 binding.tvCheckoutTotal.text = state.totalText
-                binding.tvSummaryItemName.text = state.firstItemName
-                binding.tvSummaryItemPriceQty.text = state.firstItemPriceQty
 
-                if (state.firstItemImageResId != 0) {
-                    binding.ivSummaryItemImage.setImageResource(state.firstItemImageResId)
-                } else {
-                    binding.ivSummaryItemImage.setImageResource(R.drawable.basreng_stik)
-                }
+                // Update dynamic items
+                binding.layoutOrderItemsContainer.removeAllViews()
+                state.cartItems.forEach { item ->
+                    val itemView = layoutInflater.inflate(R.layout.item_checkout_summary, binding.layoutOrderItemsContainer, false)
+                    
+                    val ivImage = itemView.findViewById<android.widget.ImageView>(R.id.iv_summary_item_image)
+                    val tvName = itemView.findViewById<android.widget.TextView>(R.id.tv_summary_item_name)
+                    val tvLevel = itemView.findViewById<android.widget.TextView>(R.id.tv_summary_item_level)
+                    val cvLevel = itemView.findViewById<com.google.android.material.card.MaterialCardView>(R.id.cv_summary_item_level)
+                    val tvQty = itemView.findViewById<android.widget.TextView>(R.id.tv_summary_item_qty)
+                    val tvPrice = itemView.findViewById<android.widget.TextView>(R.id.tv_summary_item_price)
 
-                if (state.isSpiceLevelVisible) {
-                    binding.tvSummaryItemLevel.visibility = View.VISIBLE
-                    binding.tvSummaryItemLevel.text = state.spiceLevelText
-                } else {
-                    binding.tvSummaryItemLevel.visibility = View.GONE
+                    ivImage.setImageResource(item.imageResId)
+                    tvName.text = item.name
+                    tvQty.text = item.qtyText
+                    tvPrice.text = item.priceText
+
+                    if (item.isSpiceLevelVisible) {
+                        cvLevel.visibility = View.VISIBLE
+                        tvLevel.text = item.spiceLevelText
+                    } else {
+                        cvLevel.visibility = View.GONE
+                    }
+
+                    binding.layoutOrderItemsContainer.addView(itemView)
                 }
             }
         }

@@ -283,12 +283,11 @@
                         app:layout_constraintBottom_toTopOf="@id/dot_preparing"/>
 
                     <!-- Node 1: Received (Selesai - Hijau) -->
-                    <View
+                    <ImageView
                         android:id="@+id/dot_received"
-                        android:layout_width="16dp"
-                        android:layout_height="16dp"
-                        android:background="@drawable/bg_rounded_rectangle_19"
-                        android:backgroundTint="#2E7D32"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/ic_timeline_dot_completed"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -298,12 +297,12 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="20dp"
                         android:text="Pesanan Diterima"
-                        android:textColor="#212121"
+                        android:textColor="#2E7D32"
                         android:textSize="14sp"
                         android:textStyle="bold"
-                        app:drawableStartCompat="@drawable/ic_receipt"
-                        app:drawableTint="#2E7D32"
                         android:drawablePadding="8dp"
+                        app:drawableStartCompat="@drawable/ic_check_circle"
+                        app:drawableTint="#2E7D32"
                         app:layout_constraintBottom_toBottomOf="@id/dot_received"
                         app:layout_constraintStart_toEndOf="@id/dot_received"
                         app:layout_constraintTop_toTopOf="@id/dot_received" />
@@ -320,13 +319,12 @@
                         app:layout_constraintTop_toTopOf="@id/dot_received" />
 
                     <!-- Node 2: Preparing (Aktif - Orange) -->
-                    <View
+                    <ImageView
                         android:id="@+id/dot_preparing"
-                        android:layout_width="16dp"
-                        android:layout_height="16dp"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
                         android:layout_marginTop="40dp"
-                        android:background="@drawable/bg_rounded_rectangle_19"
-                        android:backgroundTint="#FF7A1A"
+                        android:src="@drawable/ic_timeline_dot_active"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/dot_received" />
 
@@ -339,9 +337,9 @@
                         android:textColor="#FF7A1A"
                         android:textSize="14sp"
                         android:textStyle="bold"
+                        android:drawablePadding="8dp"
                         app:drawableStartCompat="@drawable/ic_restaurant"
                         app:drawableTint="#FF7A1A"
-                        android:drawablePadding="8dp"
                         app:layout_constraintBottom_toBottomOf="@id/dot_preparing"
                         app:layout_constraintStart_toEndOf="@id/dot_preparing"
                         app:layout_constraintTop_toTopOf="@id/dot_preparing" />
@@ -359,13 +357,12 @@
                         app:layout_constraintTop_toTopOf="@id/dot_preparing" />
 
                     <!-- Node 3: Shipping (Belum - Abu) -->
-                    <View
+                    <ImageView
                         android:id="@+id/dot_shipping"
-                        android:layout_width="16dp"
-                        android:layout_height="16dp"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
                         android:layout_marginTop="40dp"
-                        android:background="@drawable/bg_rounded_rectangle_19"
-                        android:backgroundTint="#EEEEEE"
+                        android:src="@drawable/ic_timeline_dot_inactive"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/dot_preparing" />
 
@@ -396,13 +393,12 @@
                         app:layout_constraintTop_toTopOf="@id/dot_shipping" />
 
                     <!-- Node 4: Arrived (Belum - Abu) -->
-                    <View
+                    <ImageView
                         android:id="@+id/dot_arrived"
-                        android:layout_width="16dp"
-                        android:layout_height="16dp"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
                         android:layout_marginTop="40dp"
-                        android:background="@drawable/bg_rounded_rectangle_19"
-                        android:backgroundTint="#EEEEEE"
+                        android:src="@drawable/ic_timeline_dot_inactive"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/dot_shipping" />
 
@@ -442,6 +438,7 @@
                 android:weightSum="2">
 
                 <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_status_detail"
                     android:layout_width="0dp"
                     android:layout_height="52dp"
                     android:layout_weight="1"
@@ -484,71 +481,65 @@
         android:layout_marginBottom="24dp"
         app:cardElevation="12dp"
         app:strokeWidth="0dp"
-        app:cardCornerRadius="24dp"
+        app:cardCornerRadius="28dp"
         app:cardBackgroundColor="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingHorizontal="24dp"
+            android:paddingHorizontal="20dp"
             android:paddingVertical="20dp">
 
             <ImageView
-                android:id="@+id/iv_eta_icon"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                app:srcCompat="@drawable/ic_access_time"
-                app:tint="#FF7A1A"
+                android:id="@+id/iv_eta_ring"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:src="@drawable/ic_timeline_dot_active"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"/>
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginStart="16dp"
-                app:layout_constraintStart_toEndOf="@id/iv_eta_icon"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/tv_eta_countdown">
-
-                <TextView
-                    android:id="@+id/tv_eta_label"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Estimasi Tiba"
-                    android:textColor="#757575"
-                    android:textSize="13sp" />
-
-                <!-- Meskipun ID tv_eta_time digunakan, tampilannya dibuat modern -->
-                <TextView
-                    android:id="@+id/tv_eta_time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="18 Menit Lagi"
-                    android:textColor="#212121"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    android:layout_marginTop="2dp" />
-            </LinearLayout>
-
-            <!-- Menjaga ID tv_eta_countdown agar tidak error di Kotlin -->
             <TextView
-                android:id="@+id/tv_eta_countdown"
+                android:id="@+id/tv_eta_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Tepat Waktu"
-                android:textColor="#FF7A1A"
+                android:text="Estimasi Tiba"
+                android:textColor="#757575"
                 android:textSize="12sp"
+                android:layout_marginStart="16dp"
+                app:layout_constraintStart_toEndOf="@id/iv_eta_ring"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_eta_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="22:02"
+                android:textColor="#212121"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@id/tv_eta_label"
+                app:layout_constraintTop_toBottomOf="@id/tv_eta_label"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_eta_countdown"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Sedang dimasak (20 menit lagi)..."
+                android:textColor="#FF7A1A"
+                android:textSize="11sp"
                 android:textStyle="bold"
                 android:background="@drawable/bg_rounded_rectangle_19"
                 android:backgroundTint="#FFF2E8"
                 android:paddingHorizontal="12dp"
-                android:paddingVertical="6dp"
+                android:paddingVertical="8dp"
+                android:gravity="center"
+                android:layout_marginStart="12dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/tv_eta_time"
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>

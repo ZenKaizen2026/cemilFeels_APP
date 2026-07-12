@@ -34,13 +34,19 @@ class RecommendationViewModel(
     val filteredSnacksState: StateFlow<List<Snack>> = MutableStateFlow<List<Snack>>(emptyList()).apply {
         viewModelScope.launch {
             combine(snackRepository.getSnacks(), _processedMood) { allSnacks, mood ->
-                when (mood) {
-                    "Marah", "Cemas" -> allSnacks.filter { it.name == "Basreng Stik" || it.name == "Makaroni Bantet" }
-                    "Bahagia" -> allSnacks.filter { it.name == "Cireng Sambal Rujak" || it.name == "Tahu Walik" }
-                    "Sedih" -> allSnacks.filter { it.name == "Piscok Lumer Coklat" || it.name == "Bola Bola Coklat" }
-                    "Biasa aja" -> allSnacks.filter { it.name == "Kulpi Balado" || it.name == "Kerupuk Pangsit" }
-                    else -> allSnacks
+                val m = mood.lowercase(java.util.Locale.ROOT)
+                val filtered = when {
+                    m == "marah" || m == "cemas" -> allSnacks.filter { it.name == "Basreng Stik" || it.name == "Makaroni Bantet" }
+                    m == "bahagia" -> allSnacks.filter { it.name == "Cireng Sambal Rujak" || it.name == "Tahu Walik" }
+                    m == "sedih" -> allSnacks.filter { it.name == "Piscok Lumer Coklat" || it.name == "Bola Bola Coklat" }
+                    m == "biasa aja" -> {
+                        val p1 = allSnacks.find { it.name == "Kerupuk Pangsit" }
+                        val p2 = allSnacks.find { it.name == "Kulpi Balado" }
+                        listOfNotNull(p1, p2)
+                    }
+                    else -> allSnacks.take(2)
                 }
+                filtered.take(2)
             }.collect {
                 value = it
             }

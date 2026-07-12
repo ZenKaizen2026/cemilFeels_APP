@@ -1,5 +1,6 @@
 package com.example.cemil_feels
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
@@ -29,6 +30,11 @@ class HomeActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
+        // Menampilkan nama dari SharedPreferences
+        val sharedPrefs = getSharedPreferences("CemilFeelsPrefs", Context.MODE_PRIVATE)
+        val savedName = sharedPrefs.getString("registered_name", "Setia")
+        binding.tvUsername.text = getString(R.string.greeting_user, savedName)
 
         binding.btnMenu.setOnClickListener {
             Toast.makeText(this, "Menu samping terpilih.", Toast.LENGTH_SHORT).show()

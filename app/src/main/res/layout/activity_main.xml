@@ -51,49 +51,65 @@
                 android:gravity="center"
                 android:padding="4dp">
 
-                <Button
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_mood_bahagia"
                     style="@style/Widget.Material3.Button.OutlinedButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
-                    android:text="Bahagia 😊"
-                    android:textColor="@color/colorTextDark" />
+                    android:text="Bahagia"
+                    android:textColor="@color/colorTextDark"
+                    app:icon="@drawable/hpy"
+                    app:iconSize="56dp"
+                    app:iconTint="@null"
+                    app:iconGravity="textStart" />
 
-                <Button
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_mood_sedih"
                     style="@style/Widget.Material3.Button.OutlinedButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
-                    android:text="Sedih 😢"
-                    android:textColor="@color/colorTextDark" />
+                    android:text="Sedih"
+                    android:textColor="@color/colorTextDark"
+                    app:icon="@drawable/sad"
+                    app:iconSize="56dp"
+                    app:iconTint="@null"
+                    app:iconGravity="textStart" />
 
-                <Button
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_mood_biasa"
                     style="@style/Widget.Material3.Button.OutlinedButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
-                    android:text="Biasa aja 😐"
-                    android:textColor="@color/colorTextDark" />
+                    android:text="Biasa aja"
+                    android:textColor="@color/colorTextDark"
+                    app:icon="@drawable/brng"
+                    app:iconSize="56dp"
+                    app:iconTint="@null"
+                    app:iconGravity="textStart" />
 
-                <Button
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_mood_cemas"
                     style="@style/Widget.Material3.Button.OutlinedButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
-                    android:text="Cemas 😟"
+                    android:text="Cemas"
                     android:textColor="@color/colorTextDark" />
 
-                <Button
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_mood_marah"
                     style="@style/Widget.Material3.Button.OutlinedButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Marah 😡"
-                    android:textColor="@color/colorTextDark" />
+                    android:text="Marah"
+                    android:textColor="@color/colorTextDark"
+                    app:icon="@drawable/mad"
+                    app:iconSize="56dp"
+                    app:iconTint="@null"
+                    app:iconGravity="textStart" />
             </LinearLayout>
         </HorizontalScrollView>
 

@@ -10,6 +10,7 @@ import android.content.res.ColorStateList
 import android.os.Build
 import android.os.Bundle
 import android.view.View
+import android.widget.ImageButton
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
@@ -71,6 +72,10 @@ class OrderStatusActivity : AppCompatActivity() {
             finish()
         }
 
+        binding.btnStatusDetail.setOnClickListener {
+            showTransactionDetailDialog()
+        }
+
         binding.btnCopyOrderId.setOnClickListener {
             val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as android.content.ClipboardManager
             val clip = android.content.ClipData.newPlainText("Order ID", binding.tvOrderId.text)
@@ -118,33 +123,30 @@ class OrderStatusActivity : AppCompatActivity() {
             OrderStep.PREPARING -> {
                 binding.tvLblPreparing.setTextColor(ContextCompat.getColor(this, R.color.colorTextDark))
                 binding.tvLblPreparing.setTypeface(null, android.graphics.Typeface.BOLD)
-                binding.dotPreparing.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorPrimary))
                 updateProgressLine(binding.dotReceived, binding.dotPreparing)
             }
             OrderStep.SHIPPING -> {
                 // Ensure PREPARING styles are also set
                 binding.tvLblPreparing.setTextColor(ContextCompat.getColor(this, R.color.colorTextDark))
                 binding.tvLblPreparing.setTypeface(null, android.graphics.Typeface.BOLD)
-                binding.dotPreparing.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorPrimary))
                 
                 binding.tvLblShipping.setTextColor(ContextCompat.getColor(this, R.color.colorTextDark))
                 binding.tvLblShipping.setTypeface(null, android.graphics.Typeface.BOLD)
-                binding.dotShipping.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorPrimary))
+                binding.dotShipping.setImageResource(R.drawable.ic_timeline_dot_active)
                 updateProgressLine(binding.dotReceived, binding.dotShipping)
             }
             OrderStep.ARRIVED -> {
                 // Ensure PREPARING and SHIPPING styles are set
                 binding.tvLblPreparing.setTextColor(ContextCompat.getColor(this, R.color.colorTextDark))
                 binding.tvLblPreparing.setTypeface(null, android.graphics.Typeface.BOLD)
-                binding.dotPreparing.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorPrimary))
                 
                 binding.tvLblShipping.setTextColor(ContextCompat.getColor(this, R.color.colorTextDark))
                 binding.tvLblShipping.setTypeface(null, android.graphics.Typeface.BOLD)
-                binding.dotShipping.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorPrimary))
+                binding.dotShipping.setImageResource(R.drawable.ic_timeline_dot_completed)
 
                 binding.tvLblArrived.setTextColor(ContextCompat.getColor(this, R.color.colorTextDark))
                 binding.tvLblArrived.setTypeface(null, android.graphics.Typeface.BOLD)
-                binding.dotArrived.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorPrimary))
+                binding.dotArrived.setImageResource(R.drawable.ic_timeline_dot_active)
                 updateProgressLine(binding.dotReceived, binding.dotArrived)
             }
             OrderStep.COMPLETED -> {
@@ -224,6 +226,41 @@ class OrderStatusActivity : AppCompatActivity() {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
                 requestNotificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
             }
+        }
+    }
+
+    private fun showTransactionDetailDialog() {
+        val dialogView = layoutInflater.inflate(R.layout.dialog_transaction_detail, null)
+        val dialog = androidx.appcompat.app.AlertDialog.Builder(this)
+            .setView(dialogView)
+            .setCancelable(true)
+            .create()
+
+        val tvPayMethod = dialogView.findViewById<android.widget.TextView>(R.id.tv_val_pay_method)
+        val tvQty = dialogView.findViewById<android.widget.TextView>(R.id.tv_val_qty)
+        val tvSnackName = dialogView.findViewById<android.widget.TextView>(R.id.tv_val_snack_name)
+        val tvTotal = dialogView.findViewById<android.widget.TextView>(R.id.tv_val_trans_total)
+        val tvTime = dialogView.findViewById<android.widget.TextView>(R.id.tv_val_time)
+        val tvDate = dialogView.findViewById<android.widget.TextView>(R.id.tv_val_date)
+
+        tvPayMethod?.text = viewModel.getPaymentMethod()
+        tvQty?.text = viewModel.getFormattedQuantity()
+        tvSnackName?.text = viewModel.getSnackName()
+        tvTotal?.text = viewModel.getFormattedTotalCost()
+        tvTime?.text = viewModel.getFormattedTime()
+        tvDate?.text = viewModel.getFormattedDate()
+
+        val btnClose = dialogView.findViewById<ImageButton>(R.id.btn_close_detail)
+        btnClose?.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialog.show()
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
+            dialog.window?.addFlags(android.view.WindowManager.LayoutParams.FLAG_BLUR_BEHIND)
+            dialog.window?.attributes?.blurBehindRadius = 25
         }
     }
 }
