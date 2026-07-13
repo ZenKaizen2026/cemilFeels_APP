@@ -82,9 +82,11 @@ class MainActivity : AppCompatActivity() {
 
         moodPickers.forEach { (moodName, pickerLayout) ->
             if (moodName == selectedMood) {
-                pickerLayout.setBackgroundColor(ContextCompat.getColor(this, R.color.colorSelected))
+                pickerLayout.setCardBackgroundColor(ContextCompat.getColor(this, R.color.colorSelected))
+                pickerLayout.strokeColor = ContextCompat.getColor(this, R.color.colorPrimary)
             } else {
-                pickerLayout.setBackgroundColor(ContextCompat.getColor(this, android.R.color.transparent))
+                pickerLayout.setCardBackgroundColor(ContextCompat.getColor(this, android.R.color.white))
+                pickerLayout.strokeColor = android.graphics.Color.parseColor("#EAEAEA")
             }
         }
     }

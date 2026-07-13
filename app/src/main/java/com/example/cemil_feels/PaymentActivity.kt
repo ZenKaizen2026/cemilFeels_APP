@@ -1,6 +1,9 @@
 package com.example.cemil_feels
 
+import android.app.Dialog
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -72,7 +75,7 @@ class PaymentActivity : AppCompatActivity() {
         // Tombol QRIS bulat
         binding.btnPaymentQris.setOnClickListener {
             viewModel.selectMethod("QRIS")
-            goToQrisScreen()
+            showQrisDialog()
         }
 
         // Tombol aksi di bawah: "Bayar Dengan ..."
@@ -84,7 +87,7 @@ class PaymentActivity : AppCompatActivity() {
             if (packageName.isNotEmpty()) {
                 checkAndProcessWallet(packageName)
             } else {
-                goToQrisScreen()
+                showQrisDialog()
             }
         }
 
@@ -100,16 +103,56 @@ class PaymentActivity : AppCompatActivity() {
     }
 
     private fun checkAndProcessWallet(targetPackage: String) {
-        val launchIntent = packageManager.getLaunchIntentForPackage(targetPackage)
-        if (launchIntent != null) {
-            // Aplikasi terinstal -> Mock buka e-wallet dan berpindah ke Konfirmasi
-            Toast.makeText(this, "Membuka aplikasi E-Wallet...", Toast.LENGTH_SHORT).show()
-            goToConfirmationScreen()
-        } else {
-            // Aplikasi TIDAK terinstal -> Alihkan ke QRIS
-            Toast.makeText(this, "Aplikasi E-Wallet tidak ditemukan secara lokal. Beralih ke QRIS.", Toast.LENGTH_LONG).show()
-            goToQrisScreen()
+        // Create an implicit intent to launch the payment app or web fallback URL
+        val uriString = when (viewModel.selectedMethod.value) {
+            "ShopeePay" -> "https://shopee.co.id"
+            "GoPay" -> "https://gopay.co.id"
+            "DANA" -> "https://www.dana.id"
+            "OVO" -> "https://www.ovo.id"
+            else -> null
         }
+
+        if (uriString != null) {
+            val intent = Intent(Intent.ACTION_VIEW, android.net.Uri.parse(uriString))
+            
+            // Check package visibility or if the app can handle this URL directly
+            val resolvedActivities = packageManager.queryIntentActivities(intent, 0)
+            val isAppInstalled = resolvedActivities.any { it.activityInfo.packageName == targetPackage }
+
+            if (isAppInstalled) {
+                // If the app is installed, configure the intent to open the app directly
+                intent.setPackage(targetPackage)
+                Toast.makeText(this, "Membuka aplikasi ${viewModel.selectedMethod.value}...", Toast.LENGTH_SHORT).show()
+            } else {
+                // Otherwise open via default browser
+                Toast.makeText(this, "Aplikasi tidak ditemukan. Membuka di browser...", Toast.LENGTH_LONG).show()
+            }
+
+            try {
+                startActivity(intent)
+                goToConfirmationScreen()
+            } catch (e: Exception) {
+                showQrisDialog()
+            }
+        } else {
+            showQrisDialog()
+        }
+    }
+
+    private fun showQrisDialog() {
+        val dialog = Dialog(this)
+        dialog.setContentView(R.layout.dialog_qris)
+        
+        // Make background transparent to show the card's rounded corners
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        
+        val btnClose = dialog.findViewById<com.google.android.material.button.MaterialButton>(R.id.btn_close_qris)
+        btnClose.setOnClickListener {
+            dialog.dismiss()
+            goToConfirmationScreen()
+        }
+        
+        dialog.show()
     }
 
     private fun goToConfirmationScreen() {
