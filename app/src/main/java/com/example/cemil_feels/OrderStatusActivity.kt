@@ -1,12 +1,9 @@
 package com.example.cemil_feels
 
 import android.Manifest
-import android.app.NotificationChannel
-import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.content.res.ColorStateList
 import android.os.Build
 import android.os.Bundle
 import android.view.View
@@ -16,7 +13,6 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -37,7 +33,6 @@ import kotlinx.coroutines.launch
 class OrderStatusActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityOrderStatusBinding
-    private val channelId = "cemil_feels_order_status"
     private var lastRenderedStep: OrderStep? = null
 
     private val viewModel: OrderStatusViewModel by viewModels {
@@ -66,7 +61,7 @@ class OrderStatusActivity : AppCompatActivity() {
             insets
         }
 
-        createNotificationChannel()
+        // Pengecekan izin notifikasi
         checkNotificationPermission()
 
         binding.btnStatusBack.setOnClickListener {
@@ -127,20 +122,18 @@ class OrderStatusActivity : AppCompatActivity() {
                 updateProgressLine(binding.dotReceived, binding.dotPreparing)
             }
             OrderStep.SHIPPING -> {
-                // Ensure PREPARING styles are also set
                 binding.tvLblPreparing.setTextColor(ContextCompat.getColor(this, R.color.colorTextDark))
                 binding.tvLblPreparing.setTypeface(null, android.graphics.Typeface.BOLD)
-                
+
                 binding.tvLblShipping.setTextColor(ContextCompat.getColor(this, R.color.colorTextDark))
                 binding.tvLblShipping.setTypeface(null, android.graphics.Typeface.BOLD)
                 binding.dotShipping.setImageResource(R.drawable.ic_timeline_dot_active)
                 updateProgressLine(binding.dotReceived, binding.dotShipping)
             }
             OrderStep.ARRIVED -> {
-                // Ensure PREPARING and SHIPPING styles are set
                 binding.tvLblPreparing.setTextColor(ContextCompat.getColor(this, R.color.colorTextDark))
                 binding.tvLblPreparing.setTypeface(null, android.graphics.Typeface.BOLD)
-                
+
                 binding.tvLblShipping.setTextColor(ContextCompat.getColor(this, R.color.colorTextDark))
                 binding.tvLblShipping.setTypeface(null, android.graphics.Typeface.BOLD)
                 binding.dotShipping.setImageResource(R.drawable.ic_timeline_dot_completed)
@@ -157,10 +150,10 @@ class OrderStatusActivity : AppCompatActivity() {
             }
         }
 
-        // Trigger local notification if the step changed and notification is configured
+        // Trigger local notification if the step changed
         if (state.currentStep != lastRenderedStep) {
-            state.triggerNotification?.let { (title, msg) ->
-                sendLocalNotification(title, msg)
+            state.triggerNotification?.let {
+                sendLocalNotification(state.currentStep)
             }
             lastRenderedStep = state.currentStep
         }
@@ -170,7 +163,7 @@ class OrderStatusActivity : AppCompatActivity() {
         binding.viewVerticalLineActive.post {
             val startY = startView.y + (startView.height / 2)
             val endY = endView.y + (endView.height / 2)
-            
+
             binding.viewVerticalLineActive.y = startY
             val params = binding.viewVerticalLineActive.layoutParams
             params.height = (endY - startY).toInt()
@@ -179,61 +172,33 @@ class OrderStatusActivity : AppCompatActivity() {
         }
     }
 
-    private fun createNotificationChannel() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val name = "Status Pesanan CemilFeels"
-            val descriptionText = "Notifikasi status pelacakan pesanan makanan"
-            val importance = NotificationManager.IMPORTANCE_HIGH
-            val channel = NotificationChannel(channelId, name, importance).apply {
-                description = descriptionText
-                enableLights(true)
-                enableVibration(true)
-                vibrationPattern = longArrayOf(100, 200, 300, 400, 500, 400, 300, 200, 400)
-                setShowBadge(true)
-                // Ensure default sound is set for the channel to trigger Heads-up
-                setSound(
-                    android.media.RingtoneManager.getDefaultUri(android.media.RingtoneManager.TYPE_NOTIFICATION),
-                    android.media.AudioAttributes.Builder()
-                        .setUsage(android.media.AudioAttributes.USAGE_NOTIFICATION)
-                        .setContentType(android.media.AudioAttributes.CONTENT_TYPE_SONIFICATION)
-                        .build()
-                )
-                lockscreenVisibility = android.app.Notification.VISIBILITY_PUBLIC
-            }
-            val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-            notificationManager.createNotificationChannel(channel)
+    private fun sendLocalNotification(step: OrderStep) {
+        // 1. Tentukan Kalimat Custom berdasarkan Status Pesanan
+        val (title, message) = when (step) {
+            OrderStep.RECEIVED -> Pair("Pesanan Diterima! 📝", "Asyik, pesananmu sudah masuk dan sedang kami tinjau.")
+            OrderStep.PREPARING -> Pair("Sedang Dimasak! 🍳", "Camilanmu sedang disiapkan dengan penuh cinta oleh koki kami.")
+            OrderStep.SHIPPING -> Pair("Pesanan Meluncur! 🛵", "Siap-siap! Driver kami sedang meluncur bawa pesananmu.")
+            OrderStep.ARRIVED -> Pair("Pesanan Tiba! 🎉", "Yey! Camilanmu sudah sampai. Selamat menikmati!")
+            OrderStep.COMPLETED -> Pair("Selesai! ✅", "Transaksi selesai. Ditunggu pesanan selanjutnya ya!")
         }
-    }
 
-    private fun sendLocalNotification(title: String, message: String) {
-        val builder = NotificationCompat.Builder(this, channelId)
-            .setSmallIcon(android.R.drawable.ic_dialog_info)
-            .setContentTitle(title)
-            .setContentText(message)
-            .setPriority(NotificationCompat.PRIORITY_HIGH)
-            .setDefaults(NotificationCompat.DEFAULT_ALL)
-            .setCategory(NotificationCompat.CATEGORY_STATUS)
-            .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-            .setAutoCancel(true)
+        // 2. Tampilkan Notifikasi dengan Logo Kustom menggunakan NotificationHelper
+        NotificationHelper.showNotification(this, title, message)
 
-        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        // 3. Simpan ke Riwayat Notifikasi (SharedPreferences) agar tetap muncul di halaman history
         try {
-            notificationManager.notify((System.currentTimeMillis() % 10000).toInt(), builder.build())
-            
-            // Save to Notification History (SharedPreferences)
             val sharedPrefs = getSharedPreferences("CemilFeelsPrefs", Context.MODE_PRIVATE)
             val currentHistory = sharedPrefs.getString("notification_history", "") ?: ""
-            
+
             val timeFormatter = java.text.SimpleDateFormat("dd MMM yyyy, HH:mm", java.util.Locale.getDefault())
             val timeStr = timeFormatter.format(java.util.Date())
-            
+
             val newNotif = "$title;;$message;;$timeStr"
             val updatedHistory = if (currentHistory.isEmpty()) newNotif else "$currentHistory||$newNotif"
-            
+
             sharedPrefs.edit().putString("notification_history", updatedHistory).apply()
-            
-        } catch (e: SecurityException) {
-            // Permission not granted
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 

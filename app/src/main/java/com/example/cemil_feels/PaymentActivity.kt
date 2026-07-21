@@ -1,6 +1,7 @@
 package com.example.cemil_feels
 
 import android.app.Dialog
+import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -20,8 +21,16 @@ import kotlinx.coroutines.launch
 
 /**
  * Aktivitas Payment Selection Screen (Page 8).
- * Menangani pemilihan metode pembayaran (Bank, E-Wallet, atau QRIS) dan mengecek keberadaan aplikasi E-Wallet.
- * Refactored to follow MVVM architecture.
+ * Menangani pemilihan metode pembayaran (Bank, E-Wallet, atau QRIS).
+ *
+ * Fix UX Flow:
+ * User klik "Bayar" → E-Wallet terbuka di foreground
+ * PaymentConfirmationActivity ditempatkan di back stack terlebih dahulu
+ * Saat user back dari E-Wallet → langsung mendarat di PaymentConfirmationActivity ✅
+ *
+ * Fix Package Visibility:
+ * Membutuhkan tag <queries> di AndroidManifest.xml agar getLaunchIntentForPackage()
+ * bekerja di Android 11+ (API 30+).
  */
 class PaymentActivity : AppCompatActivity() {
 
@@ -45,13 +54,13 @@ class PaymentActivity : AppCompatActivity() {
             insets
         }
 
+        totalPayment = intent.getDoubleExtra("TOTAL_PAYMENT_EXTRA", 23000.0)
+
         binding.btnPaymentBack.setOnClickListener {
             finish()
         }
 
-        totalPayment = intent.getDoubleExtra("TOTAL_PAYMENT_EXTRA", 23000.0)
-
-        // Setup E-Wallet Click Listeners
+        // --- E-Wallet Click Listeners ---
         binding.btnWalletShopee.setOnClickListener {
             viewModel.selectMethod("ShopeePay")
             Toast.makeText(this, "ShopeePay Terpilih", Toast.LENGTH_SHORT).show()
@@ -72,23 +81,29 @@ class PaymentActivity : AppCompatActivity() {
             Toast.makeText(this, "OVO Terpilih", Toast.LENGTH_SHORT).show()
         }
 
-        // Tombol QRIS bulat
+        binding.btnWalletJago.setOnClickListener {
+            viewModel.selectMethod("Jago")
+            Toast.makeText(this, "Jago Terpilih", Toast.LENGTH_SHORT).show()
+        }
+
+        binding.btnWalletLinkaja.setOnClickListener {
+            viewModel.selectMethod("LinkAja")
+            Toast.makeText(this, "LinkAja Terpilih", Toast.LENGTH_SHORT).show()
+        }
+
+        // --- QRIS ---
         binding.btnPaymentQris.setOnClickListener {
             viewModel.selectMethod("QRIS")
             showQrisDialog()
         }
 
-        // Tombol aksi di bawah: "Bayar Dengan ..."
+        // --- Tombol Bayar Utama ---
         binding.btnActionPay.setOnClickListener {
             viewModel.savePaymentMethod()
             syncOrderToLegacyAppState()
-            
-            val packageName = viewModel.getTargetPackageName()
-            if (packageName.isNotEmpty()) {
-                checkAndProcessWallet(packageName)
-            } else {
-                showQrisDialog()
-            }
+
+            val targetPackage = viewModel.getTargetPackageName()
+            checkAndProcessWallet(targetPackage)
         }
 
         setupObservers()
@@ -102,56 +117,109 @@ class PaymentActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Mengecek keberadaan aplikasi E-Wallet dan menyusun back stack yang benar.
+     *
+     * Urutan yang WAJIB diikuti:
+     * 1. startActivity(PaymentConfirmationActivity) → masuk ke back stack (belum terlihat)
+     * 2. startActivity(EWalletApp)                  → muncul di foreground
+     * 3. finish()                                   → PaymentActivity dihapus dari stack
+     *
+     * Hasil back stack: [..., PaymentConfirmationActivity, EWalletApp (foreground)]
+     * Saat user Back dari EWallet → PaymentConfirmationActivity tampil ✅
+     */
     private fun checkAndProcessWallet(targetPackage: String) {
-        // Create an implicit intent to launch the payment app or web fallback URL
-        val uriString = when (viewModel.selectedMethod.value) {
-            "ShopeePay" -> "https://shopee.co.id"
-            "GoPay" -> "https://gopay.co.id"
-            "DANA" -> "https://www.dana.id"
-            "OVO" -> "https://www.ovo.id"
-            else -> null
+        val selectedMethod = viewModel.selectedMethod.value
+
+        // Early return: QRIS tidak butuh buka aplikasi eksternal
+        if (selectedMethod == "QRIS") {
+            showQrisDialog()
+            return
         }
 
-        if (uriString != null) {
-            val intent = Intent(Intent.ACTION_VIEW, android.net.Uri.parse(uriString))
-            
-            // Check package visibility or if the app can handle this URL directly
-            val resolvedActivities = packageManager.queryIntentActivities(intent, 0)
-            val isAppInstalled = resolvedActivities.any { it.activityInfo.packageName == targetPackage }
+        val packageName = when (selectedMethod) {
+            "ShopeePay" -> "com.shopee.id"
+            "GoPay"     -> "com.gojek.app"
+            "DANA"      -> "id.dana"
+            "OVO"       -> "ovo.id"
+            "Jago"      -> "com.jago.digitalBanking"
+            "LinkAja"   -> "id.or.tcash.wallet"
+            else        -> targetPackage
+        }
 
-            if (isAppInstalled) {
-                // If the app is installed, configure the intent to open the app directly
-                intent.setPackage(targetPackage)
-                Toast.makeText(this, "Membuka aplikasi ${viewModel.selectedMethod.value}...", Toast.LENGTH_SHORT).show()
-            } else {
-                // Otherwise open via default browser
-                Toast.makeText(this, "Aplikasi tidak ditemukan. Membuka di browser...", Toast.LENGTH_LONG).show()
-            }
-
-            try {
-                startActivity(intent)
-                goToConfirmationScreen()
-            } catch (e: Exception) {
-                showQrisDialog()
-            }
-        } else {
+        if (packageName.isEmpty()) {
             showQrisDialog()
+            return
+        }
+
+        // getLaunchIntentForPackage() hanya return non-null jika:
+        // (a) Aplikasi terinstal di device, DAN
+        // (b) Tag <queries> sudah ada di AndroidManifest.xml (wajib untuk API 30+)
+        val launchIntent = packageManager.getLaunchIntentForPackage(packageName)
+
+        if (launchIntent != null) {
+            Toast.makeText(this, "Membuka $selectedMethod...", Toast.LENGTH_SHORT).show()
+
+            // ✅ LANGKAH 1: Tempatkan PaymentConfirmation di back stack terlebih dahulu
+            val confirmIntent = Intent(this, PaymentConfirmationActivity::class.java).apply {
+                putExtra("TOTAL_PAYMENT_EXTRA", totalPayment)
+                putExtra("PAYMENT_METHOD_EXTRA", selectedMethod)
+            }
+            startActivity(confirmIntent)
+
+            // ✅ LANGKAH 2: Buka E-Wallet di atas PaymentConfirmation
+            try {
+                startActivity(launchIntent)
+            } catch (e: ActivityNotFoundException) {
+                // Sangat jarang terjadi setelah getLaunchIntentForPackage() non-null,
+                // tapi tetap ditangani sebagai safety net.
+                redirectToPlayStore(packageName)
+            }
+
+            // ✅ LANGKAH 3: Hancurkan PaymentActivity dari stack
+            finish()
+
+        } else {
+            // Aplikasi tidak terinstal → arahkan ke Play Store
+            // Tidak perlu goToConfirmationScreen() karena user belum melakukan pembayaran
+            Toast.makeText(
+                this,
+                "Aplikasi $selectedMethod tidak ditemukan. Mengarahkan ke Play Store...",
+                Toast.LENGTH_LONG
+            ).show()
+            redirectToPlayStore(packageName)
+        }
+    }
+
+    private fun redirectToPlayStore(packageName: String) {
+        try {
+            startActivity(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    android.net.Uri.parse("market://details?id=$packageName")
+                )
+            )
+        } catch (e: ActivityNotFoundException) {
+            startActivity(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    android.net.Uri.parse("https://play.google.com/store/apps/details?id=$packageName")
+                )
+            )
         }
     }
 
     private fun showQrisDialog() {
         val dialog = Dialog(this)
         dialog.setContentView(R.layout.dialog_qris)
-        
-        // Make background transparent to show the card's rounded corners
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        
+
         val btnClose = dialog.findViewById<com.google.android.material.button.MaterialButton>(R.id.btn_close_qris)
         btnClose.setOnClickListener {
             dialog.dismiss()
             goToConfirmationScreen()
         }
-        
+
         dialog.show()
     }
 
@@ -161,13 +229,7 @@ class PaymentActivity : AppCompatActivity() {
             putExtra("PAYMENT_METHOD_EXTRA", viewModel.selectedMethod.value)
         }
         startActivity(intent)
-    }
-
-    private fun goToQrisScreen() {
-        val intent = Intent(this, QrisActivity::class.java).apply {
-            putExtra("TOTAL_PAYMENT_EXTRA", totalPayment)
-        }
-        startActivity(intent)
+        finish()
     }
 
     private fun syncOrderToLegacyAppState() {
