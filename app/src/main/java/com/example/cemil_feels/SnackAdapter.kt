@@ -1,5 +1,6 @@
 package com.example.cemil_feels
 
+import android.graphics.Color
 import android.graphics.ColorMatrix
 import android.graphics.ColorMatrixColorFilter
 import android.view.LayoutInflater
@@ -32,26 +33,33 @@ class SnackAdapter(
         private val adapter: SnackAdapter
     ) : RecyclerView.ViewHolder(binding.root) {
         
+        fun updateSelectionState(snack: Snack) {
+            val isSelected = adapter.selectedSnackNames.contains(snack.name)
+            if (isSelected) {
+                binding.root.strokeColor = Color.parseColor("#4CAF50") // Green Success Color
+                binding.root.strokeWidth = 6
+                binding.root.setCardBackgroundColor(Color.parseColor("#E8F5E9")) // Light Green Tint
+                binding.btnAddSnack.backgroundTintList = android.content.res.ColorStateList.valueOf(Color.parseColor("#4CAF50"))
+                binding.btnAddSnack.setIconResource(R.drawable.ic_check_circle)
+            } else {
+                binding.root.strokeColor = Color.parseColor("#E0E0E0")
+                binding.root.strokeWidth = 2
+                binding.root.setCardBackgroundColor(Color.WHITE)
+                binding.btnAddSnack.backgroundTintList = android.content.res.ColorStateList.valueOf(Color.parseColor("#FF7A1A"))
+                binding.btnAddSnack.setIconResource(android.R.drawable.ic_input_add)
+            }
+        }
+
         fun bind(snack: Snack) {
             binding.tvSnackName.text = snack.name
             binding.tvSnackRating.text = "⭐ ${snack.rating}"
             binding.ivSnackImage.setImageResource(snack.imageResId)
 
-            val context = binding.root.context
             val formatter = NumberFormat.getNumberInstance(Locale.forLanguageTag("id-ID"))
             binding.tvSnackPrice.text = "Rp. " + formatter.format(snack.price.toInt())
 
-            // Atur status seleksi visual card (Border & Background Tint)
-            val isSelected = adapter.selectedSnackNames.contains(snack.name)
-            if (isSelected) {
-                binding.root.strokeColor = ContextCompat.getColor(context, R.color.colorPrimary)
-                binding.root.strokeWidth = 6 // Tebal garis border saat dipilih (~3dp)
-                binding.root.setCardBackgroundColor(ContextCompat.getColor(context, R.color.colorSelected))
-            } else {
-                binding.root.strokeColor = ContextCompat.getColor(context, R.color.colorGrayLight)
-                binding.root.strokeWidth = 2 // Tebal garis border normal (~1dp)
-                binding.root.setCardBackgroundColor(ContextCompat.getColor(context, R.color.white))
-            }
+            // Atur status seleksi visual card
+            updateSelectionState(snack)
 
             // FT-03: Sinkronisasi Stok & Efek Grayscale jika stok 0
             if (snack.stock <= 0) {
@@ -69,6 +77,11 @@ class SnackAdapter(
                 
                 // Click listener untuk tombol tambah (+)
                 binding.btnAddSnack.setOnClickListener {
+                    val isSelected = adapter.selectedSnackNames.contains(snack.name)
+                    if (!isSelected) {
+                        adapter.selectedSnackNames.add(snack.name)
+                        adapter.notifyItemChanged(bindingAdapterPosition, "SELECTION_CHANGED")
+                    }
                     onAddClicked(snack)
                 }
 
@@ -81,7 +94,7 @@ class SnackAdapter(
                         adapter.selectedSnackNames.add(snack.name)
                     }
                     onCardClicked(snack, !currentlySelected)
-                    adapter.notifyItemChanged(bindingAdapterPosition)
+                    adapter.notifyItemChanged(bindingAdapterPosition, "SELECTION_CHANGED")
                 }
             }
         }
@@ -98,6 +111,14 @@ class SnackAdapter(
 
     override fun onBindViewHolder(holder: SnackViewHolder, position: Int) {
         holder.bind(getItem(position))
+    }
+
+    override fun onBindViewHolder(holder: SnackViewHolder, position: Int, payloads: MutableList<Any>) {
+        if (payloads.contains("SELECTION_CHANGED")) {
+            holder.updateSelectionState(getItem(position))
+        } else {
+            super.onBindViewHolder(holder, position, payloads)
+        }
     }
 
     companion object DiffCallback : DiffUtil.ItemCallback<Snack>() {

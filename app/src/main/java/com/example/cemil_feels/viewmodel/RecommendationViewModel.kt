@@ -75,8 +75,7 @@ class RecommendationViewModel(
     val eventFlow: SharedFlow<RecommendationEvent> = _eventFlow.asSharedFlow()
 
     init {
-        // Clear the cart on starting, as per the specifications
-        cartRepository.clearCart()
+        // ViewModel starting
     }
 
     fun initMoodAndStory(story: String?, selectedMood: String?) {

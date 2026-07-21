@@ -1,6 +1,7 @@
 package com.example.cemil_feels
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import androidx.activity.enableEdgeToEdge
@@ -46,6 +47,7 @@ class CheckoutActivity : AppCompatActivity() {
         }
 
         setupObservers()
+        setupDeliveryToggle()
 
         val totalCart = intent.getDoubleExtra("TOTAL_CART_EXTRA", 16000.0)
         viewModel.calculateCheckoutDetails(totalCart)
@@ -62,6 +64,43 @@ class CheckoutActivity : AppCompatActivity() {
         }
     }
 
+    private fun setupDeliveryToggle() {
+        binding.toggleDeliveryMethod.addOnButtonCheckedListener { _, checkedId, isChecked ->
+            if (isChecked) {
+                when (checkedId) {
+                    R.id.btn_delivery -> {
+                        // Tampilkan Alamat dan Ongkos Kirim, Sembunyikan Resto
+                        binding.cardAddress.visibility = View.VISIBLE
+                        binding.cardPickupLocation.visibility = View.GONE
+                        binding.layoutDeliveryFee.visibility = View.VISIBLE
+
+                        // Kembalikan Teks Estimasi ke semula
+                        binding.tvDeliveryLabel.text = "Estimasi Tiba"
+                        binding.tvDeliveryEta.text = "Akan sampai 20 - 30 menit"
+
+                        // Ubah styling button
+                        binding.btnDelivery.setTextColor(Color.parseColor("#FF7A1A"))
+                        binding.btnPickup.setTextColor(Color.parseColor("#757575"))
+                    }
+                    R.id.btn_pickup -> {
+                        // Sembunyikan Alamat dan Ongkos Kirim, Tampilkan Resto
+                        binding.cardAddress.visibility = View.GONE
+                        binding.cardPickupLocation.visibility = View.VISIBLE
+                        binding.layoutDeliveryFee.visibility = View.GONE
+
+                        // Ubah Teks Estimasi untuk Pick Up
+                        binding.tvDeliveryLabel.text = "Waktu Pengambilan"
+                        binding.tvDeliveryEta.text = "Pesanan siap dalam 15 - 20 menit"
+
+                        // Ubah styling button
+                        binding.btnPickup.setTextColor(Color.parseColor("#FF7A1A"))
+                        binding.btnDelivery.setTextColor(Color.parseColor("#757575"))
+                    }
+                }
+            }
+        }
+    }
+
     private fun setupObservers() {
         lifecycleScope.launch {
             viewModel.uiState.collect { state ->
@@ -72,7 +111,7 @@ class CheckoutActivity : AppCompatActivity() {
                 binding.layoutOrderItemsContainer.removeAllViews()
                 state.cartItems.forEach { item ->
                     val itemView = layoutInflater.inflate(R.layout.item_checkout_summary, binding.layoutOrderItemsContainer, false)
-                    
+
                     val ivImage = itemView.findViewById<android.widget.ImageView>(R.id.iv_summary_item_image)
                     val tvName = itemView.findViewById<android.widget.TextView>(R.id.tv_summary_item_name)
                     val tvLevel = itemView.findViewById<android.widget.TextView>(R.id.tv_summary_item_level)

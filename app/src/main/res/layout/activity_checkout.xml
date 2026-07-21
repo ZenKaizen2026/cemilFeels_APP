@@ -75,8 +75,40 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!-- KARTU 1: Alamat Pengiriman -->
+            <!-- OPSI PENGIRIMAN: Pick Up / Delivery -->
+            <com.google.android.material.button.MaterialButtonToggleGroup
+                android:id="@+id/toggle_delivery_method"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:singleSelection="true"
+                app:checkedButton="@id/btn_delivery"
+                app:selectionRequired="true">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_delivery"
+                    style="?attr/materialButtonOutlinedStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Delivery"
+                    android:textColor="#FF7A1A"
+                    app:strokeColor="#FF7A1A"/>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_pickup"
+                    style="?attr/materialButtonOutlinedStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Pick Up"
+                    android:textColor="#757575"
+                    app:strokeColor="#E0E0E0"/>
+            </com.google.android.material.button.MaterialButtonToggleGroup>
+
+            <!-- KARTU 1A: Alamat Pengiriman (Delivery) -->
             <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
@@ -149,7 +181,67 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- KARTU 2: Estimasi Pengiriman -->
+            <!-- KARTU 1B: Lokasi Resto (Pick Up) - Awalnya Sembunyi -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_pickup_location"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:visibility="gone"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="4dp"
+                app:strokeWidth="0dp"
+                app:cardBackgroundColor="#FFFFFF">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="20dp"
+                    android:paddingVertical="18dp">
+
+                    <ImageView
+                        android:id="@+id/iv_store_icon"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        app:srcCompat="@drawable/ic_location_on"
+                        app:tint="#FF7A1A"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:contentDescription="Ikon Resto" />
+
+                    <TextView
+                        android:id="@+id/tv_store_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:text="Lokasi Pengambilan (Resto)"
+                        android:textColor="#212121"
+                        android:textStyle="bold"
+                        android:textSize="15sp"
+                        app:layout_constraintStart_toEndOf="@id/iv_store_icon"
+                        app:layout_constraintTop_toTopOf="@id/iv_store_icon"
+                        app:layout_constraintBottom_toBottomOf="@id/iv_store_icon"/>
+
+                    <TextView
+                        android:id="@+id/tv_store_details"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="12dp"
+                        android:text="Cemil Feels Resto\nJl. Merdeka No. 45, Kota Yogyakarta"
+                        android:textColor="#757575"
+                        android:textSize="13sp"
+                        android:maxLines="2"
+                        android:ellipsize="end"
+                        android:lineSpacingExtra="4dp"
+                        app:layout_constraintStart_toEndOf="@id/iv_store_icon"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_store_label" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- KARTU 2: Estimasi Pengiriman / Waktu Ambil -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -287,6 +379,7 @@
 
                     <!-- Ongkos Kirim -->
                     <LinearLayout
+                        android:id="@+id/layout_delivery_fee"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
@@ -410,5 +503,4 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
-
 </androidx.constraintlayout.widget.ConstraintLayout>
