@@ -19,6 +19,7 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        maven { url = uri("https://dl.bintray.com/pt-midtrans/maven") }
     }
 }
 
