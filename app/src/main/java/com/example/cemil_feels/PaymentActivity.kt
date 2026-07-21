@@ -86,7 +86,19 @@ class PaymentActivity : AppCompatActivity() {
         binding.btnActionPay.setOnClickListener {
             binding.btnActionPay.isEnabled = false
             binding.btnActionPay.text = "Memproses..."
-            requestSnapToken()
+            
+            if (selectedMethod == "QRIS") {
+                // Bypass Midtrans langsung ke PaymentConfirmationActivity untuk metode QRIS
+                val intent = Intent(this, PaymentConfirmationActivity::class.java).apply {
+                    putExtra("TOTAL_PAYMENT_EXTRA", totalPayment)
+                    putExtra("PAYMENT_METHOD_EXTRA", "QRIS")
+                    putExtra("TRANSACTION_ID_EXTRA", "MOCK-QRIS-${UUID.randomUUID().toString().take(8).uppercase()}")
+                }
+                startActivity(intent)
+                finish()
+            } else {
+                requestSnapToken()
+            }
         }
     }
 
