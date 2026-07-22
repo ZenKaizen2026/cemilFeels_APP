@@ -37,7 +37,8 @@ class HomeActivity : AppCompatActivity() {
         binding.tvUsername.text = getString(R.string.greeting_user, savedName)
 
         binding.btnMenu.setOnClickListener {
-            Toast.makeText(this, "Menu samping terpilih.", Toast.LENGTH_SHORT).show()
+            val intent = Intent(this, ProfileActivity::class.java)
+            startActivity(intent)
         }
 
         binding.btnNotification.setOnClickListener {

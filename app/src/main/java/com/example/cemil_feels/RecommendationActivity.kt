@@ -36,68 +36,84 @@ class RecommendationActivity : AppCompatActivity() {
         // Preserved STATIC_SNACKS for full compatibility with legacy code
         val STATIC_SNACKS = listOf(
             Snack(
+                id = 1,
                 name = "Basreng Stik",
                 price = 16000.0,
                 rating = 4.5,
                 description = "Pedasnya basreng nagih, instan usir bad mood dan bikin happy!",
                 imageResId = R.drawable.basreng_stik,
-                stock = 5
+                stock = 5,
+                flavorTag = "Pedas"
             ),
             Snack(
+                id = 2,
                 name = "Makaroni Bantet",
                 price = 10000.0,
                 rating = 4.4,
                 description = "Makaroni bantet renyah gurih pedas khas jajanan pasar.",
                 imageResId = R.drawable.makaroni_bantet,
-                stock = 3
+                stock = 3,
+                flavorTag = "Pedas"
             ),
             Snack(
+                id = 3,
                 name = "Cireng Sambal Rujak",
                 price = 15000.0,
                 rating = 4.7,
                 description = "Cireng hangat renyah disajikan dengan saus rujak manis pedas.",
                 imageResId = R.drawable.cireng_sambal_rujak,
-                stock = 4
+                stock = 4,
+                flavorTag = "Crispy"
             ),
             Snack(
+                id = 4,
                 name = "Tahu Walik",
                 price = 12000.0,
                 rating = 4.6,
                 description = "Tahu goreng walik isi adonan bakso ayam gurih lezat.",
                 imageResId = R.drawable.tahu_walik,
-                stock = 2
+                stock = 2,
+                flavorTag = "Gurih"
             ),
             Snack(
+                id = 5,
                 name = "Piscok Lumer Coklat",
                 price = 12000.0,
                 rating = 4.8,
                 description = "Pisang coklat goreng renyah dengan coklat lumer melimpah.",
                 imageResId = R.drawable.piscok_lumer_coklat,
-                stock = 3
+                stock = 3,
+                flavorTag = "Manis"
             ),
             Snack(
+                id = 6,
                 name = "Bola Bola Coklat",
                 price = 14000.0,
                 rating = 4.5,
                 description = "Kue manis berbentuk bola berbalut mesis coklat legit.",
                 imageResId = R.drawable.bola_bola_coklat,
-                stock = 0
+                stock = 0,
+                flavorTag = "Manis"
             ),
             Snack(
+                id = 7,
                 name = "Kulpi Balado",
                 price = 11000.0,
                 rating = 4.3,
                 description = "Keripik kulit lumpia renyah bertabur bumbu balado manis gurih.",
                 imageResId = R.drawable.kulpi_balado,
-                stock = 4
+                stock = 4,
+                flavorTag = "Crispy"
             ),
             Snack(
+                id = 8,
                 name = "Kerupuk Pangsit",
                 price = 8000.0,
                 rating = 4.2,
                 description = "Kerupuk pangsit goreng renyah teman santai hari ini.",
                 imageResId = R.drawable.krupuk_pangsit,
-                stock = 6
+                stock = 6,
+                flavorTag = "Gurih"
             )
         )
     }
@@ -309,6 +325,31 @@ class RecommendationActivity : AppCompatActivity() {
                 snackAdapter.selectedSnackNames.clear()
                 snackAdapter.selectedSnackNames.addAll(names)
                 // Removed notifyDataSetChanged() to prevent ViewPager2 reset/jump
+            }
+        }
+
+        // ── Observer AI: Loading State ──────────────────────────────────────
+        lifecycleScope.launch {
+            viewModel.isLoading.collect { isLoading ->
+                binding.pbAiLoading.visibility = if (isLoading) View.VISIBLE else View.GONE
+            }
+        }
+
+        // ── Observer AI: Empathy & Reasoning ────────────────────────────────
+        lifecycleScope.launch {
+            viewModel.aiEmpathyMessage.collect { message ->
+                if (!message.isNullOrBlank()) {
+                    binding.cardAiRecommendation.visibility = View.VISIBLE
+                    binding.tvAiEmpathyMessage.text = message
+                }
+            }
+        }
+
+        lifecycleScope.launch {
+            viewModel.aiReasoning.collect { reasoning ->
+                if (!reasoning.isNullOrBlank()) {
+                    binding.tvAiReasoning.text = reasoning
+                }
             }
         }
 

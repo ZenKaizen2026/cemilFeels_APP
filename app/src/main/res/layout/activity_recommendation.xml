@@ -59,6 +59,103 @@
             android:gravity="center"
             app:layout_constraintTop_toBottomOf="@id/tv_rec_title" />
 
+        <!-- AI Loading Indicator (muncul saat request Gemini berlangsung) -->
+        <ProgressBar
+            android:id="@+id/pb_ai_loading"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:indeterminate="true"
+            android:progressTint="#FF7A1A"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/tv_rec_subtitle" />
+
+        <!-- AI Recommendation Bubble Card (muncul setelah AI menjawab) -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card_ai_recommendation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:visibility="gone"
+            app:cardBackgroundColor="#FFF3E8"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="3dp"
+            app:strokeColor="#FFDDB9"
+            app:strokeWidth="1dp"
+            app:layout_constraintTop_toBottomOf="@id/pb_ai_loading">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <!-- Header label AI -->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="8dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="✨"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="6dp"
+                        android:text="Rekomendasi AI untuk kamu"
+                        android:textColor="#E65100"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <!-- Pesan empati dari Gemini -->
+                <TextView
+                    android:id="@+id/tv_ai_empathy_message"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="#4E342E"
+                    android:textSize="14sp"
+                    android:lineSpacingExtra="2dp" />
+
+                <!-- Pemisah tipis -->
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginVertical="10dp"
+                    android:background="#FFDDB9" />
+
+                <!-- Alasan pemilihan camilan dari Gemini -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <ImageView
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+                        android:layout_marginEnd="6dp"
+                        app:srcCompat="@drawable/ic_pencil"
+                        app:tint="#FF7A1A" />
+
+                    <TextView
+                        android:id="@+id/tv_ai_reasoning"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="#757575"
+                        android:textSize="12sp"
+                        android:fontFamily="sans-serif-medium" />
+                </LinearLayout>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
         <!-- Carousel ViewPager2 for Snack Cards -->
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/vp_snacks_carousel"
@@ -67,7 +164,7 @@
             android:layout_marginTop="16dp"
             android:clipChildren="false"
             android:clipToPadding="false"
-            app:layout_constraintTop_toBottomOf="@id/tv_rec_subtitle" />
+            app:layout_constraintTop_toBottomOf="@id/card_ai_recommendation" />
 
         <!-- Carousel Dot Indicators -->
         <LinearLayout

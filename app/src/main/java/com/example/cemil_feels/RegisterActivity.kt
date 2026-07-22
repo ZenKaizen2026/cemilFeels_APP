@@ -30,8 +30,10 @@ class RegisterActivity : AppCompatActivity() {
             val name = binding.etRegisterName.text.toString().trim()
             val email = binding.etRegisterEmail.text.toString().trim()
             val password = binding.etRegisterPassword.text.toString().trim()
+            val phone = binding.etRegisterPhone.text.toString().trim()
+            val favorite = binding.etRegisterFavorite.text.toString().trim()
 
-            if (name.isEmpty() || email.isEmpty() || password.isEmpty()) {
+            if (name.isEmpty() || email.isEmpty() || password.isEmpty() || phone.isEmpty() || favorite.isEmpty()) {
                 Toast.makeText(this, "Mohon lengkapi semua data", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
@@ -42,6 +44,8 @@ class RegisterActivity : AppCompatActivity() {
                 putString("registered_name", name)
                 putString("registered_email", email)
                 putString("registered_password", password)
+                putString("registered_phone", phone)
+                putString("registered_favorite", favorite)
                 apply()
             }
 
