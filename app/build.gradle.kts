@@ -70,14 +70,20 @@ dependencies {
     // ------------------------------------------------------------------
     // Midtrans Payment SDK
     // ------------------------------------------------------------------
-    implementation("com.midtrans:uikit:2.5.0")
+    // ✅ FIX ROOT CAUSE: Gunakan flavor "sandbox" agar SDK menghubungi
+    // https://app.sandbox.midtrans.com/snap/ (bukan production)
+    // SDK versi production hardcode SNAP_BASE_URL ke https://app.midtrans.com/snap/
+    // yang menyebabkan error "Couldn't find your transaction record"
+    implementation("com.midtrans:uikit:2.5.0-SANDBOX")
 
     // ------------------------------------------------------------------
-    // Retrofit & OkHttp (Backend API Integration)
+    // Networking (Retrofit & OkHttp) & JSON Parsing
     // ------------------------------------------------------------------
     implementation("com.squareup.retrofit2:retrofit:2.11.0")
     implementation("com.squareup.retrofit2:converter-gson:2.11.0")
+    implementation("com.squareup.okhttp3:okhttp:4.12.0")
     implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
+    implementation("com.google.code.gson:gson:2.10.1")
 
     // ------------------------------------------------------------------
     // Coroutines & Lifecycle Architecture Components

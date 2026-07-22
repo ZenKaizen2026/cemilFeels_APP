@@ -2,6 +2,7 @@ package com.example.cemil_feels.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.example.cemil_feels.data.repository.PaymentRepository // Import PaymentRepository jika belum ada
 import com.example.cemil_feels.di.AppContainer
 
 class ViewModelFactory(private val container: AppContainer) : ViewModelProvider.Factory {
@@ -28,7 +29,10 @@ class ViewModelFactory(private val container: AppContainer) : ViewModelProvider.
                 CheckoutViewModel(container.cartRepository, container.orderRepository) as T
             }
             modelClass.isAssignableFrom(PaymentViewModel::class.java) -> {
-                PaymentViewModel(container.orderRepository) as T
+                PaymentViewModel(
+                    container.orderRepository,
+                    PaymentRepository() // ✅ DITAMBAHKAN
+                ) as T
             }
             modelClass.isAssignableFrom(QrisViewModel::class.java) -> {
                 QrisViewModel(container.cartRepository, container.orderRepository) as T

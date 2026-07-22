@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <!-- ✅ Izinkan HTTPS untuk semua domain (default sudah HTTPS) -->
+    <base-config cleartextTrafficPermitted="false">
+        <trust-anchors>
+            <certificates src="system" />
+        </trust-anchors>
+    </base-config>
+
+    <!-- ✅ Izinkan HTTP hanya untuk Midtrans Sandbox (development) -->
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">sandbox.midtrans.com</domain>
+        <domain includeSubdomains="true">api.sandbox.midtrans.com</domain>
+        <domain includeSubdomains="true">app.sandbox.midtrans.com</domain>
+        <!-- ✅ Ganti dengan domain Render kamu -->
+        <domain includeSubdomains="true">cemilfeels-api.onrender.com</domain>
+    </domain-config>
+</network-security-config>

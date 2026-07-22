@@ -19,13 +19,15 @@ data class SnapTokenRequest(
 data class SnapTokenResponse(
     val success: Boolean,
     val token: String?,
-    val order_id: String?
+    val order_id: String?,
+    val redirect_url: String?,
+    val message: String?
 )
 
 // ── Daftar endpoint yang tersedia ──
 interface MerchantApiService {
     @POST("api/payment/snap-token")
-    suspend fun getSnapToken(@Body request: SnapTokenRequest): SnapTokenResponse
+    suspend fun getSnapToken(@Body request: SnapTokenRequest): retrofit2.Response<SnapTokenResponse>
 }
 
 // ── Singleton koneksi ke backend ──
@@ -33,14 +35,25 @@ object RetrofitClient {
 
     private val logging: HttpLoggingInterceptor by lazy {
         HttpLoggingInterceptor().apply {
-            level = HttpLoggingInterceptor.Level.BODY
+            // ✅ FIX: Log body hanya saat debug build, none di release
+            level = if (BuildConfig.DEBUG) {
+                HttpLoggingInterceptor.Level.BODY
+            } else {
+                HttpLoggingInterceptor.Level.NONE
+            }
         }
     }
 
     private val client: OkHttpClient by lazy {
         OkHttpClient.Builder()
-            .connectTimeout(30, TimeUnit.SECONDS)
-            .readTimeout(30, TimeUnit.SECONDS)
+            // ✅ FIX: 60s untuk handle Render.com free tier cold start
+            .connectTimeout(60, TimeUnit.SECONDS)
+            .readTimeout(60, TimeUnit.SECONDS)
+            .writeTimeout(30, TimeUnit.SECONDS)
+            // ✅ FIX: Total max call duration 90 detik
+            .callTimeout(90, TimeUnit.SECONDS)
+            // ✅ FIX: Retry otomatis jika koneksi awal gagal
+            .retryOnConnectionFailure(true)
             .addInterceptor(logging)
             .build()
     }

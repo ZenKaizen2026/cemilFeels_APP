@@ -19,7 +19,8 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-        maven { url = uri("https://dl.bintray.com/pt-midtrans/maven") }
+        // ✅ WAJIB untuk Midtrans SDK:
+        maven { url = uri("https://software.r.worldssl.net/artifactory/libs-release/") }
     }
 }
 

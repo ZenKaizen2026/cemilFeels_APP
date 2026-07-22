@@ -2,19 +2,42 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- ✅ TAMBAHKAN INI — izin internet -->
+    <!-- ✅ WAJIB: Izin Internet untuk semua request jaringan -->
     <uses-permission android:name="android.permission.INTERNET" />
-
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
+    <!-- ✅ Package Visibility Android 11+ untuk membuka E-Wallet -->
     <queries>
+        <!-- ShopeePay -->
         <package android:name="com.shopee.id" />
+        <!-- GoPay -->
         <package android:name="com.gojek.app" />
+        <!-- DANA -->
         <package android:name="id.dana" />
-        <package android:name="ovo.id" />
+        <!-- OVO -->
+        <package android:name="id.ovo" />
+        <!-- LinkAja -->
+        <package android:name="id.or.tcash.wallet" />
+        <!-- Jago -->
+        <package android:name="com.jago.digitalBanking" />
+        <!-- BCA Mobile -->
+        <package android:name="com.bca" />
+        <!-- Mandiri -->
+        <package android:name="com.bankmandiri.mandirionline" />
+        <!-- CIMB Niaga -->
+        <package android:name="com.cimbniaga.mobile.android" />
+        <!-- Intent untuk membuka browser (Snap redirect) -->
         <intent>
             <action android:name="android.intent.action.VIEW" />
+            <category android:name="android.intent.category.BROWSABLE" />
             <data android:scheme="https" />
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <category android:name="android.intent.category.BROWSABLE" />
+            <data android:scheme="http" />
         </intent>
     </queries>
 
@@ -26,8 +49,10 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Cemil_feels">
-        
+        android:theme="@style/Theme.Cemil_feels"
+        android:networkSecurityConfig="@xml/network_security_config"
+        android:usesCleartextTraffic="true">
+
         <!-- Welcome Splash Screen (Layar Utama yang Pertama Kali Dibuka) -->
         <activity
             android:name=".WelcomeActivity"
@@ -52,7 +77,7 @@
         <activity
             android:name=".RegisterActivity"
             android:exported="false" />
-            
+
         <!-- Notification History Screen -->
         <activity
             android:name=".NotificationHistoryActivity"
@@ -67,7 +92,7 @@
         <activity
             android:name=".RecommendationActivity"
             android:exported="false" />
-        
+
         <!-- Live Order Status Tracker Simulation Screen -->
         <activity
             android:name=".OrderStatusActivity"
@@ -107,7 +132,14 @@
         <activity
             android:name=".OrderCompletedActivity"
             android:exported="false" />
-            
+
+        <!-- ✅ WAJIB: Midtrans Snap UI Activity -->
+        <activity
+            android:name="com.midtrans.sdk.uikit.external.UiKitActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+
+
     </application>
 
-</manifest>
+</manifest>
