@@ -1,3 +1,6 @@
+import java.util.Properties
+import java.io.FileInputStream
+
 plugins {
     alias(libs.plugins.android.application)
 }
@@ -27,6 +30,15 @@ android {
             "MIDTRANS_CLIENT_KEY",
             "\"${project.findProperty("MIDTRANS_CLIENT_KEY") ?: ""}\""
         )
+
+        // Baca API Key dari local.properties dengan aman, ekspos via BuildConfig
+        val localProperties = Properties()
+        val localPropertiesFile = rootProject.file("local.properties")
+        if (localPropertiesFile.exists()) {
+            FileInputStream(localPropertiesFile).use { localProperties.load(it) }
+        }
+        val geminiApiKey = localProperties.getProperty("GEMINI_API_KEY") ?: ""
+        buildConfigField("String", "GEMINI_API_KEY", "\"$geminiApiKey\"")
     }
 
     buildTypes {
@@ -98,4 +110,8 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    // Gemini AI & JSON Parser
+    implementation(libs.google.generativeai)
+    implementation(libs.google.gson)
 }
