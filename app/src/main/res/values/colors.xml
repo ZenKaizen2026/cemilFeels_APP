@@ -5,11 +5,23 @@
     <color name="colorPrimary">#FF914D</color> <!-- Salem/pastel orange -->
     <color name="colorPrimaryDark">#E05A1F</color>
     <color name="colorAccent">#FF7043</color>
-    <color name="colorBackground">#FAF8F5</color> <!-- Warm off-white -->
-    <color name="colorTextDark">#2C2C2C</color>
-    <color name="colorGrayLight">#F0EFEA</color>
-    <color name="colorSelected">#FFE0B2</color>
-    <color name="surfaceColor">#FFFFFF</color>
-    <color name="textPrimary">#2C2C2C</color>
+    <color name="colorBackground">#FFF9F5</color> <!-- Warm Cream Background -->
+    <color name="colorTextDark">#212121</color>
+    <color name="colorTextGrey">#9E9E9E</color>
+    <color name="colorGrayLight">#EEEEEE</color>
+    <color name="colorSuccess">#2E7D32</color>
+    <color name="colorActive">#FF7A1A</color>
+    <color name="colorSelected">#FFF3E0</color> <!-- Light Orange background for selected item -->
+
+    <color name="textPrimary">#212121</color>
     <color name="textSecondary">#757575</color>
+
+    <!-- Mood Chip Colors -->
+    <color name="mood_chip_selected_bg">#FFF3E0</color>
+    <color name="mood_chip_selected_stroke">#FF7A1A</color>
+    <color name="mood_chip_selected_text">#BF360C</color>
+    <color name="mood_chip_unselected_bg">#FFFFFF</color>
+    <color name="mood_chip_unselected_stroke">#F5F5F5</color>
+    <color name="mood_chip_unselected_text">#757575</color>
+    <color name="mood_chip_ripple">#FFE0B2</color>
 </resources>

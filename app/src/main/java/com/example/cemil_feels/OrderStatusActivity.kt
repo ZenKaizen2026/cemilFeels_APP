@@ -8,6 +8,8 @@ import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageButton
+import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
@@ -25,28 +27,31 @@ import com.example.cemil_feels.viewmodel.OrderStatusViewModel
 import com.example.cemil_feels.viewmodel.ViewModelFactory
 import kotlinx.coroutines.launch
 
+import android.animation.ObjectAnimator
+import android.animation.PropertyValuesHolder
+import android.graphics.Color
+import android.view.animation.AccelerateDecelerateInterpolator
+
 /**
  * Aktivitas untuk memantau status pesanan secara real-time (FT-05).
- * Menggunakan simulasi Coroutines dengan StateFlow yang dihubungkan ke OrderStatusViewModel.
- * Refactored to follow MVVM architecture.
+ * Redesigned for Premium UI/UX with Micro-interactions and Modern Timeline.
  */
 class OrderStatusActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityOrderStatusBinding
     private var lastRenderedStep: OrderStep? = null
+    private var pulseAnimator: ObjectAnimator? = null
 
     private val viewModel: OrderStatusViewModel by viewModels {
         ViewModelFactory(ServiceLocator.container)
     }
 
-    // Launcher untuk meminta izin notifikasi di Android 13+ (API 33+)
-    private val requestNotificationPermissionLauncher = registerForActivityResult(
-        ActivityResultContracts.RequestPermission()
-    ) { isGranted ->
-        if (!isGranted) {
-            Toast.makeText(this, "Izin notifikasi ditolak. Anda tidak akan menerima notifikasi status.", Toast.LENGTH_SHORT).show()
+    private val requestNotificationPermissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+            if (!isGranted) {
+                Toast.makeText(this, "Notification permission denied", Toast.LENGTH_SHORT).show()
+            }
         }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,25 +66,37 @@ class OrderStatusActivity : AppCompatActivity() {
             insets
         }
 
-        // Pengecekan izin notifikasi
         checkNotificationPermission()
-
-        binding.btnStatusBack.setOnClickListener {
-            finish()
-        }
-
-        binding.btnStatusDetail.setOnClickListener {
-            showTransactionDetailDialog()
-        }
-
-        binding.btnCopyOrderId.setOnClickListener {
-            val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as android.content.ClipboardManager
-            val clip = android.content.ClipData.newPlainText("Order ID", binding.tvOrderId.text)
-            clipboard.setPrimaryClip(clip)
-            Toast.makeText(this, "Order ID disalin!", Toast.LENGTH_SHORT).show()
-        }
-
+        setupClickListeners()
         setupObservers()
+        startHeroPulse()
+    }
+
+    private fun setupClickListeners() {
+        binding.btnStatusBack.setOnClickListener { finish() }
+        binding.btnStatusDetail.setOnClickListener { showTransactionDetailDialog() }
+        binding.btnCopyOrderId.setOnClickListener { copyOrderId() }
+    }
+
+    private fun copyOrderId() {
+        val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as android.content.ClipboardManager
+        val clip = android.content.ClipData.newPlainText("Order ID", binding.tvOrderId.text)
+        clipboard.setPrimaryClip(clip)
+        Toast.makeText(this, "Order ID copied to clipboard!", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun startHeroPulse() {
+        pulseAnimator = ObjectAnimator.ofPropertyValuesHolder(
+            binding.viewHeroPulse,
+            PropertyValuesHolder.ofFloat(View.SCALE_X, 1f, 1.4f),
+            PropertyValuesHolder.ofFloat(View.SCALE_Y, 1f, 1.4f),
+            PropertyValuesHolder.ofFloat(View.ALPHA, 0.4f, 0f)
+        ).apply {
+            duration = 1500
+            repeatCount = ObjectAnimator.INFINITE
+            interpolator = AccelerateDecelerateInterpolator()
+            start()
+        }
     }
 
     private fun setupObservers() {
@@ -91,82 +108,106 @@ class OrderStatusActivity : AppCompatActivity() {
     }
 
     private fun renderSimulationState(state: OrderSimulationState) {
-        // Update simple texts
         binding.tvChefStatus.text = state.chefStatus
         binding.tvEtaCountdown.text = state.etaCountdown
-        if (state.etaTime.isNotEmpty()) {
-            binding.tvEtaTime.text = state.etaTime
-        }
+        if (state.etaTime.isNotEmpty()) binding.tvEtaTime.text = state.etaTime
 
-        if (state.timeReceived.isNotEmpty()) {
-            binding.tvTimeReceived.text = state.timeReceived
-        }
-        if (state.timePreparing.isNotEmpty()) {
-            binding.tvTimePreparing.text = state.timePreparing
-        }
-        if (state.timeShipping.isNotEmpty()) {
-            binding.tvTimeShipping.text = state.timeShipping
-        }
-        if (state.timeArrived.isNotEmpty()) {
-            binding.tvTimeArrived.text = state.timeArrived
-        }
+        updateTimelineTimes(state)
+        updateTimelineProgress(state.currentStep)
 
-        // Apply progress styling and line connections based on step
-        when (state.currentStep) {
-            OrderStep.RECEIVED -> {
-                // Initial state
-            }
-            OrderStep.PREPARING -> {
-                binding.tvLblPreparing.setTextColor(ContextCompat.getColor(this, R.color.colorTextDark))
-                binding.tvLblPreparing.setTypeface(null, android.graphics.Typeface.BOLD)
-                updateProgressLine(binding.dotReceived, binding.dotPreparing)
-            }
-            OrderStep.SHIPPING -> {
-                binding.tvLblPreparing.setTextColor(ContextCompat.getColor(this, R.color.colorTextDark))
-                binding.tvLblPreparing.setTypeface(null, android.graphics.Typeface.BOLD)
-
-                binding.tvLblShipping.setTextColor(ContextCompat.getColor(this, R.color.colorTextDark))
-                binding.tvLblShipping.setTypeface(null, android.graphics.Typeface.BOLD)
-                binding.dotShipping.setImageResource(R.drawable.ic_timeline_dot_active)
-                updateProgressLine(binding.dotReceived, binding.dotShipping)
-            }
-            OrderStep.ARRIVED -> {
-                binding.tvLblPreparing.setTextColor(ContextCompat.getColor(this, R.color.colorTextDark))
-                binding.tvLblPreparing.setTypeface(null, android.graphics.Typeface.BOLD)
-
-                binding.tvLblShipping.setTextColor(ContextCompat.getColor(this, R.color.colorTextDark))
-                binding.tvLblShipping.setTypeface(null, android.graphics.Typeface.BOLD)
-                binding.dotShipping.setImageResource(R.drawable.ic_timeline_dot_completed)
-
-                binding.tvLblArrived.setTextColor(ContextCompat.getColor(this, R.color.colorTextDark))
-                binding.tvLblArrived.setTypeface(null, android.graphics.Typeface.BOLD)
-                binding.dotArrived.setImageResource(R.drawable.ic_timeline_dot_active)
-                updateProgressLine(binding.dotReceived, binding.dotArrived)
-            }
-            OrderStep.COMPLETED -> {
-                val intent = Intent(this, OrderCompletedActivity::class.java)
-                startActivity(intent)
-                finish()
-            }
-        }
-
-        // Trigger local notification if the step changed
         if (state.currentStep != lastRenderedStep) {
-            state.triggerNotification?.let {
-                sendLocalNotification(state.currentStep)
-            }
+            state.triggerNotification?.let { sendLocalNotification(state.currentStep) }
             lastRenderedStep = state.currentStep
         }
     }
 
-    private fun updateProgressLine(startView: View, endView: View) {
+    private fun updateTimelineTimes(state: OrderSimulationState) {
+        if (state.timeReceived.isNotEmpty()) binding.tvTimeReceived.text = state.timeReceived
+        if (state.timePreparing.isNotEmpty()) binding.tvTimePreparing.text = state.timePreparing
+        if (state.timeShipping.isNotEmpty()) binding.tvTimeShipping.text = state.timeShipping
+        if (state.timeArrived.isNotEmpty()) binding.tvTimeArrived.text = state.timeArrived
+    }
+
+    private fun updateTimelineProgress(step: OrderStep) {
+        // Reset all to default (upcoming)
+        resetTimelineNodes()
+
+        when (step) {
+            OrderStep.RECEIVED -> {
+                setActiveNode(binding.dotReceived, binding.tvLblReceived, binding.tvTimeReceived)
+            }
+            OrderStep.PREPARING -> {
+                setCompletedNode(binding.dotReceived, binding.tvLblReceived, binding.tvTimeReceived)
+                setActiveNode(binding.dotPreparing, binding.tvLblPreparing, binding.tvTimePreparing)
+                updateLine(binding.dotReceived, binding.dotPreparing)
+                binding.ivHeroStatus.setImageResource(R.drawable.ic_chef_hat)
+            }
+            OrderStep.SHIPPING -> {
+                setCompletedNode(binding.dotReceived, binding.tvLblReceived, binding.tvTimeReceived)
+                setCompletedNode(binding.dotPreparing, binding.tvLblPreparing, binding.tvTimePreparing)
+                setActiveNode(binding.dotShipping, binding.tvLblShipping, binding.tvTimeShipping)
+                updateLine(binding.dotReceived, binding.dotShipping)
+                binding.ivHeroStatus.setImageResource(R.drawable.ic_scooter)
+            }
+            OrderStep.ARRIVED -> {
+                setCompletedNode(binding.dotReceived, binding.tvLblReceived, binding.tvTimeReceived)
+                setCompletedNode(binding.dotPreparing, binding.tvLblPreparing, binding.tvTimePreparing)
+                setCompletedNode(binding.dotShipping, binding.tvLblShipping, binding.tvTimeShipping)
+                setActiveNode(binding.dotArrived, binding.tvLblArrived, binding.tvTimeArrived)
+                updateLine(binding.dotReceived, binding.dotArrived)
+                binding.ivHeroStatus.setImageResource(R.drawable.emot_home)
+            }
+            OrderStep.COMPLETED -> {
+                startActivity(Intent(this, OrderCompletedActivity::class.java))
+                finish()
+            }
+        }
+    }
+
+    private fun resetTimelineNodes() {
+        val nodes = listOf(binding.dotReceived, binding.dotPreparing, binding.dotShipping, binding.dotArrived)
+        nodes.forEach { 
+            it.setImageResource(R.drawable.ic_circle_outline)
+            it.imageTintList = ContextCompat.getColorStateList(this, R.color.colorTextGrey)
+        }
+
+        val labels = listOf(binding.tvLblReceived, binding.tvLblPreparing, binding.tvLblShipping, binding.tvLblArrived)
+        labels.forEach { 
+            it.setTextColor(ContextCompat.getColor(this, R.color.colorTextGrey))
+            it.setTypeface(null, android.graphics.Typeface.NORMAL)
+        }
+
+        val times = listOf(binding.tvTimeReceived, binding.tvTimePreparing, binding.tvTimeShipping, binding.tvTimeArrived)
+        times.forEach {
+            it.setTextColor(ContextCompat.getColor(this, R.color.colorTextGrey))
+        }
+
+        binding.viewVerticalLineActive.visibility = View.GONE
+    }
+
+    private fun setActiveNode(dot: ImageView, label: TextView, time: TextView) {
+        dot.setImageResource(R.drawable.bg_status_dot_current)
+        dot.imageTintList = null
+        label.setTextColor(ContextCompat.getColor(this, R.color.colorActive))
+        label.setTypeface(null, android.graphics.Typeface.BOLD)
+        time.setTextColor(ContextCompat.getColor(this, R.color.colorActive))
+    }
+
+    private fun setCompletedNode(dot: ImageView, label: TextView, time: TextView) {
+        dot.setImageResource(R.drawable.bg_status_dot_completed)
+        dot.imageTintList = null
+        label.setTextColor(ContextCompat.getColor(this, R.color.colorSuccess))
+        label.setTypeface(null, android.graphics.Typeface.NORMAL)
+        time.setTextColor(ContextCompat.getColor(this, R.color.colorTextGrey))
+    }
+
+    private fun updateLine(startView: View, endView: View) {
         binding.viewVerticalLineActive.post {
             val startY = startView.y + (startView.height / 2)
             val endY = endView.y + (endView.height / 2)
-
-            binding.viewVerticalLineActive.y = startY
             val params = binding.viewVerticalLineActive.layoutParams
             params.height = (endY - startY).toInt()
+            binding.viewVerticalLineActive.y = startY
             binding.viewVerticalLineActive.layoutParams = params
             binding.viewVerticalLineActive.visibility = View.VISIBLE
         }
@@ -217,12 +258,12 @@ class OrderStatusActivity : AppCompatActivity() {
             .setCancelable(true)
             .create()
 
-        val tvPayMethod = dialogView.findViewById<android.widget.TextView>(R.id.tv_val_pay_method)
-        val tvQty = dialogView.findViewById<android.widget.TextView>(R.id.tv_val_qty)
-        val tvSnackName = dialogView.findViewById<android.widget.TextView>(R.id.tv_val_snack_name)
-        val tvTotal = dialogView.findViewById<android.widget.TextView>(R.id.tv_val_trans_total)
-        val tvTime = dialogView.findViewById<android.widget.TextView>(R.id.tv_val_time)
-        val tvDate = dialogView.findViewById<android.widget.TextView>(R.id.tv_val_date)
+        val tvPayMethod = dialogView.findViewById<TextView>(R.id.tv_val_pay_method)
+        val tvQty = dialogView.findViewById<TextView>(R.id.tv_val_qty)
+        val tvSnackName = dialogView.findViewById<TextView>(R.id.tv_val_snack_name)
+        val tvTotal = dialogView.findViewById<TextView>(R.id.tv_val_trans_total)
+        val tvTime = dialogView.findViewById<TextView>(R.id.tv_val_time)
+        val tvDate = dialogView.findViewById<TextView>(R.id.tv_val_date)
 
         tvPayMethod?.text = viewModel.getPaymentMethod()
         tvQty?.text = viewModel.getFormattedQuantity()
@@ -239,7 +280,7 @@ class OrderStatusActivity : AppCompatActivity() {
         dialog.show()
         dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
 
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             dialog.window?.addFlags(android.view.WindowManager.LayoutParams.FLAG_BLUR_BEHIND)
             dialog.window?.attributes?.blurBehindRadius = 25
         }

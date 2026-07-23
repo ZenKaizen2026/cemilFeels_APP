@@ -3,7 +3,7 @@ package com.example.cemil_feels
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
+import android.view.animation.AnimationUtils
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -20,10 +20,20 @@ class HomeActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        android.util.Log.d("HOME_DEBUG", "onCreate started")
         enableEdgeToEdge()
 
-        binding = ActivityHomeBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        try {
+            android.util.Log.d("HOME_DEBUG", "Inflating binding...")
+            binding = ActivityHomeBinding.inflate(layoutInflater)
+            android.util.Log.d("HOME_DEBUG", "Binding inflated successfully")
+            setContentView(binding.root)
+            android.util.Log.d("HOME_DEBUG", "setContentView called")
+        } catch (e: Exception) {
+            android.util.Log.e("HOME_DEBUG", "CRASH during inflation: ${e.message}")
+            e.printStackTrace()
+            throw e
+        }
 
         ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -31,31 +41,59 @@ class HomeActivity : AppCompatActivity() {
             insets
         }
 
-        // Menampilkan nama dari SharedPreferences
-        val sharedPrefs = getSharedPreferences("CemilFeelsPrefs", Context.MODE_PRIVATE)
-        val savedName = sharedPrefs.getString("registered_name", "Setia")
-        binding.tvUsername.text = getString(R.string.greeting_user, savedName)
+        try {
+            android.util.Log.d("HOME_DEBUG", "Setting up animations and views")
+            setupAnimations()
 
-        binding.btnMenu.setOnClickListener {
-            val intent = Intent(this, ProfileActivity::class.java)
-            startActivity(intent)
+            // Menampilkan nama dari SharedPreferences
+            val sharedPrefs = getSharedPreferences("CemilFeelsPrefs", Context.MODE_PRIVATE)
+            val savedName = sharedPrefs.getString("registered_name", "Setia")
+            
+            android.util.Log.d("HOME_DEBUG", "Accessing layoutTopBar.tvUsername")
+            binding.layoutTopBar.tvUsername.text = getString(R.string.greeting_user, savedName)
+
+            binding.layoutTopBar.btnMenu.setOnClickListener {
+                val intent = Intent(this, ProfileActivity::class.java)
+                startActivity(intent)
+            }
+
+            binding.layoutTopBar.btnNotification.setOnClickListener {
+                val intent = Intent(this, NotificationHistoryActivity::class.java)
+                startActivity(intent)
+            }
+            android.util.Log.d("HOME_DEBUG", "onCreate finished successfully")
+        } catch (e: Exception) {
+            android.util.Log.e("HOME_DEBUG", "CRASH during initialization: ${e.message}")
+            e.printStackTrace()
+            throw e
         }
+    }
 
-        binding.btnNotification.setOnClickListener {
-            val intent = Intent(this, NotificationHistoryActivity::class.java)
-            startActivity(intent)
-        }
-
-        // Menghubungkan tombol pointer (btn_search_snack) ke halaman Venting
-        binding.btnSearchSnack.setOnClickListener {
+    private fun setupAnimations() {
+        val clickAnim = AnimationUtils.loadAnimation(this, R.anim.button_click)
+        
+        binding.layoutHero.btnSearchSnack.setOnClickListener {
+            it.startAnimation(clickAnim)
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }
 
-        binding.chipHappy.setOnClickListener { navigateToRecommendation() }
-        binding.chipSad.setOnClickListener { navigateToRecommendation() }
-        binding.chipAngry.setOnClickListener { navigateToRecommendation() }
-        binding.chipBored.setOnClickListener { navigateToRecommendation() }
+        binding.layoutMood.chipHappy.setOnClickListener { 
+            it.startAnimation(clickAnim)
+            navigateToRecommendation() 
+        }
+        binding.layoutMood.chipSad.setOnClickListener { 
+            it.startAnimation(clickAnim)
+            navigateToRecommendation() 
+        }
+        binding.layoutMood.chipAngry.setOnClickListener { 
+            it.startAnimation(clickAnim)
+            navigateToRecommendation() 
+        }
+        binding.layoutMood.chipBored.setOnClickListener {
+            it.startAnimation(clickAnim)
+            navigateToRecommendation() 
+        }
     }
 
     private fun navigateToRecommendation() {

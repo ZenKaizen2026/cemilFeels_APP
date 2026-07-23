@@ -1,9 +1,12 @@
 package com.example.cemil_feels
 
+import android.animation.ObjectAnimator
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
+import android.view.animation.AccelerateDecelerateInterpolator
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -18,12 +21,12 @@ import kotlinx.coroutines.launch
 
 /**
  * Aktivitas Checkout Screen (Page 7).
- * Menampilkan alamat, estimasi durasi, ringkasan belanja, dan rincian biaya.
- * Refactored to follow MVVM architecture.
+ * Redesigned for Premium UI/UX with Sliding Segmented Control.
  */
 class CheckoutActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityCheckoutBinding
+    private var isDeliverySelected = true
 
     private val viewModel: CheckoutViewModel by viewModels {
         ViewModelFactory(ServiceLocator.container)
@@ -42,19 +45,18 @@ class CheckoutActivity : AppCompatActivity() {
             insets
         }
 
-        binding.btnCheckoutBack.setOnClickListener {
+        binding.layoutCheckoutHeader.btnCheckoutBack.setOnClickListener {
             finish()
         }
 
         setupObservers()
-        setupDeliveryToggle()
+        setupSegmentedControl()
 
         val totalCart = intent.getDoubleExtra("TOTAL_CART_EXTRA", 16000.0)
         viewModel.calculateCheckoutDetails(totalCart)
 
         binding.btnSelectPayment.setOnClickListener {
             val totalCost = viewModel.uiState.value.totalCost
-            // Sync with legacy AppState just in case
             AppState.lastOrderTotalCost = totalCost
 
             val intent = Intent(this, PaymentActivity::class.java).apply {
@@ -62,55 +64,84 @@ class CheckoutActivity : AppCompatActivity() {
             }
             startActivity(intent)
         }
+
+        binding.btnChangeAddress.setOnClickListener {
+            Toast.makeText(this, "Fitur Ubah Alamat akan segera hadir!", Toast.LENGTH_SHORT).show()
+        }
     }
 
-    private fun setupDeliveryToggle() {
-        binding.toggleDeliveryMethod.addOnButtonCheckedListener { _, checkedId, isChecked ->
-            if (isChecked) {
-                when (checkedId) {
-                    R.id.btn_delivery -> {
-                        // Tampilkan Alamat dan Ongkos Kirim, Sembunyikan Resto
-                        binding.cardAddress.visibility = View.VISIBLE
-                        binding.cardPickupLocation.visibility = View.GONE
-                        binding.layoutDeliveryFee.visibility = View.VISIBLE
-
-                        // Kembalikan Teks Estimasi ke semula
-                        binding.tvDeliveryLabel.text = "Estimasi Tiba"
-                        binding.tvDeliveryEta.text = "Akan sampai 20 - 30 menit"
-
-                        // Ubah styling button
-                        binding.btnDelivery.setTextColor(Color.parseColor("#FF7A1A"))
-                        binding.btnPickup.setTextColor(Color.parseColor("#757575"))
-                    }
-                    R.id.btn_pickup -> {
-                        // Sembunyikan Alamat dan Ongkos Kirim, Tampilkan Resto
-                        binding.cardAddress.visibility = View.GONE
-                        binding.cardPickupLocation.visibility = View.VISIBLE
-                        binding.layoutDeliveryFee.visibility = View.GONE
-
-                        // Ubah Teks Estimasi untuk Pick Up
-                        binding.tvDeliveryLabel.text = "Waktu Pengambilan"
-                        binding.tvDeliveryEta.text = "Pesanan siap dalam 15 - 20 menit"
-
-                        // Ubah styling button
-                        binding.btnPickup.setTextColor(Color.parseColor("#FF7A1A"))
-                        binding.btnDelivery.setTextColor(Color.parseColor("#757575"))
-                    }
-                }
+    private fun setupSegmentedControl() {
+        binding.tvToggleDelivery.setOnClickListener {
+            if (!isDeliverySelected) {
+                switchDeliveryMethod(true)
             }
+        }
+
+        binding.tvTogglePickup.setOnClickListener {
+            if (isDeliverySelected) {
+                switchDeliveryMethod(false)
+            }
+        }
+        
+        // Initial state
+        binding.segmentedContainer.post {
+            updateIndicatorPosition(true, animate = false)
+        }
+    }
+
+    private fun switchDeliveryMethod(isDelivery: Boolean) {
+        isDeliverySelected = isDelivery
+        
+        // 1. Animate Indicator
+        updateIndicatorPosition(isDelivery, animate = true)
+
+        // 2. Update Text Colors
+        binding.tvToggleDelivery.setTextColor(if (isDelivery) Color.parseColor("#FF7A1A") else Color.parseColor("#757575"))
+        binding.tvTogglePickup.setTextColor(if (!isDelivery) Color.parseColor("#FF7A1A") else Color.parseColor("#757575"))
+
+        // 3. Update Visibility & Content
+        if (isDelivery) {
+            binding.cardAddress.visibility = View.VISIBLE
+            binding.cardPickupLocation.visibility = View.GONE
+            binding.layoutOrderSummary.layoutDeliveryFee.visibility = View.VISIBLE
+
+            binding.tvDeliveryLabel.text = "Estimasi Tiba"
+            binding.tvDeliveryEta.text = "20 - 30 menit"
+            binding.ivDeliveryIcon.setImageResource(R.drawable.logo_checkout_delivery)
+        } else {
+            binding.cardAddress.visibility = View.GONE
+            binding.cardPickupLocation.visibility = View.VISIBLE
+            binding.layoutOrderSummary.layoutDeliveryFee.visibility = View.GONE
+
+            binding.tvDeliveryLabel.text = "Waktu Pengambilan"
+            binding.tvDeliveryEta.text = "Siap dalam 15 - 20 menit"
+            binding.ivDeliveryIcon.setImageResource(R.drawable.logo_checkout_restaurant)
+        }
+    }
+
+    private fun updateIndicatorPosition(isDelivery: Boolean, animate: Boolean) {
+        val targetX = if (isDelivery) 0f else binding.segmentedContainer.width / 2f
+        
+        if (animate) {
+            ObjectAnimator.ofFloat(binding.viewIndicator, "translationX", targetX).apply {
+                duration = 300
+                interpolator = AccelerateDecelerateInterpolator()
+                start()
+            }
+        } else {
+            binding.viewIndicator.translationX = targetX
         }
     }
 
     private fun setupObservers() {
         lifecycleScope.launch {
             viewModel.uiState.collect { state ->
-                binding.tvCheckoutSubtotal.text = state.subtotalText
-                binding.tvCheckoutTotal.text = state.totalText
+                binding.layoutOrderSummary.tvCheckoutSubtotal.text = state.subtotalText
+                binding.layoutOrderSummary.tvCheckoutTotal.text = state.totalText
 
-                // Update dynamic items
-                binding.layoutOrderItemsContainer.removeAllViews()
+                binding.layoutOrderSummary.layoutOrderItemsContainer.removeAllViews()
                 state.cartItems.forEach { item ->
-                    val itemView = layoutInflater.inflate(R.layout.item_checkout_summary, binding.layoutOrderItemsContainer, false)
+                    val itemView = layoutInflater.inflate(R.layout.item_checkout_summary, binding.layoutOrderSummary.layoutOrderItemsContainer, false)
 
                     val ivImage = itemView.findViewById<android.widget.ImageView>(R.id.iv_summary_item_image)
                     val tvName = itemView.findViewById<android.widget.TextView>(R.id.tv_summary_item_name)
@@ -131,7 +162,7 @@ class CheckoutActivity : AppCompatActivity() {
                         cvLevel.visibility = View.GONE
                     }
 
-                    binding.layoutOrderItemsContainer.addView(itemView)
+                    binding.layoutOrderSummary.layoutOrderItemsContainer.addView(itemView)
                 }
             }
         }

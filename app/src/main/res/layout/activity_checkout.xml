@@ -6,66 +6,19 @@
     android:layout_height="match_parent"
     android:background="#FFF9F5">
 
-    <!-- 1. App Bar Modern dengan Subtitle -->
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <!-- 1. App Bar Modern -->
+    <include
         android:id="@+id/layout_checkout_header"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingHorizontal="20dp"
-        android:paddingTop="24dp"
-        android:paddingBottom="16dp"
-        android:background="#FFF9F5"
-        android:elevation="4dp"
-        app:layout_constraintTop_toTopOf="parent">
+        layout="@layout/layout_checkout_header"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageButton
-            android:id="@+id/btn_checkout_back"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="Kembali"
-            app:srcCompat="@drawable/ic_arrow_back"
-            app:tint="#212121"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginStart="16dp"
-            app:layout_constraintBottom_toBottomOf="@id/btn_checkout_back"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/btn_checkout_back"
-            app:layout_constraintTop_toTopOf="@id/btn_checkout_back">
-
-            <TextView
-                android:id="@+id/tv_checkout_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Checkout Pesanan"
-                android:textColor="#212121"
-                android:textSize="24sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Pastikan semua informasi pesanan sudah benar."
-                android:textColor="#757575"
-                android:textSize="12sp"
-                android:layout_marginTop="2dp" />
-        </LinearLayout>
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <!-- 2. Scrollable Content Area -->
+    <!-- 2. Content Area -->
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:clipToPadding="false"
         android:paddingHorizontal="20dp"
-        android:paddingTop="16dp"
+        android:paddingTop="8dp"
         android:paddingBottom="120dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/layout_checkout_header">
@@ -75,227 +28,242 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!-- OPSI PENGIRIMAN: Pick Up / Delivery -->
-            <com.google.android.material.button.MaterialButtonToggleGroup
-                android:id="@+id/toggle_delivery_method"
+            <!-- PREMIUM SEGMENTED CONTROL -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/segmented_container"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                app:singleSelection="true"
-                app:checkedButton="@id/btn_delivery"
-                app:selectionRequired="true">
+                android:layout_height="52dp"
+                android:layout_marginBottom="24dp"
+                android:background="@drawable/bg_segmented_container"
+                android:padding="4dp">
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btn_delivery"
-                    style="?attr/materialButtonOutlinedStyle"
+                <View
+                    android:id="@+id/view_indicator"
                     android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/bg_segmented_indicator"
+                    android:elevation="2dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/guideline_center"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline_center"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.5" />
+
+                <TextView
+                    android:id="@+id/tv_toggle_delivery"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:clickable="true"
+                    android:elevation="3dp"
+                    android:fontFamily="sans-serif-medium"
+                    android:focusable="true"
+                    android:gravity="center"
                     android:text="Delivery"
                     android:textColor="#FF7A1A"
-                    app:strokeColor="#FF7A1A"/>
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toStartOf="@+id/guideline_center"
+                    app:layout_constraintStart_toStartOf="parent" />
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btn_pickup"
-                    style="?attr/materialButtonOutlinedStyle"
+                <TextView
+                    android:id="@+id/tv_toggle_pickup"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:clickable="true"
+                    android:elevation="3dp"
+                    android:fontFamily="sans-serif-medium"
+                    android:focusable="true"
+                    android:gravity="center"
                     android:text="Pick Up"
                     android:textColor="#757575"
-                    app:strokeColor="#E0E0E0"/>
-            </com.google.android.material.button.MaterialButtonToggleGroup>
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/guideline_center" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <!-- KARTU 1A: Alamat Pengiriman (Delivery) -->
+            <!-- CARD ALAMAT (DELIVERY) -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/card_address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
-                app:cardCornerRadius="20dp"
-                app:cardElevation="4dp"
+                app:cardCornerRadius="24dp"
+                app:cardElevation="2dp"
                 app:strokeWidth="0dp"
                 app:cardBackgroundColor="#FFFFFF">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingHorizontal="20dp"
-                    android:paddingVertical="18dp">
+                    android:padding="20dp">
 
                     <ImageView
                         android:id="@+id/iv_address_icon"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        app:srcCompat="@drawable/ic_location_on"
-                        app:tint="#FF7A1A"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        app:srcCompat="@drawable/logo_checkout_delivery"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        android:contentDescription="Ikon Alamat" />
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
                         android:id="@+id/tv_address_label"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="12dp"
+                        android:layout_marginStart="14dp"
                         android:text="Alamat Pengiriman"
                         android:textColor="#212121"
-                        android:textStyle="bold"
+                        android:fontFamily="sans-serif-medium"
                         android:textSize="15sp"
                         app:layout_constraintStart_toEndOf="@id/iv_address_icon"
                         app:layout_constraintTop_toTopOf="@id/iv_address_icon"
-                        app:layout_constraintBottom_toBottomOf="@id/iv_address_icon"/>
+                        app:layout_constraintBottom_toBottomOf="@id/iv_address_icon" />
 
                     <TextView
                         android:id="@+id/tv_address_details"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="12dp"
-                        android:layout_marginTop="8dp"
+                        android:layout_marginTop="12dp"
                         android:layout_marginEnd="12dp"
                         android:text="Jl. Bantul raya adoh kono, mwuah cerak goa"
                         android:textColor="#757575"
                         android:textSize="13sp"
                         android:maxLines="2"
                         android:ellipsize="end"
-                        android:lineSpacingExtra="4dp"
-                        app:layout_constraintStart_toEndOf="@id/iv_address_icon"
+                        android:lineSpacingExtra="3dp"
+                        app:layout_constraintStart_toStartOf="@id/tv_address_label"
                         app:layout_constraintEnd_toStartOf="@id/btn_change_address"
                         app:layout_constraintTop_toBottomOf="@id/tv_address_label" />
 
+                    <!-- MODERN ACTION BUTTON -->
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btn_change_address"
-                        style="@style/Widget.MaterialComponents.Button.TextButton"
                         android:layout_width="wrap_content"
-                        android:layout_height="40dp"
+                        android:layout_height="38dp"
+                        android:background="@drawable/bg_button_outlined_pill"
                         android:text="Ubah"
-                        android:textSize="13sp"
-                        android:textStyle="bold"
+                        android:textAllCaps="false"
                         android:textColor="#FF7A1A"
-                        app:icon="@drawable/ic_chevron_right"
+                        android:textSize="12sp"
+                        android:fontFamily="sans-serif-medium"
+                        android:paddingHorizontal="12dp"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"
+                        app:icon="@drawable/ic_location_pin_sophisticated"
+                        app:iconSize="16dp"
+                        app:iconPadding="4dp"
                         app:iconTint="#FF7A1A"
-                        app:iconGravity="end"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- KARTU 1B: Lokasi Resto (Pick Up) - Awalnya Sembunyi -->
+            <!-- CARD RESTO (PICKUP) -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/card_pickup_location"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
                 android:visibility="gone"
-                app:cardCornerRadius="20dp"
-                app:cardElevation="4dp"
+                app:cardCornerRadius="24dp"
+                app:cardElevation="2dp"
                 app:strokeWidth="0dp"
                 app:cardBackgroundColor="#FFFFFF">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingHorizontal="20dp"
-                    android:paddingVertical="18dp">
+                    android:padding="20dp">
 
                     <ImageView
                         android:id="@+id/iv_store_icon"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        app:srcCompat="@drawable/ic_location_on"
-                        app:tint="#FF7A1A"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        app:srcCompat="@drawable/logo_checkout_restaurant"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        android:contentDescription="Ikon Resto" />
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
                         android:id="@+id/tv_store_label"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="12dp"
-                        android:text="Lokasi Pengambilan (Resto)"
+                        android:layout_marginStart="14dp"
+                        android:text="Lokasi Pengambilan"
                         android:textColor="#212121"
-                        android:textStyle="bold"
+                        android:fontFamily="sans-serif-medium"
                         android:textSize="15sp"
                         app:layout_constraintStart_toEndOf="@id/iv_store_icon"
                         app:layout_constraintTop_toTopOf="@id/iv_store_icon"
-                        app:layout_constraintBottom_toBottomOf="@id/iv_store_icon"/>
+                        app:layout_constraintBottom_toBottomOf="@id/iv_store_icon" />
 
                     <TextView
                         android:id="@+id/tv_store_details"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="12dp"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginEnd="12dp"
-                        android:text="Cemil Feels Resto\nJl. Merdeka No. 45, Kota Yogyakarta"
+                        android:layout_marginTop="12dp"
+                        android:text="Cemil Feels Resto\nJl. Merdeka No. 45, Yogyakarta"
                         android:textColor="#757575"
                         android:textSize="13sp"
-                        android:maxLines="2"
-                        android:ellipsize="end"
-                        android:lineSpacingExtra="4dp"
-                        app:layout_constraintStart_toEndOf="@id/iv_store_icon"
+                        android:lineSpacingExtra="3dp"
+                        app:layout_constraintStart_toStartOf="@id/tv_store_label"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/tv_store_label" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- KARTU 2: Estimasi Pengiriman / Waktu Ambil -->
+            <!-- CARD ESTIMASI -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
-                app:cardCornerRadius="20dp"
-                app:cardElevation="4dp"
+                app:cardCornerRadius="24dp"
+                app:cardElevation="2dp"
                 app:strokeWidth="0dp"
                 app:cardBackgroundColor="#FFFFFF">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingHorizontal="20dp"
-                    android:paddingVertical="18dp">
+                    android:padding="20dp">
 
                     <ImageView
                         android:id="@+id/iv_delivery_icon"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        app:srcCompat="@drawable/ic_local_shipping"
-                        app:tint="#FF7A1A"
-                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        app:srcCompat="@drawable/logo_checkout_time"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        android:contentDescription="Ikon Estimasi" />
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
                         android:id="@+id/tv_delivery_label"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="12dp"
+                        android:layout_marginStart="14dp"
                         android:text="Estimasi Tiba"
                         android:textColor="#212121"
-                        android:textStyle="bold"
+                        android:fontFamily="sans-serif-medium"
                         android:textSize="15sp"
                         app:layout_constraintStart_toEndOf="@id/iv_delivery_icon"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toTopOf="@id/badge_eta"
-                        app:layout_constraintVertical_chainStyle="packed" />
+                        app:layout_constraintTop_toTopOf="@id/iv_delivery_icon"
+                        app:layout_constraintBottom_toTopOf="@id/badge_eta" />
 
-                    <!-- Badge Wrapper agar bentuknya Pill/Rounded -->
                     <com.google.android.material.card.MaterialCardView
                         android:id="@+id/badge_eta"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="6dp"
-                        android:layout_marginStart="12dp"
+                        android:layout_marginTop="8dp"
                         app:cardBackgroundColor="#FFF2E8"
-                        app:cardCornerRadius="12dp"
+                        app:cardCornerRadius="10dp"
                         app:cardElevation="0dp"
-                        app:strokeWidth="0dp"
-                        app:layout_constraintStart_toEndOf="@id/iv_delivery_icon"
-                        app:layout_constraintTop_toBottomOf="@id/tv_delivery_label"
-                        app:layout_constraintBottom_toBottomOf="parent">
+                        app:layout_constraintStart_toStartOf="@id/tv_delivery_label"
+                        app:layout_constraintTop_toBottomOf="@id/tv_delivery_label">
 
                         <TextView
                             android:id="@+id/tv_delivery_eta"
@@ -303,204 +271,51 @@
                             android:layout_height="wrap_content"
                             android:paddingHorizontal="10dp"
                             android:paddingVertical="4dp"
-                            android:text="Akan sampai 20 - 30 menit"
+                            android:text="20 - 30 menit"
                             android:textColor="#FF7A1A"
                             android:textSize="12sp"
-                            android:textStyle="bold"
+                            android:fontFamily="sans-serif-medium"
                             android:drawablePadding="6dp"
-                            app:drawableStartCompat="@drawable/ic_access_time"
+                            app:drawableStartCompat="@drawable/ic_access_time_sophisticated"
                             app:drawableTint="#FF7A1A" />
                     </com.google.android.material.card.MaterialCardView>
-
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- KARTU 3: Ringkasan Pesanan & Biaya -->
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                app:cardCornerRadius="20dp"
-                app:cardElevation="4dp"
-                app:strokeWidth="0dp"
-                app:cardBackgroundColor="#FFFFFF">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:paddingHorizontal="20dp"
-                    android:paddingVertical="20dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Ringkasan Pesanan"
-                        android:textColor="#212121"
-                        android:textStyle="bold"
-                        android:textSize="16sp"
-                        android:layout_marginBottom="16dp" />
-
-                    <!-- Container for dynamic items -->
-                    <LinearLayout
-                        android:id="@+id/layout_order_items_container"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical" />
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="#EEEEEE"
-                        android:layout_marginBottom="16dp" />
-
-                    <!-- Subtotal Row -->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_marginBottom="12dp">
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Subtotal"
-                            android:textColor="#757575"
-                            android:textSize="14sp" />
-                        <TextView
-                            android:id="@+id/tv_checkout_subtotal"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Rp 36.000"
-                            android:textColor="#212121"
-                            android:textSize="14sp"
-                            android:textStyle="bold" />
-                    </LinearLayout>
-
-                    <!-- Ongkos Kirim -->
-                    <LinearLayout
-                        android:id="@+id/layout_delivery_fee"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_marginBottom="12dp">
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Ongkos Kirim"
-                            android:textColor="#757575"
-                            android:textSize="14sp" />
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Rp 5.000"
-                            android:textColor="#212121"
-                            android:textSize="14sp"
-                            android:textStyle="bold" />
-                    </LinearLayout>
-
-                    <!-- Biaya Layanan -->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_marginBottom="16dp">
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Biaya Layanan"
-                            android:textColor="#757575"
-                            android:textSize="14sp" />
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Rp 2.000"
-                            android:textColor="#212121"
-                            android:textSize="14sp"
-                            android:textStyle="bold" />
-                    </LinearLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="#EEEEEE"
-                        android:layout_marginBottom="16dp" />
-
-                    <!-- Total Biaya (Fokus Utama) -->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Total Pembayaran"
-                            android:textColor="#212121"
-                            android:textSize="16sp"
-                            android:textStyle="bold"
-                            app:drawableStartCompat="@drawable/ic_wallet"
-                            app:drawableTint="#FF7A1A"
-                            android:drawablePadding="8dp"/>
-
-                        <TextView
-                            android:id="@+id/tv_checkout_total"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Rp 43.000"
-                            android:textColor="#FF7A1A"
-                            android:textSize="26sp"
-                            android:textStyle="bold" />
-                    </LinearLayout>
-
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
+            <!-- RINGKASAN PESANAN -->
+            <include
+                android:id="@+id/layout_order_summary"
+                layout="@layout/layout_checkout_order_summary" />
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
-    <!-- 3. Bottom Sticky Bar: Metode Pembayaran (Elevated Floating Card) -->
+    <!-- 3. Bottom Sticky Bar -->
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/card_bottom_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="16dp"
-        android:layout_marginBottom="24dp"
+        android:layout_margin="16dp"
         app:cardBackgroundColor="#FFFFFF"
         app:cardCornerRadius="32dp"
         app:cardElevation="12dp"
         app:strokeWidth="0dp"
         app:layout_constraintBottom_toBottomOf="parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_select_payment"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="8dp">
-
-            <!-- Tombol CTA Utama -->
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_select_payment"
-                android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:backgroundTint="#FF7A1A"
-                android:text="Pilih Metode Pembayaran"
-                android:textColor="#FFFFFF"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                app:cornerRadius="28dp"
-                app:elevation="0dp"
-                app:icon="@drawable/ic_wallet"
-                app:iconGravity="textStart"
-                app:iconTint="#FFFFFF"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            android:layout_height="64dp"
+            android:backgroundTint="#FF7A1A"
+            android:text="Pilih Metode Pembayaran"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp"
+            android:fontFamily="sans-serif-bold"
+            android:layout_margin="8dp"
+            app:cornerRadius="28dp"
+            app:icon="@drawable/ic_wallet_sophisticated"
+            app:iconGravity="textStart"
+            app:iconPadding="12dp" />
     </com.google.android.material.card.MaterialCardView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

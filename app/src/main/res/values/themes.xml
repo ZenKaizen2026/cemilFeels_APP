@@ -2,7 +2,9 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.Cemil_feels" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="colorPrimary">#FF7A1A</item>
+        <item name="android:outlineAmbientShadowColor" tools:targetApi="p">#26000000</item>
+        <item name="android:outlineSpotShadowColor" tools:targetApi="p">#26000000</item>
     </style>
 
     <style name="Theme.Cemil_feels" parent="Base.Theme.Cemil_feels" />

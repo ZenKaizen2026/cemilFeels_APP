@@ -2,4 +2,9 @@
 <resources>
     <string name="app_name">Cemil_feels</string>
     <string name="greeting_user">%s 👋</string>
+    <string name="hint_search">Cari camilan favoritmu...</string>
+    <string name="hero_title">Apa mood kamu\nhari ini? 🍪</string>
+    <string name="hero_desc">Pilih perasaanmu dan biarkan kami memberikan rekomendasi terbaik.</string>
+    <string name="rating_default">4.9</string>
+    <string name="rating_piscok">4.8</string>
 </resources>

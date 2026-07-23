@@ -12,7 +12,7 @@
         android:layout_margin="16dp"
         app:cardBackgroundColor="#FFFFFF"
         app:cardCornerRadius="24dp"
-        app:cardElevation="8dp"
+        app:cardElevation="16dp"
         app:cardPreventCornerOverlap="false"
         app:strokeWidth="0dp">
 
@@ -309,7 +309,7 @@
                 android:text="Total Pembayaran"
                 android:textColor="#222222"
                 android:textSize="15sp"
-                android:textStyle="bold"
+                android:fontFamily="sans-serif-bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/divider_detail_bottom" />
@@ -321,8 +321,8 @@
                 android:gravity="end"
                 android:text="Rp 65.000"
                 android:textColor="#FF7A1A"
-                android:textSize="18sp"
-                android:textStyle="bold"
+                android:textSize="20sp"
+                android:fontFamily="sans-serif-black"
                 android:layout_marginStart="8dp"
                 app:layout_constraintBottom_toBottomOf="@id/tv_lbl_trans_total"
                 app:layout_constraintEnd_toEndOf="parent"

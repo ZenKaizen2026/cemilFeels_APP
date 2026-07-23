@@ -261,25 +261,20 @@ class RecommendationActivity : AppCompatActivity() {
                 ContextCompat.getColor(this, if (isSelected) R.color.colorPrimary else R.color.white)
             )
 
-            for (i in 0 until layout.childCount) {
-                val child = layout.getChildAt(i)
-                if (child is android.widget.TextView) {
-                    child.setTextColor(
-                        ContextCompat.getColor(this, if (isSelected) R.color.white else R.color.colorTextDark)
-                    )
-                } else if (child is android.widget.ImageView) {
-                    child.imageTintList = ColorStateList.valueOf(
-                        ContextCompat.getColor(this, if (isSelected) R.color.white else R.color.colorAccent)
-                    )
-                } else if (child is LinearLayout) {
-                    for (j in 0 until child.childCount) {
-                        val nestedChild = child.getChildAt(j)
-                        if (nestedChild is android.widget.ImageView) {
-                            nestedChild.imageTintList = ColorStateList.valueOf(
-                                ContextCompat.getColor(this, if (isSelected) R.color.white else R.color.colorAccent)
-                            )
-                        }
-                    }
+            val contentColor = ContextCompat.getColor(this, if (isSelected) R.color.white else R.color.colorTextDark)
+            val iconTint = ContextCompat.getColor(this, if (isSelected) R.color.white else R.color.colorAccent)
+
+            updateColorsRecursively(layout, contentColor, iconTint)
+        }
+    }
+
+    private fun updateColorsRecursively(view: View, textColor: Int, iconColor: Int) {
+        when (view) {
+            is android.widget.TextView -> view.setTextColor(textColor)
+            is android.widget.ImageView -> view.imageTintList = ColorStateList.valueOf(iconColor)
+            is android.view.ViewGroup -> {
+                for (i in 0 until view.childCount) {
+                    updateColorsRecursively(view.getChildAt(i), textColor, iconColor)
                 }
             }
         }

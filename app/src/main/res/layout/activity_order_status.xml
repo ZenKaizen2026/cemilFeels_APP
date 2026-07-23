@@ -4,86 +4,69 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFF9F5">
+    android:background="#FAFAFA">
 
-    <!-- 1. Header Navigation Premium -->
+    <!-- Header Navigation -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layout_status_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingHorizontal="20dp"
-        android:paddingTop="24dp"
+        android:paddingHorizontal="16dp"
+        android:paddingTop="32dp"
         android:paddingBottom="16dp"
-        android:background="#FFF9F5"
-        android:elevation="4dp"
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageButton
             android:id="@+id/btn_status_back"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="Kembali"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:background="@drawable/bg_rounded_rectangle_19"
+            android:backgroundTint="#FFFFFF"
+            android:elevation="2dp"
+            android:contentDescription="Back"
             app:srcCompat="@drawable/ic_arrow_back"
             app:tint="#212121"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
-        <LinearLayout
-            android:layout_width="0dp"
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginStart="12dp"
-            app:layout_constraintBottom_toBottomOf="@id/btn_status_back"
+            android:text="Track Order"
+            android:textColor="#212121"
+            android:textSize="18sp"
+            android:fontFamily="sans-serif-medium"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/btn_status_back"
-            app:layout_constraintTop_toTopOf="@id/btn_status_back">
-
-            <TextView
-                android:id="@+id/tv_status_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Live Order Status"
-                android:textColor="#212121"
-                android:textSize="22sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Pantau pesananmu secara real-time."
-                android:textColor="#757575"
-                android:textSize="12sp"
-                android:layout_marginTop="2dp"/>
-        </LinearLayout>
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <!-- 2. Scrollable Center Content -->
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:clipToPadding="false"
-        android:paddingHorizontal="20dp"
-        android:paddingTop="16dp"
-        android:paddingBottom="130dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/layout_status_header">
+        android:paddingBottom="120dp"
+        app:layout_constraintTop_toBottomOf="@id/layout_status_header"
+        app:layout_constraintBottom_toBottomOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingHorizontal="20dp">
 
-            <!-- Hero Status Card (Fokus Utama) -->
+            <!-- Hero Progress Section -->
             <com.google.android.material.card.MaterialCardView
-                android:id="@+id/card_illustration"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                app:cardCornerRadius="24dp"
-                app:cardElevation="6dp"
-                app:strokeWidth="0dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="20dp"
+                app:cardCornerRadius="28dp"
+                app:cardElevation="0dp"
+                app:strokeWidth="1dp"
+                app:strokeColor="#F0F0F0"
                 app:cardBackgroundColor="#FFFFFF">
 
                 <LinearLayout
@@ -91,58 +74,66 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:gravity="center"
-                    android:paddingHorizontal="24dp"
-                    android:paddingVertical="32dp">
+                    android:padding="32dp">
 
-                    <ImageView
-                        android:layout_width="96dp"
-                        android:layout_height="96dp"
-                        android:src="@drawable/emot_home"
-                        android:layout_marginBottom="16dp"/>
+                    <FrameLayout
+                        android:layout_width="120dp"
+                        android:layout_height="120dp"
+                        android:layout_marginBottom="20dp">
+                        <View
+                            android:id="@+id/view_hero_pulse"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/bg_status_dot_current"
+                            android:alpha="0.2"/>
+                        <ImageView
+                            android:id="@+id/iv_hero_status"
+                            android:layout_width="80dp"
+                            android:layout_height="80dp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/emot_home"/>
+                    </FrameLayout>
 
                     <TextView
                         android:id="@+id/tv_chef_status"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Pesanan Sedang Disiapkan 🍳"
-                        android:textColor="#FF7A1A"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
+                        android:text="Memasak Camilanmu..."
+                        android:textColor="#212121"
+                        android:textSize="20sp"
+                        android:fontFamily="sans-serif-black"
                         android:gravity="center"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:text="Tim kami sedang menyiapkan camilan favoritmu dengan penuh perhatian."
+                        android:text="Driver akan menjemput setelah matang"
                         android:textColor="#757575"
-                        android:textSize="13sp"
-                        android:textAlignment="center"
-                        android:lineSpacingExtra="4dp" />
+                        android:textSize="14sp"
+                        android:gravity="center"/>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Order ID Card -->
+            <!-- Order ID Card (Premium) -->
             <com.google.android.material.card.MaterialCardView
-                android:id="@+id/card_order_id"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                app:cardCornerRadius="16dp"
+                android:layout_marginBottom="24dp"
+                app:cardCornerRadius="20dp"
                 app:cardElevation="2dp"
-                app:strokeColor="#EEEEEE"
-                app:strokeWidth="1dp"
+                app:strokeWidth="0dp"
                 app:cardBackgroundColor="#FFFFFF">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="16dp">
+                    android:padding="20dp">
 
                     <ImageView
-                        android:id="@+id/iv_receipt"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
+                        android:id="@+id/iv_order_icon"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
                         app:srcCompat="@drawable/ic_receipt"
                         app:tint="#FF7A1A"
                         app:layout_constraintStart_toStartOf="parent"
@@ -150,397 +141,322 @@
                         app:layout_constraintBottom_toBottomOf="parent"/>
 
                     <LinearLayout
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:layout_marginStart="12dp"
-                        app:layout_constraintStart_toEndOf="@id/iv_receipt"
+                        android:layout_marginStart="16dp"
+                        app:layout_constraintStart_toEndOf="@id/iv_order_icon"
+                        app:layout_constraintEnd_toStartOf="@id/btn_copy_order_id"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent">
 
                         <TextView
-                            android:id="@+id/tv_order_label"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Order ID"
+                            android:text="Order Reference"
                             android:textColor="#757575"
-                            android:textSize="12sp" />
+                            android:textSize="12sp"
+                            android:textAllCaps="true"
+                            android:letterSpacing="0.1"/>
 
                         <TextView
                             android:id="@+id/tv_order_id"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="#CML088228642625"
+                            android:text="#CML-2024-8822"
                             android:textColor="#212121"
-                            android:textSize="14sp"
-                            android:textStyle="bold"
-                            android:layout_marginTop="2dp" />
+                            android:textSize="16sp"
+                            android:fontFamily="sans-serif-medium"
+                            android:layout_marginTop="2dp"/>
                     </LinearLayout>
 
-                    <TextView
+                    <com.google.android.material.button.MaterialButton
                         android:id="@+id/btn_copy_order_id"
+                        style="@style/Widget.Material3.Button.TextButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="SALIN"
                         android:textColor="#FF7A1A"
-                        android:textSize="12sp"
-                        android:textStyle="bold"
-                        android:background="@drawable/bg_rounded_rectangle_19"
-                        android:backgroundTint="#FFF2E8"
-                        android:paddingHorizontal="12dp"
-                        android:paddingVertical="6dp"
-                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:textSize="13sp"
+                        android:fontFamily="sans-serif-bold"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"/>
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Status Pembayaran (Tambahan UI Premium) -->
-            <com.google.android.material.card.MaterialCardView
+            <!-- Custom Timeline Section -->
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="2dp"
-                app:strokeColor="#EEEEEE"
-                app:strokeWidth="1dp"
-                app:cardBackgroundColor="#FFFFFF">
+                android:paddingBottom="32dp">
+
+                <!-- Timeline Lines -->
+                <View
+                    android:id="@+id/line_inactive"
+                    android:layout_width="3dp"
+                    android:layout_height="0dp"
+                    android:background="#E0E0E0"
+                    app:layout_constraintStart_toStartOf="@id/dot_received"
+                    app:layout_constraintEnd_toEndOf="@id/dot_received"
+                    app:layout_constraintTop_toTopOf="@id/dot_received"
+                    app:layout_constraintBottom_toBottomOf="@id/dot_arrived"/>
+
+                <View
+                    android:id="@+id/view_vertical_line_active"
+                    android:layout_width="3dp"
+                    android:layout_height="0dp"
+                    android:background="@drawable/bg_status_line_gradient"
+                    app:layout_constraintStart_toStartOf="@id/dot_received"
+                    app:layout_constraintEnd_toEndOf="@id/dot_received"
+                    app:layout_constraintTop_toTopOf="@id/dot_received"
+                    app:layout_constraintBottom_toTopOf="@id/dot_preparing"/>
+
+                <!-- Node 1: Received -->
+                <ImageView
+                    android:id="@+id/dot_received"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:src="@drawable/bg_status_dot_completed"
+                    android:elevation="2dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
 
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:id="@+id/container_received"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:padding="16dp">
-
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        app:srcCompat="@drawable/ic_wallet"
-                        app:tint="#2E7D32" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_marginStart="12dp"
-                        android:text="Metode Pembayaran"
-                        android:textColor="#212121"
-                        android:textSize="14sp"
-                        android:textStyle="bold"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="✔ Berhasil"
-                        android:textColor="#2E7D32"
-                        android:textSize="12sp"
-                        android:textStyle="bold"
-                        android:background="@drawable/bg_rounded_rectangle_19"
-                        android:backgroundTint="#E8F5E9"
-                        android:paddingHorizontal="10dp"
-                        android:paddingVertical="4dp"/>
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-
-            <!-- Timeline Tracking Frame -->
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/card_timeline"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="24dp"
-                app:cardCornerRadius="20dp"
-                app:cardElevation="2dp"
-                app:strokeColor="#EEEEEE"
-                app:strokeWidth="1dp"
-                app:cardBackgroundColor="#FFFFFF">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingHorizontal="24dp"
-                    android:paddingVertical="28dp">
-
-                    <!-- Vertical Lines -->
-                    <View
-                        android:id="@+id/view_vertical_line_bg"
-                        android:layout_width="2dp"
-                        android:layout_height="0dp"
-                        android:background="#EEEEEE"
-                        app:layout_constraintBottom_toBottomOf="@id/dot_arrived"
-                        app:layout_constraintEnd_toEndOf="@id/dot_received"
-                        app:layout_constraintStart_toStartOf="@id/dot_received"
-                        app:layout_constraintTop_toTopOf="@id/dot_received" />
-
-                    <View
-                        android:id="@+id/view_vertical_line_active"
-                        android:layout_width="2dp"
-                        android:layout_height="0dp"
-                        android:background="#FF7A1A"
-                        app:layout_constraintEnd_toEndOf="@id/dot_received"
-                        app:layout_constraintStart_toStartOf="@id/dot_received"
-                        app:layout_constraintTop_toTopOf="@id/dot_received"
-                        app:layout_constraintBottom_toTopOf="@id/dot_preparing"/>
-
-                    <!-- Node 1: Received (Selesai - Hijau) -->
-                    <ImageView
-                        android:id="@+id/dot_received"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:src="@drawable/ic_timeline_dot_completed"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                    android:orientation="vertical"
+                    android:layout_marginStart="20dp"
+                    app:layout_constraintStart_toEndOf="@id/dot_received"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/dot_received">
 
                     <TextView
                         android:id="@+id/tv_lbl_received"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
-                        android:text="Pesanan Diterima"
+                        android:text="Order Confirmed"
                         android:textColor="#2E7D32"
-                        android:textSize="14sp"
-                        android:textStyle="bold"
-                        android:drawablePadding="8dp"
-                        app:drawableStartCompat="@drawable/ic_check_circle"
-                        app:drawableTint="#2E7D32"
-                        app:layout_constraintBottom_toBottomOf="@id/dot_received"
-                        app:layout_constraintStart_toEndOf="@id/dot_received"
-                        app:layout_constraintTop_toTopOf="@id/dot_received" />
-
+                        android:fontFamily="sans-serif-medium"
+                        android:textSize="16sp"/>
                     <TextView
                         android:id="@+id/tv_time_received"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="18:00"
-                        android:textColor="#757575"
-                        android:textSize="12sp"
-                        app:layout_constraintBottom_toBottomOf="@id/dot_received"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="@id/dot_received" />
+                        android:text="14:20"
+                        android:textColor="#9E9E9E"
+                        android:textSize="12sp"/>
+                </LinearLayout>
 
-                    <!-- Node 2: Preparing (Aktif - Orange) -->
-                    <ImageView
-                        android:id="@+id/dot_preparing"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_marginTop="40dp"
-                        android:src="@drawable/ic_timeline_dot_active"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/dot_received" />
+                <!-- Node 2: Preparing -->
+                <ImageView
+                    android:id="@+id/dot_preparing"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_marginTop="56dp"
+                    android:src="@drawable/bg_status_dot_current"
+                    android:elevation="4dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/dot_received"/>
+
+                <LinearLayout
+                    android:id="@+id/container_preparing"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginStart="20dp"
+                    app:layout_constraintStart_toEndOf="@id/dot_preparing"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/dot_preparing">
 
                     <TextView
                         android:id="@+id/tv_lbl_preparing"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
-                        android:text="Sedang Disiapkan"
+                        android:text="Chef is Preparing"
                         android:textColor="#FF7A1A"
-                        android:textSize="14sp"
-                        android:textStyle="bold"
-                        android:drawablePadding="8dp"
-                        app:drawableStartCompat="@drawable/ic_restaurant"
-                        app:drawableTint="#FF7A1A"
-                        app:layout_constraintBottom_toBottomOf="@id/dot_preparing"
-                        app:layout_constraintStart_toEndOf="@id/dot_preparing"
-                        app:layout_constraintTop_toTopOf="@id/dot_preparing" />
-
+                        android:fontFamily="sans-serif-bold"
+                        android:textSize="16sp"/>
                     <TextView
                         android:id="@+id/tv_time_preparing"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="18:05"
+                        android:text="14:25"
                         android:textColor="#FF7A1A"
                         android:textSize="12sp"
-                        android:textStyle="bold"
-                        app:layout_constraintBottom_toBottomOf="@id/dot_preparing"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="@id/dot_preparing" />
+                        android:fontFamily="sans-serif-medium"/>
+                </LinearLayout>
 
-                    <!-- Node 3: Shipping (Belum - Abu) -->
-                    <ImageView
-                        android:id="@+id/dot_shipping"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_marginTop="40dp"
-                        android:src="@drawable/ic_timeline_dot_inactive"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/dot_preparing" />
+                <!-- Node 3: Shipping -->
+                <ImageView
+                    android:id="@+id/dot_shipping"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_marginTop="56dp"
+                    android:src="@drawable/ic_circle_outline"
+                    app:tint="#E0E0E0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/dot_preparing"/>
+
+                <LinearLayout
+                    android:id="@+id/container_shipping"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginStart="20dp"
+                    app:layout_constraintStart_toEndOf="@id/dot_shipping"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/dot_shipping">
 
                     <TextView
                         android:id="@+id/tv_lbl_shipping"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
-                        android:text="Sedang Dikirim"
-                        android:textColor="#757575"
-                        android:textSize="14sp"
-                        app:drawableStartCompat="@drawable/ic_local_shipping"
-                        app:drawableTint="#9E9E9E"
-                        android:drawablePadding="8dp"
-                        app:layout_constraintBottom_toBottomOf="@id/dot_shipping"
-                        app:layout_constraintStart_toEndOf="@id/dot_shipping"
-                        app:layout_constraintTop_toTopOf="@id/dot_shipping" />
-
+                        android:text="Out for Delivery"
+                        android:textColor="#9E9E9E"
+                        android:textSize="16sp"/>
                     <TextView
                         android:id="@+id/tv_time_shipping"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="--:--"
-                        android:textColor="#757575"
-                        android:textSize="12sp"
-                        app:layout_constraintBottom_toBottomOf="@id/dot_shipping"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="@id/dot_shipping" />
+                        android:text="Pending"
+                        android:textColor="#9E9E9E"
+                        android:textSize="12sp"/>
+                </LinearLayout>
 
-                    <!-- Node 4: Arrived (Belum - Abu) -->
-                    <ImageView
-                        android:id="@+id/dot_arrived"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_marginTop="40dp"
-                        android:src="@drawable/ic_timeline_dot_inactive"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/dot_shipping" />
+                <!-- Node 4: Arrived -->
+                <ImageView
+                    android:id="@+id/dot_arrived"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_marginTop="56dp"
+                    android:src="@drawable/ic_circle_outline"
+                    app:tint="#E0E0E0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/dot_shipping"/>
+
+                <LinearLayout
+                    android:id="@+id/container_arrived"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginStart="20dp"
+                    app:layout_constraintStart_toEndOf="@id/dot_arrived"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/dot_arrived">
 
                     <TextView
                         android:id="@+id/tv_lbl_arrived"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
-                        android:text="Pesanan Tiba"
-                        android:textColor="#757575"
-                        android:textSize="14sp"
-                        app:drawableStartCompat="@drawable/ic_location_on"
-                        app:drawableTint="#9E9E9E"
-                        android:drawablePadding="8dp"
-                        app:layout_constraintBottom_toBottomOf="@id/dot_arrived"
-                        app:layout_constraintStart_toEndOf="@id/dot_arrived"
-                        app:layout_constraintTop_toTopOf="@id/dot_arrived" />
-
+                        android:text="Enjoy your snacks!"
+                        android:textColor="#9E9E9E"
+                        android:textSize="16sp"/>
                     <TextView
                         android:id="@+id/tv_time_arrived"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="--:--"
-                        android:textColor="#757575"
-                        android:textSize="12sp"
-                        app:layout_constraintBottom_toBottomOf="@id/dot_arrived"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="@id/dot_arrived" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-            </com.google.android.material.card.MaterialCardView>
+                        android:text="Estimating..."
+                        android:textColor="#9E9E9E"
+                        android:textSize="12sp"/>
+                </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <!-- CTA Opsional (Modern Buttons) -->
+            <!-- Actions -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:weightSum="2">
+                android:weightSum="2"
+                android:paddingBottom="40dp">
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_status_detail"
+                    style="@style/Widget.Material3.Button.TonalButton"
                     android:layout_width="0dp"
-                    android:layout_height="52dp"
+                    android:layout_height="56dp"
                     android:layout_weight="1"
-                    android:layout_marginEnd="6dp"
-                    android:text="Detail"
-                    android:textColor="#FF7A1A"
-                    android:textStyle="bold"
-                    app:backgroundTint="#FFF2E8"
-                    app:cornerRadius="26dp"
-                    app:icon="@drawable/ic_receipt"
-                    app:iconTint="#FF7A1A"
-                    app:iconGravity="textStart"
-                    app:elevation="0dp"/>
+                    android:layout_marginEnd="8dp"
+                    android:text="Receipt"
+                    app:cornerRadius="16dp"/>
 
                 <com.google.android.material.button.MaterialButton
                     android:layout_width="0dp"
-                    android:layout_height="52dp"
+                    android:layout_height="56dp"
                     android:layout_weight="1"
-                    android:layout_marginStart="6dp"
-                    android:text="Hubungi"
+                    android:layout_marginStart="8dp"
+                    android:text="Help Center"
+                    android:backgroundTint="#212121"
                     android:textColor="#FFFFFF"
-                    android:textStyle="bold"
-                    app:backgroundTint="#FF7A1A"
-                    app:cornerRadius="26dp"
-                    app:icon="@drawable/ic_chat"
-                    app:iconTint="#FFFFFF"
-                    app:iconGravity="textStart"
-                    app:elevation="2dp"/>
+                    app:cornerRadius="16dp"/>
             </LinearLayout>
-
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
-    <!-- 3. Sticky Bottom Bar: ETA Card Premium -->
+    <!-- Bottom ETA Card -->
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/card_eta"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="16dp"
-        android:layout_marginBottom="24dp"
+        android:layout_margin="16dp"
+        app:cardCornerRadius="24dp"
         app:cardElevation="12dp"
-        app:strokeWidth="0dp"
-        app:cardCornerRadius="28dp"
-        app:cardBackgroundColor="#FFFFFF"
+        app:cardBackgroundColor="#212121"
         app:layout_constraintBottom_toBottomOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingHorizontal="20dp"
-            android:paddingVertical="20dp">
+            android:padding="20dp">
 
             <ImageView
-                android:id="@+id/iv_eta_ring"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:src="@drawable/ic_timeline_dot_active"
+                android:id="@+id/iv_timer"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                app:srcCompat="@drawable/ic_access_time"
+                app:tint="#FF7A1A"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"/>
+                app:layout_constraintTop_toTopOf="parent"/>
 
             <TextView
                 android:id="@+id/tv_eta_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Estimasi Tiba"
-                android:textColor="#757575"
+                android:layout_marginStart="12dp"
+                android:text="Estimated Delivery Time"
+                android:textColor="#BDBDBD"
                 android:textSize="12sp"
-                android:layout_marginStart="16dp"
-                app:layout_constraintStart_toEndOf="@id/iv_eta_ring"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintStart_toEndOf="@id/iv_timer"
+                app:layout_constraintTop_toTopOf="@id/iv_timer"
+                app:layout_constraintBottom_toBottomOf="@id/iv_timer"/>
 
             <TextView
                 android:id="@+id/tv_eta_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="22:02"
-                android:textColor="#212121"
-                android:textSize="24sp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="@id/tv_eta_label"
-                app:layout_constraintTop_toBottomOf="@id/tv_eta_label"
-                app:layout_constraintBottom_toBottomOf="parent" />
+                android:text="14:55"
+                android:textColor="#FFFFFF"
+                android:textSize="28sp"
+                android:fontFamily="sans-serif-black"
+                android:layout_marginTop="4dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/iv_timer"/>
 
             <TextView
                 android:id="@+id/tv_eta_countdown"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Sedang dimasak (20 menit lagi)..."
+                android:text="Arriving in 15 mins"
                 android:textColor="#FF7A1A"
-                android:textSize="11sp"
-                android:textStyle="bold"
+                android:fontFamily="sans-serif-medium"
                 android:background="@drawable/bg_rounded_rectangle_19"
-                android:backgroundTint="#FFF2E8"
+                android:backgroundTint="#33FF7A1A"
                 android:paddingHorizontal="12dp"
-                android:paddingVertical="8dp"
-                android:gravity="center"
-                android:layout_marginStart="12dp"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:paddingVertical="6dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/tv_eta_time"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintBottom_toBottomOf="@id/tv_eta_time"
+                app:layout_constraintTop_toTopOf="@id/tv_eta_time"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
 
