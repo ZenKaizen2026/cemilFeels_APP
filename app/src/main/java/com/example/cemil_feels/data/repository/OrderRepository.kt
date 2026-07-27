@@ -28,6 +28,8 @@ data class OrderSimulationState(
 interface OrderRepository {
     fun saveOrderDetails(snackName: String, qty: Int, totalCost: Double, spiceLevel: String)
     fun savePaymentMethod(method: String)
+    fun saveOrderId(orderId: String)
+    fun getLastOrderId(): String
     fun getLastOrderSnackName(): String
     fun getLastOrderQty(): Int
     fun getLastOrderTotalCost(): Double
@@ -37,6 +39,7 @@ interface OrderRepository {
 }
 
 class OrderRepositoryImpl : OrderRepository {
+    private var lastOrderId: String = "ORDER-NONE"
     private var lastOrderSnackName: String = "Basreng Stik"
     private var lastOrderQty: Int = 1
     private var lastOrderTotalCost: Double = 23000.0
@@ -54,6 +57,11 @@ class OrderRepositoryImpl : OrderRepository {
         lastPaymentMethod = method
     }
 
+    override fun saveOrderId(orderId: String) {
+        lastOrderId = orderId
+    }
+
+    override fun getLastOrderId(): String = lastOrderId
     override fun getLastOrderSnackName(): String = lastOrderSnackName
     override fun getLastOrderQty(): Int = lastOrderQty
     override fun getLastOrderTotalCost(): Double = lastOrderTotalCost

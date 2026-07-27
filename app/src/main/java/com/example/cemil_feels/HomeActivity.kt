@@ -80,24 +80,26 @@ class HomeActivity : AppCompatActivity() {
 
         binding.layoutMood.chipHappy.setOnClickListener { 
             it.startAnimation(clickAnim)
-            navigateToRecommendation() 
+            navigateToRecommendation("Senang") 
         }
         binding.layoutMood.chipSad.setOnClickListener { 
             it.startAnimation(clickAnim)
-            navigateToRecommendation() 
+            navigateToRecommendation("Sedih") 
         }
         binding.layoutMood.chipAngry.setOnClickListener { 
             it.startAnimation(clickAnim)
-            navigateToRecommendation() 
+            navigateToRecommendation("Marah") 
         }
         binding.layoutMood.chipBored.setOnClickListener {
             it.startAnimation(clickAnim)
-            navigateToRecommendation() 
+            navigateToRecommendation("Bosan")
         }
     }
 
-    private fun navigateToRecommendation() {
-        val intent = Intent(this, RecommendationActivity::class.java)
+    private fun navigateToRecommendation(mood: String) {
+        val intent = Intent(this, RecommendationActivity::class.java).apply {
+            putExtra("MOOD_EXTRA", mood)
+        }
         startActivity(intent)
     }
 }

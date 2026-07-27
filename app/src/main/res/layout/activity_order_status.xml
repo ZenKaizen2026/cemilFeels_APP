@@ -445,7 +445,7 @@
 
             <TextView
                 android:id="@+id/tv_eta_countdown"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="Arriving in 15 mins"
                 android:textColor="#FF7A1A"
@@ -454,9 +454,10 @@
                 android:backgroundTint="#33FF7A1A"
                 android:paddingHorizontal="12dp"
                 android:paddingVertical="6dp"
+                android:layout_marginTop="12dp"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toBottomOf="@id/tv_eta_time"
-                app:layout_constraintTop_toTopOf="@id/tv_eta_time"/>
+                app:layout_constraintTop_toBottomOf="@id/tv_eta_time"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
 

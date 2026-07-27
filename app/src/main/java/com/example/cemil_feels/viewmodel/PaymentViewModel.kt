@@ -61,6 +61,7 @@ class PaymentViewModel(
             _isLoading.value = true
 
             val orderId = "ORDER-${UUID.randomUUID().toString().take(8).uppercase()}"
+            orderRepository.saveOrderId(orderId) // Save to source of truth
             val amountInRupiah = totalAmount.toInt()
 
             val result = paymentRepository.getSnapToken(

@@ -1,444 +1,425 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFF9F5"
-    android:fillViewport="true">
+    android:background="#FFF9F5">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="20dp">
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scroll_view"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:clipToPadding="false"
+        android:fillViewport="true"
+        app:layout_constraintBottom_toTopOf="@id/layout_sticky_footer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <!-- Top Navigation -->
-        <ImageButton
-            android:id="@+id/btn_rec_back"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="Kembali"
-            app:srcCompat="@drawable/ic_arrow_back"
-            app:tint="#212121"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageButton
-            android:id="@+id/btn_cart"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="Keranjang Belanja"
-            app:srcCompat="@drawable/ic_cart"
-            app:tint="#FF7A1A"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <!-- Titles -->
-        <TextView
-            android:id="@+id/tv_rec_title"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="Rekomendasi Camilan\nSesuai Isi Hatimu"
-            android:textColor="#212121"
-            android:textSize="22sp"
-            android:textStyle="bold"
-            android:gravity="center"
-            app:layout_constraintTop_toBottomOf="@id/btn_rec_back" />
+            android:padding="20dp">
 
-        <TextView
-            android:id="@+id/tv_rec_subtitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="Pilih camilan yang pas untuk mengembalikan suasana perasaanmu"
-            android:textColor="#757575"
-            android:textSize="13sp"
-            android:gravity="center"
-            app:layout_constraintTop_toBottomOf="@id/tv_rec_title" />
+            <!-- Top Navigation -->
+            <ImageButton
+                android:id="@+id/btn_rec_back"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="Kembali"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_arrow_back"
+                app:tint="#212121" />
 
-        <!-- AI Loading Indicator (muncul saat request Gemini berlangsung) -->
-        <ProgressBar
-            android:id="@+id/pb_ai_loading"
-            style="?android:attr/progressBarStyleHorizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:indeterminate="true"
-            android:progressTint="#FF7A1A"
-            android:visibility="gone"
-            app:layout_constraintTop_toBottomOf="@id/tv_rec_subtitle" />
+            <ImageButton
+                android:id="@+id/btn_cart"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="Keranjang Belanja"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_cart"
+                app:tint="#FF7A1A" />
 
-        <!-- AI Recommendation Bubble Card (muncul setelah AI menjawab) -->
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/card_ai_recommendation"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:visibility="gone"
-            app:cardBackgroundColor="#FFF3E8"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="3dp"
-            app:strokeColor="#FFDDB9"
-            app:strokeWidth="1dp"
-            app:layout_constraintTop_toBottomOf="@id/pb_ai_loading">
-
-            <LinearLayout
+            <!-- Titles -->
+            <TextView
+                android:id="@+id/tv_rec_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp">
+                android:layout_marginTop="20dp"
+                android:gravity="center"
+                android:text="Rekomendasi Camilan\nSesuai Isi Hatimu"
+                android:textColor="#212121"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@id/btn_rec_back" />
 
-                <!-- Header label AI -->
+            <TextView
+                android:id="@+id/tv_rec_subtitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:gravity="center"
+                android:text="Pilih camilan yang pas untuk mengembalikan suasana perasaanmu"
+                android:textColor="#757575"
+                android:textSize="14sp"
+                app:layout_constraintTop_toBottomOf="@id/tv_rec_title" />
+
+            <!-- AI Loading Indicator -->
+            <ProgressBar
+                android:id="@+id/pb_ai_loading"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:indeterminate="true"
+                android:progressTint="#FF7A1A"
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@id/tv_rec_subtitle" />
+
+            <!-- AI Recommendation Bubble Card (Premium v2.0 style) -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_ai_recommendation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:visibility="gone"
+                app:cardElevation="0dp"
+                app:layout_constraintTop_toBottomOf="@id/pb_ai_loading"
+                app:shapeAppearanceOverlay="@null"
+                app:strokeWidth="0dp">
+
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:layout_marginBottom="8dp">
+                    android:background="@drawable/bg_ai_insight"
+                    android:orientation="vertical"
+                    android:padding="20dp">
 
-                    <TextView
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="✨"
-                        android:textSize="14sp" />
+                        android:layout_marginBottom="12dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="✨"
+                            android:textSize="18sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:text="Cemil AI Insight"
+                            android:textColor="#FF7A1A"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
 
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="6dp"
-                        android:text="Rekomendasi AI untuk kamu"
-                        android:textColor="#E65100"
-                        android:textSize="12sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
-
-                <!-- Pesan empati dari Gemini -->
-                <TextView
-                    android:id="@+id/tv_ai_empathy_message"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="#4E342E"
-                    android:textSize="14sp"
-                    android:lineSpacingExtra="2dp" />
-
-                <!-- Pemisah tipis -->
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginVertical="10dp"
-                    android:background="#FFDDB9" />
-
-                <!-- Alasan pemilihan camilan dari Gemini -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical">
-
-                    <ImageView
-                        android:layout_width="14dp"
-                        android:layout_height="14dp"
-                        android:layout_marginEnd="6dp"
-                        app:srcCompat="@drawable/ic_pencil"
-                        app:tint="#FF7A1A" />
-
-                    <TextView
-                        android:id="@+id/tv_ai_reasoning"
+                        android:id="@+id/tv_ai_empathy_message"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textColor="#757575"
-                        android:textSize="12sp"
-                        android:fontFamily="sans-serif-medium" />
-                </LinearLayout>
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
-
-        <!-- Carousel ViewPager2 for Snack Cards -->
-        <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/vp_snacks_carousel"
-            android:layout_width="match_parent"
-            android:layout_height="220dp"
-            android:layout_marginTop="16dp"
-            android:clipChildren="false"
-            android:clipToPadding="false"
-            app:layout_constraintTop_toBottomOf="@id/card_ai_recommendation" />
-
-        <!-- Carousel Dot Indicators -->
-        <LinearLayout
-            android:id="@+id/layout_dots_indicator"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:orientation="horizontal"
-            android:gravity="center"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/vp_snacks_carousel">
-            <!-- Dynamic dot views will be added here programmatically, or simple template views -->
-            <View
-                android:layout_width="24dp"
-                android:layout_height="6dp"
-                android:layout_margin="3dp"
-                android:background="@drawable/btn_pill"
-                android:backgroundTint="#FF7A1A" />
-            <View
-                android:layout_width="12dp"
-                android:layout_height="6dp"
-                android:layout_margin="3dp"
-                android:background="@drawable/btn_pill"
-                android:backgroundTint="#E0E0E0" />
-            <View
-                android:layout_width="12dp"
-                android:layout_height="6dp"
-                android:layout_margin="3dp"
-                android:background="@drawable/btn_pill"
-                android:backgroundTint="#E0E0E0" />
-        </LinearLayout>
-
-        <!-- Atur Level Kepedasan Section -->
-        <TextView
-            android:id="@+id/tv_spice_level_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="28dp"
-            android:text="Atur Level Kepedasan"
-            android:textColor="#212121"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/layout_dots_indicator" />
-
-        <!-- Spice Selector Grid (Tidak Pedas, Sedang, Pedas, Extra Pedas) -->
-        <LinearLayout
-            android:id="@+id/layout_spice_selector"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:orientation="horizontal"
-            android:weightSum="4"
-            app:layout_constraintTop_toBottomOf="@id/tv_spice_level_title">
-
-            <!-- Tidak Pedas -->
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/btn_spice_none"
-                android:layout_width="0dp"
-                android:layout_height="70dp"
-                android:layout_weight="1"
-                android:layout_margin="4dp"
-                app:cardBackgroundColor="#FFFFFF"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="2dp"
-                app:strokeWidth="0dp">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:gravity="center">
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-                        <ImageView
-                            android:layout_width="16dp"
-                            android:layout_height="16dp"
-                            app:srcCompat="@drawable/ic_chili"
-                            app:tint="#BDBDBD" />
-                    </LinearLayout>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Tidak Pedas"
-                        android:textSize="10sp"
-                        android:textColor="#757575"
-                        android:layout_marginTop="4dp"
-                        android:gravity="center" />
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-
-            <!-- Sedang -->
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/btn_spice_medium"
-                android:layout_width="0dp"
-                android:layout_height="70dp"
-                android:layout_weight="1"
-                android:layout_margin="4dp"
-                app:cardBackgroundColor="#FFFFFF"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="2dp"
-                app:strokeWidth="0dp">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:gravity="center">
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-                        <ImageView
-                            android:layout_width="16dp"
-                            android:layout_height="16dp"
-                            app:srcCompat="@drawable/ic_chili"
-                            app:tint="#F9A825" />
-                    </LinearLayout>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Sedang"
-                        android:textSize="10sp"
+                        android:lineSpacingExtra="4dp"
+                        android:text="AI sedang menganalisa mood-mu..."
                         android:textColor="#212121"
-                        android:layout_marginTop="4dp"
-                        android:gravity="center" />
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
+                        android:textSize="15sp"
+                        android:textStyle="italic" />
 
-            <!-- Pedas -->
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/btn_spice_high"
-                android:layout_width="0dp"
-                android:layout_height="70dp"
-                android:layout_weight="1"
-                android:layout_margin="4dp"
-                app:cardBackgroundColor="#FF7A1A"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="2dp"
-                app:strokeWidth="0dp">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:gravity="center">
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginVertical="12dp"
+                        android:background="#FFE0B2" />
+
                     <LinearLayout
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
                         android:orientation="horizontal">
+
                         <ImageView
                             android:layout_width="16dp"
                             android:layout_height="16dp"
-                            app:srcCompat="@drawable/ic_chili"
-                            app:tint="@color/white" />
-                        <ImageView
-                            android:layout_width="16dp"
-                            android:layout_height="16dp"
-                            app:srcCompat="@drawable/ic_chili"
-                            app:tint="@color/white" />
+                            android:layout_marginEnd="8dp"
+                            app:srcCompat="@drawable/ic_pencil"
+                            app:tint="#FF7A1A" />
+
+                        <TextView
+                            android:id="@+id/tv_ai_reasoning"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="sans-serif-medium"
+                            android:textColor="#757575"
+                            android:textSize="13sp" />
                     </LinearLayout>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Pedas"
-                        android:textSize="10sp"
-                        android:textColor="@color/white"
-                        android:textStyle="bold"
-                        android:layout_marginTop="4dp"
-                        android:gravity="center" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Extra Pedas -->
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/btn_spice_extra"
-                android:layout_width="0dp"
-                android:layout_height="70dp"
-                android:layout_weight="1"
-                android:layout_margin="4dp"
-                app:cardBackgroundColor="#FFFFFF"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="2dp"
-                app:strokeWidth="0dp">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:gravity="center">
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-                        <ImageView
-                            android:layout_width="12dp"
-                            android:layout_height="12dp"
-                            app:srcCompat="@drawable/ic_chili"
-                            app:tint="#D32F2F" />
-                        <ImageView
-                            android:layout_width="12dp"
-                            android:layout_height="12dp"
-                            app:srcCompat="@drawable/ic_chili"
-                            app:tint="#D32F2F" />
-                        <ImageView
-                            android:layout_width="12dp"
-                            android:layout_height="12dp"
-                            app:srcCompat="@drawable/ic_chili"
-                            app:tint="#D32F2F" />
-                    </LinearLayout>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Extra Pedas"
-                        android:textSize="10sp"
-                        android:textColor="#212121"
-                        android:layout_marginTop="4dp"
-                        android:gravity="center" />
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-        </LinearLayout>
+            <!-- Carousel ViewPager2 for Snack Cards -->
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/vp_snacks_carousel"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:layout_marginTop="24dp"
+                android:clipChildren="false"
+                android:clipToPadding="false"
+                app:layout_constraintTop_toBottomOf="@id/card_ai_recommendation" />
 
-        <!-- Seller Note Section -->
-        <TextView
-            android:id="@+id/tv_seller_note_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="28dp"
-            android:text="Catatan untuk penjual (Opsional)"
-            android:textColor="#212121"
-            android:textSize="14sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/layout_spice_selector" />
+            <!-- Carousel Dot Indicators -->
+            <LinearLayout
+                android:id="@+id/layout_dots_indicator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:gravity="center"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/vp_snacks_carousel" />
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/card_seller_note"
-            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            app:boxCornerRadiusBottomEnd="16dp"
-            app:boxCornerRadiusBottomStart="16dp"
-            app:boxCornerRadiusTopEnd="16dp"
-            app:boxCornerRadiusTopStart="16dp"
-            app:boxStrokeColor="#FF7A1A"
-            app:layout_constraintTop_toBottomOf="@id/tv_seller_note_title">
+            <!-- Atur Level Kepedasan Section -->
+            <TextView
+                android:id="@+id/tv_spice_level_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:text="Level Kepedasan"
+                android:textColor="#212121"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/layout_dots_indicator" />
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/et_seller_note"
+            <!-- Spice Selector Grid -->
+            <LinearLayout
+                android:id="@+id/layout_spice_selector"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Contoh: Tanpa gula, dsb..."
-                android:inputType="textMultiLine"
-                android:minLines="3"
-                android:gravity="top|start"
-                android:textColor="#212121"
-                android:textSize="14sp" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:layout_marginTop="16dp"
+                android:orientation="horizontal"
+                android:weightSum="4"
+                app:layout_constraintTop_toBottomOf="@id/tv_spice_level_title">
 
-        <!-- Order Button (Pesan) -->
+                <!-- [Spice buttons remain mostly same but updated to match 2.0 aesthetics if needed] -->
+                <!-- No spice -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/btn_spice_none"
+                    android:layout_width="0dp"
+                    android:layout_height="80dp"
+                    android:layout_margin="4dp"
+                    android:layout_weight="1"
+                    app:cardBackgroundColor="#FFFFFF"
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="2dp"
+                    app:strokeWidth="0dp">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:orientation="vertical">
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            app:srcCompat="@drawable/ic_chili"
+                            app:tint="#BDBDBD" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="6dp"
+                            android:gravity="center"
+                            android:text="Ori"
+                            android:textColor="#757575"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Medium -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/btn_spice_medium"
+                    android:layout_width="0dp"
+                    android:layout_height="80dp"
+                    android:layout_margin="4dp"
+                    android:layout_weight="1"
+                    app:cardBackgroundColor="#FFFFFF"
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="2dp"
+                    app:strokeWidth="0dp">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:orientation="vertical">
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            app:srcCompat="@drawable/ic_chili"
+                            app:tint="#F9A825" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="6dp"
+                            android:gravity="center"
+                            android:text="Sedang"
+                            android:textColor="#212121"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Pedas -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/btn_spice_high"
+                    android:layout_width="0dp"
+                    android:layout_height="80dp"
+                    android:layout_margin="4dp"
+                    android:layout_weight="1"
+                    app:cardBackgroundColor="#FF7A1A"
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="2dp"
+                    app:strokeWidth="0dp">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:orientation="vertical">
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                app:srcCompat="@drawable/ic_chili"
+                                app:tint="@color/white" />
+                        </LinearLayout>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="6dp"
+                            android:gravity="center"
+                            android:text="Pedas"
+                            android:textColor="@color/white"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Extra Pedas -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/btn_spice_extra"
+                    android:layout_width="0dp"
+                    android:layout_height="80dp"
+                    android:layout_margin="4dp"
+                    android:layout_weight="1"
+                    app:cardBackgroundColor="#FFFFFF"
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="2dp"
+                    app:strokeWidth="0dp">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:orientation="vertical">
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+                            <ImageView
+                                android:layout_width="16dp"
+                                android:layout_height="16dp"
+                                app:srcCompat="@drawable/ic_chili"
+                                app:tint="#D32F2F" />
+                            <ImageView
+                                android:layout_width="16dp"
+                                android:layout_height="16dp"
+                                app:srcCompat="@drawable/ic_chili"
+                                app:tint="#D32F2F" />
+                        </LinearLayout>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="6dp"
+                            android:gravity="center"
+                            android:text="Extra"
+                            android:textColor="#212121"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
+
+            <!-- Seller Note Section -->
+            <TextView
+                android:id="@+id/tv_seller_note_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:text="Catatan untuk penjual"
+                android:textColor="#212121"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/layout_spice_selector" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/card_seller_note"
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="24dp"
+                app:boxCornerRadiusBottomEnd="16dp"
+                app:boxCornerRadiusBottomStart="16dp"
+                app:boxCornerRadiusTopEnd="16dp"
+                app:boxCornerRadiusTopStart="16dp"
+                app:boxStrokeColor="#FF7A1A"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_seller_note_title">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_seller_note"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="top|start"
+                    android:hint="Contoh: Tanpa gula, dsb..."
+                    android:inputType="textMultiLine"
+                    android:minLines="3"
+                    android:textColor="#212121"
+                    android:textSize="14sp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <!-- Sticky Bottom CTA -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_sticky_footer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_sticky_footer"
+        android:elevation="8dp"
+        android:paddingHorizontal="20dp"
+        android:paddingVertical="16dp"
+        app:layout_constraintBottom_toBottomOf="parent">
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_pesan"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:layout_marginTop="32dp"
-            android:layout_marginBottom="16dp"
+            android:layout_height="60dp"
             android:backgroundTint="#FF7A1A"
-            android:text="Pesan"
+            android:text="Pesan Sekarang"
             android:textColor="@android:color/white"
             android:textSize="16sp"
             android:textStyle="bold"
-            app:cornerRadius="28dp"
-            app:layout_constraintTop_toBottomOf="@id/card_seller_note"
-            app:layout_constraintBottom_toBottomOf="parent" />
-
+            app:cornerRadius="30dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.core.widget.NestedScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

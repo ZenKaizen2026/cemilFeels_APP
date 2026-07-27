@@ -5,9 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:minHeight="160dp"
-    app:cardCornerRadius="28dp"
-    app:cardElevation="6dp"
-    app:strokeWidth="0dp"
+    app:cardCornerRadius="24dp"
+    app:cardElevation="2dp"
+    app:strokeWidth="1.5dp"
+    app:strokeColor="#EAEAEA"
     app:cardBackgroundColor="#FFFFFF">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -15,23 +16,24 @@
         android:layout_height="match_parent"
         android:padding="16dp">
 
-        <!-- 1. Gambar Camilan: Fixed Size & CenterCrop -->
+        <!-- 1. Gambar Camilan -->
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/card_snack_img"
-            android:layout_width="110dp"
-            android:layout_height="110dp"
-            app:cardCornerRadius="20dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            app:cardCornerRadius="16dp"
             app:cardElevation="0dp"
             app:strokeWidth="0dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
 
             <ImageView
                 android:id="@+id/iv_snack_image"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
-                android:src="@drawable/basreng_stik"
+                tools:src="@drawable/basreng_stik"
                 tools:ignore="ContentDescription" />
         </com.google.android.material.card.MaterialCardView>
 
@@ -43,11 +45,11 @@
             android:layout_marginStart="16dp"
             android:ellipsize="end"
             android:maxLines="1"
-            android:text="Kulpi Balado"
+            android:text="Basreng Stik"
             android:textColor="#212121"
-            android:textSize="18sp"
+            android:textSize="17sp"
             android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/layout_rating"
             app:layout_constraintStart_toEndOf="@id/card_snack_img"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -56,17 +58,15 @@
             android:id="@+id/layout_rating"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="2dp"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-            app:layout_constraintStart_toEndOf="@id/card_snack_img"
-            app:layout_constraintTop_toBottomOf="@id/tv_snack_name">
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_snack_name">
 
             <ImageView
                 android:layout_width="14dp"
                 android:layout_height="14dp"
-                android:src="@android:drawable/btn_star_big_on"
+                app:srcCompat="@drawable/ic_star"
                 app:tint="#FFC107"
                 tools:ignore="ContentDescription" />
 
@@ -75,51 +75,63 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
-                android:text="4.3"
+                android:text="4.5"
                 android:textColor="#757575"
                 android:textSize="13sp"
                 android:textStyle="bold" />
         </LinearLayout>
 
-        <!-- 3. Deskripsi: Match Constraint (0dp) & Bound to Price/Button -->
+        <!-- 3. Deskripsi -->
         <TextView
             android:id="@+id/tv_snack_description"
             android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="4dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="4dp"
             android:ellipsize="end"
-            android:maxLines="4"
-            android:text="Keripik kulit lumpia renyah bertabur bumbu balado yang pedas manis gurih."
+            android:maxLines="2"
+            android:text="Pedasnya basreng nagih, instan usir bad mood dan bikin happy!"
             android:textColor="#757575"
             android:textSize="12sp"
             android:lineSpacingExtra="2dp"
-            app:layout_constraintBottom_toTopOf="@id/tv_snack_price"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/card_snack_img"
-            app:layout_constraintTop_toBottomOf="@id/layout_rating" />
+            app:layout_constraintTop_toBottomOf="@id/tv_snack_name" />
 
-        <!-- 2. Harga: Anchored to Parent Bottom -->
+        <!-- Selected Label (Hidden by default) -->
+        <TextView
+            android:id="@+id/tv_selected_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Dipilih"
+            android:textColor="#FF7A1A"
+            android:textSize="11sp"
+            android:textStyle="bold"
+            android:visibility="gone"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintBottom_toBottomOf="@id/btn_add_snack"
+            app:layout_constraintEnd_toStartOf="@id/btn_add_snack"
+            app:layout_constraintTop_toTopOf="@id/btn_add_snack" />
+
+        <!-- 2. Harga -->
         <TextView
             android:id="@+id/tv_snack_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:text="Rp. 12.000"
+            android:text="Rp. 16.000"
             android:textColor="#FF7A1A"
-            android:textSize="17sp"
+            android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/card_snack_img" />
 
-        <!-- 2. Tombol Tambah: Anchored to Parent Bottom & Right -->
+        <!-- 2. Tombol Tambah -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_add_snack"
             style="@style/Widget.Material3.Button.IconButton.Filled"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:backgroundTint="#FF7A1A"
             app:rippleColor="#80FFFFFF"
             android:padding="0dp"
@@ -127,9 +139,9 @@
             android:insetBottom="0dp"
             android:insetLeft="0dp"
             android:insetRight="0dp"
-            app:cornerRadius="24dp"
-            app:icon="@android:drawable/ic_input_add"
-            app:iconSize="24dp"
+            app:cornerRadius="12dp"
+            app:icon="@drawable/ic_plus"
+            app:iconSize="20dp"
             app:iconTint="@android:color/white"
             app:iconGravity="textStart"
             app:layout_constraintBottom_toBottomOf="parent"

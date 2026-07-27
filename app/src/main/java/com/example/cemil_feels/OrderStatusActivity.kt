@@ -70,6 +70,11 @@ class OrderStatusActivity : AppCompatActivity() {
         setupClickListeners()
         setupObservers()
         startHeroPulse()
+        displayOrderId()
+    }
+
+    private fun displayOrderId() {
+        binding.tvOrderId.text = viewModel.getOrderId()
     }
 
     private fun setupClickListeners() {
@@ -278,11 +283,15 @@ class OrderStatusActivity : AppCompatActivity() {
         }
 
         dialog.show()
-        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            dialog.window?.addFlags(android.view.WindowManager.LayoutParams.FLAG_BLUR_BEHIND)
-            dialog.window?.attributes?.blurBehindRadius = 25
+        dialog.window?.apply {
+            setBackgroundDrawableResource(android.R.color.transparent)
+            setDimAmount(0.7f)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                addFlags(android.view.WindowManager.LayoutParams.FLAG_BLUR_BEHIND)
+                attributes = attributes.apply {
+                    blurBehindRadius = 40
+                }
+            }
         }
     }
 }

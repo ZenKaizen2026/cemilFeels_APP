@@ -123,11 +123,12 @@ class CheckoutActivity : AppCompatActivity() {
         val targetX = if (isDelivery) 0f else binding.segmentedContainer.width / 2f
         
         if (animate) {
-            ObjectAnimator.ofFloat(binding.viewIndicator, "translationX", targetX).apply {
-                duration = 300
-                interpolator = AccelerateDecelerateInterpolator()
-                start()
-            }
+            binding.viewIndicator.animate().cancel()
+            binding.viewIndicator.animate()
+                .translationX(targetX)
+                .setDuration(300)
+                .setInterpolator(AccelerateDecelerateInterpolator())
+                .start()
         } else {
             binding.viewIndicator.translationX = targetX
         }

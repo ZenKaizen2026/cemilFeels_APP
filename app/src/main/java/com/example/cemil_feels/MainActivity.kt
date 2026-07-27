@@ -6,6 +6,8 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.widget.LinearLayout
 import android.widget.Toast
+import android.view.View
+import androidx.core.view.updatePadding
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -41,7 +43,29 @@ class MainActivity : AppCompatActivity() {
 
         ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            val imeInsets = insets.getInsets(WindowInsetsCompat.Type.ime())
+            val isImeVisible = insets.isVisible(WindowInsetsCompat.Type.ime())
+            val density = resources.displayMetrics.density
+
+            // 1. Root: Handle horizontal insets (notches, landscape, etc.)
+            v.updatePadding(left = systemBars.left, right = systemBars.right)
+
+            // 2. Header: Add status bar height to base 20dp padding
+            val headerTopPadding = systemBars.top + (20 * density).toInt()
+            binding.layoutHeader.updatePadding(top = headerTopPadding)
+
+            // 3. Footer (Sticky CTA): Handle Keyboard vs Navigation Bar insets
+            // We use ime() insets when keyboard is visible, otherwise systemBars() (navigation bars)
+            val isKeyboardVisible = isImeVisible && imeInsets.bottom > 0
+            val bottomInset = if (isKeyboardVisible) imeInsets.bottom else systemBars.bottom
+            
+            // Adjust base padding for footer: 12dp when keyboard is open (tight), 24dp normally
+            val footerBasePadding = if (isKeyboardVisible) (12 * density).toInt() else (24 * density).toInt()
+            binding.layoutFooter.updatePadding(bottom = bottomInset + footerBasePadding)
+
+            // 4. Privacy Badge: Hide when keyboard is open to maximize screen space for input
+            binding.layoutSecurityFooter.visibility = if (isKeyboardVisible) View.GONE else View.VISIBLE
+
             insets
         }
 

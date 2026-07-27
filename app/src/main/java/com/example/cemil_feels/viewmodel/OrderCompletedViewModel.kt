@@ -13,6 +13,8 @@ class OrderCompletedViewModel(
 
     fun getPaymentMethod(): String = orderRepository.getLastPaymentMethod()
     
+    fun getOrderId(): String = orderRepository.getLastOrderId()
+    
     fun getFormattedQuantity(): String = "${orderRepository.getLastOrderQty()} (100gr)"
     
     fun getSnackName(): String = orderRepository.getLastOrderSnackName()

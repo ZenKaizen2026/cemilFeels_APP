@@ -99,6 +99,13 @@ class PaymentActivity : AppCompatActivity() {
     private fun setupClickListeners() {
         binding.btnPaymentBack.setOnClickListener { finish() }
 
+        binding.btnBankMandiri.setOnClickListener { viewModel.selectMethod("Mandiri") }
+        binding.btnBankBca.setOnClickListener     { viewModel.selectMethod("BCA") }
+        binding.btnBankBri.setOnClickListener     { viewModel.selectMethod("BRI") }
+        binding.btnBankBni.setOnClickListener     { viewModel.selectMethod("BNI") }
+        binding.btnBankBsi.setOnClickListener     { viewModel.selectMethod("BSI") }
+        binding.btnBankMega.setOnClickListener    { viewModel.selectMethod("Mega") }
+
         binding.btnWalletShopee.setOnClickListener  { viewModel.selectMethod("ShopeePay") }
         binding.btnWalletGopay.setOnClickListener   { viewModel.selectMethod("GoPay") }
         binding.btnWalletDana.setOnClickListener    { viewModel.selectMethod("DANA") }
@@ -130,6 +137,7 @@ class PaymentActivity : AppCompatActivity() {
                     viewModel.selectedMethod.collect { method ->
                         val fmt = String.format(java.util.Locale("id", "ID"), "Rp %,.0f", totalPayment)
                         binding.btnActionPay.text = "Bayar $fmt dengan $method"
+                        updateSelectedVisuals(method)
                     }
                 }
                 launch {
@@ -200,6 +208,33 @@ class PaymentActivity : AppCompatActivity() {
         binding.btnActionPay.isEnabled = true
         val fmt = String.format(java.util.Locale("id", "ID"), "Rp %,.0f", totalPayment)
         binding.btnActionPay.text = "Bayar $fmt dengan ${viewModel.selectedMethod.value}"
+    }
+
+    private fun updateSelectedVisuals(selectedMethod: String) {
+        val bankButtons = listOf(
+            binding.btnBankMandiri, binding.btnBankBca, binding.btnBankBri,
+            binding.btnBankBni, binding.btnBankBsi, binding.btnBankMega
+        )
+        val walletButtons = listOf(
+            binding.btnWalletShopee, binding.btnWalletGopay, binding.btnWalletDana,
+            binding.btnWalletOvo, binding.btnWalletJago, binding.btnWalletLinkaja
+        )
+
+        bankButtons.forEach { it.isSelected = it.text.toString().contains(selectedMethod, ignoreCase = true) }
+        walletButtons.forEach { it.isSelected = it.text.toString().contains(selectedMethod, ignoreCase = true) }
+
+        binding.btnPaymentQris.isSelected = selectedMethod == "QRIS"
+        
+        // Custom visual for QRIS card since it's not a button
+        if (selectedMethod == "QRIS") {
+            binding.btnPaymentQris.setStrokeColor(android.content.res.ColorStateList.valueOf(android.graphics.Color.parseColor("#FF7A1A")))
+            binding.btnPaymentQris.setCardBackgroundColor(android.content.res.ColorStateList.valueOf(android.graphics.Color.parseColor("#FFF3E0")))
+            binding.btnPaymentQris.strokeWidth = 4
+        } else {
+            binding.btnPaymentQris.setStrokeColor(android.content.res.ColorStateList.valueOf(android.graphics.Color.parseColor("#EEEEEE")))
+            binding.btnPaymentQris.setCardBackgroundColor(android.content.res.ColorStateList.valueOf(android.graphics.Color.parseColor("#FFFFFF")))
+            binding.btnPaymentQris.strokeWidth = 2
+        }
     }
 
     /**

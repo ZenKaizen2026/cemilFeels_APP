@@ -59,6 +59,12 @@ class OrderCompletedActivity : AppCompatActivity() {
             Toast.makeText(this, "Ayo cari camilan lagi!", Toast.LENGTH_SHORT).show()
             goToHome()
         }
+
+        displayOrderId()
+    }
+
+    private fun displayOrderId() {
+        binding.tvCompletedOrderId.text = viewModel.getOrderId()
     }
 
     private fun goToHome() {
@@ -85,14 +91,8 @@ class OrderCompletedActivity : AppCompatActivity() {
         val tvTotal = dialogView.findViewById<android.widget.TextView>(R.id.tv_val_trans_total)
         val tvTime = dialogView.findViewById<android.widget.TextView>(R.id.tv_val_time)
         val tvDate = dialogView.findViewById<android.widget.TextView>(R.id.tv_val_date)
-
-        // Set value dinamis dari ViewModel
-        tvPayMethod?.text = viewModel.getPaymentMethod()
-        tvQty?.text = viewModel.getFormattedQuantity()
-        tvSnackName?.text = viewModel.getSnackName()
-        tvTotal?.text = viewModel.getFormattedTotalCost()
-        tvTime?.text = viewModel.getFormattedTime()
         tvDate?.text = viewModel.getFormattedDate()
+
 
         val btnClose = dialogView.findViewById<ImageButton>(R.id.btn_close_detail)
         btnClose?.setOnClickListener {
@@ -100,13 +100,15 @@ class OrderCompletedActivity : AppCompatActivity() {
         }
 
         dialog.show()
-        // Fix background transparan agar sudut rounded MaterialCardView terlihat sempurna
-        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
-        
-        // Menambahkan efek Blur pada background (Android 12+)
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
-            dialog.window?.addFlags(android.view.WindowManager.LayoutParams.FLAG_BLUR_BEHIND)
-            dialog.window?.attributes?.blurBehindRadius = 25
+        dialog.window?.apply {
+            setBackgroundDrawableResource(android.R.color.transparent)
+            setDimAmount(0.7f)
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
+                addFlags(android.view.WindowManager.LayoutParams.FLAG_BLUR_BEHIND)
+                attributes = attributes.apply {
+                    blurBehindRadius = 40
+                }
+            }
         }
     }
 }

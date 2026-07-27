@@ -32,21 +32,23 @@ class SnackAdapter(
         private val onCardClicked: (Snack, Boolean) -> Unit,
         private val adapter: SnackAdapter
     ) : RecyclerView.ViewHolder(binding.root) {
-        
+
         fun updateSelectionState(snack: Snack) {
             val isSelected = adapter.selectedSnackNames.contains(snack.name)
             if (isSelected) {
-                binding.root.strokeColor = Color.parseColor("#4CAF50") // Green Success Color
+                binding.root.strokeColor = Color.parseColor("#FF7A1A") // Orange Primary
                 binding.root.strokeWidth = 6
-                binding.root.setCardBackgroundColor(Color.parseColor("#E8F5E9")) // Light Green Tint
-                binding.btnAddSnack.backgroundTintList = android.content.res.ColorStateList.valueOf(Color.parseColor("#4CAF50"))
-                binding.btnAddSnack.setIconResource(R.drawable.ic_check_circle)
+                binding.root.setCardBackgroundColor(Color.parseColor("#FFF3E0")) // Light Orange Tint
+                binding.tvSelectedLabel.visibility = android.view.View.VISIBLE
+                binding.btnAddSnack.backgroundTintList = android.content.res.ColorStateList.valueOf(Color.parseColor("#FF7A1A"))
+                binding.btnAddSnack.setIconResource(R.drawable.ic_check_white)
             } else {
                 binding.root.strokeColor = Color.parseColor("#E0E0E0")
                 binding.root.strokeWidth = 2
                 binding.root.setCardBackgroundColor(Color.WHITE)
+                binding.tvSelectedLabel.visibility = android.view.View.GONE
                 binding.btnAddSnack.backgroundTintList = android.content.res.ColorStateList.valueOf(Color.parseColor("#FF7A1A"))
-                binding.btnAddSnack.setIconResource(android.R.drawable.ic_input_add)
+                binding.btnAddSnack.setIconResource(R.drawable.ic_plus)
             }
         }
 
@@ -74,7 +76,7 @@ class SnackAdapter(
                 binding.root.alpha = 1.0f
                 binding.btnAddSnack.isEnabled = true
                 binding.tvSnackDescription.text = snack.description
-                
+
                 // Click listener untuk tombol tambah (+)
                 binding.btnAddSnack.setOnClickListener {
                     val isSelected = adapter.selectedSnackNames.contains(snack.name)

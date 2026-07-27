@@ -7,4 +7,28 @@
     <string name="hero_desc">Pilih perasaanmu dan biarkan kami memberikan rekomendasi terbaik.</string>
     <string name="rating_default">4.9</string>
     <string name="rating_piscok">4.8</string>
+    <string name="welcome_feeling_happy">Feeling Happy</string>
+    <string name="welcome_snack_match">Snack Match</string>
+    <string name="welcome_perfect_match">Perfect for you!</string>
+    <string name="welcome_title">Snack your mood.\nFeel a little better.</string>
+    <string name="welcome_description">Tell us how you feel and we\'ll find the snack that fits your moment perfectly.</string>
+
+    <!-- Venting Screen Strings -->
+    <string name="back_desc">Kembali</string>
+    <string name="header_title">Hai Cemil</string>
+    <string name="header_subtitle">Ceritakan bagaimana perasaanmu hari ini ✨</string>
+    <string name="mood_question">Gimana perasaanmu sekarang?</string>
+    <string name="mood_subtitle">Pilih yang paling menggambarkan suasana hatimu.</string>
+    <string name="text_or">Atau</string>
+    <string name="write_story_title">Ceritakan lebih banyak</string>
+    <string name="write_story_subtitle">Opsional — ceritamu membantu kami memahami suasana hatimu.</string>
+    <string name="story_input_hint">Ceritakan apa yang sedang kamu rasakan...</string>
+    <string name="privacy_note">Ceritamu tetap privat dan rahasia</string>
+    <string name="btn_submit_text">Siap, cari camilan!</string>
+
+    <!-- Mood Labels -->
+    <string name="mood_happy">Senang</string>
+    <string name="mood_sad">Sedih</string>
+    <string name="mood_bored">Bosan</string>
+    <string name="mood_angry">Marah</string>
 </resources>

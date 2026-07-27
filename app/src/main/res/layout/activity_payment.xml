@@ -1,429 +1,562 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFF9F5"
-    android:fillViewport="true">
+    android:background="#FFF9F5">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/card_bottom_pay">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="12dp"
+            android:paddingBottom="24dp">
+
+            <!-- Top Navigation -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layout_payment_header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="12dp"
+                android:paddingBottom="8dp"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageButton
+                    android:id="@+id/btn_payment_back"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="Kembali"
+                    app:srcCompat="@drawable/ic_arrow_back"
+                    app:tint="#212121"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginStart="8dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/btn_payment_back"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:id="@+id/tv_payment_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Pilih Metode Pembayaran"
+                        android:textColor="#212121"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Pilih metode yang paling nyaman untukmu"
+                        android:textColor="#757575"
+                        android:textSize="13sp" />
+                </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!-- Bank Section -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_bank"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="16dp"
+                app:cardCornerRadius="24dp"
+                app:cardElevation="2dp"
+                app:strokeWidth="0dp"
+                app:cardBackgroundColor="#FFFFFF"
+                app:layout_constraintTop_toBottomOf="@id/layout_payment_header">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="20dp">
+
+                    <TextView
+                        android:id="@+id/tv_bank_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Bank Transfer"
+                        android:textColor="#212121"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:letterSpacing="0.05" />
+
+                    <GridLayout
+                        android:id="@+id/grid_banks"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:columnCount="3"
+                        android:alignmentMode="alignMargins"
+                        android:columnOrderPreserved="false">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btn_bank_mandiri"
+                            style="@style/Widget.Material3.Button.OutlinedButton"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_columnWeight="1"
+                            android:layout_margin="6dp"
+                            app:cornerRadius="16dp"
+                            android:paddingVertical="16dp"
+                            android:paddingHorizontal="4dp"
+                            app:strokeColor="#EEEEEE"
+                            app:icon="@drawable/ic_bank"
+                            app:iconGravity="top"
+                            app:iconSize="28dp"
+                            app:iconTint="#FF7A1A"
+                            android:text="Mandiri"
+                            android:textSize="11sp"
+                            android:maxLines="1"
+                            android:ellipsize="end"
+                            android:textColor="#212121"
+                            android:insetTop="0dp"
+                            android:insetBottom="0dp"
+                            android:background="@drawable/bg_payment_option"
+                            app:backgroundTint="@null" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btn_bank_bca"
+                            style="@style/Widget.Material3.Button.OutlinedButton"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_columnWeight="1"
+                            android:layout_margin="6dp"
+                            app:cornerRadius="16dp"
+                            android:paddingVertical="16dp"
+                            android:paddingHorizontal="4dp"
+                            app:strokeColor="#EEEEEE"
+                            app:icon="@drawable/ic_bank"
+                            app:iconGravity="top"
+                            app:iconSize="28dp"
+                            app:iconTint="#FF7A1A"
+                            android:text="BCA"
+                            android:textSize="11sp"
+                            android:maxLines="1"
+                            android:ellipsize="end"
+                            android:textColor="#212121"
+                            android:insetTop="0dp"
+                            android:insetBottom="0dp"
+                            android:background="@drawable/bg_payment_option"
+                            app:backgroundTint="@null" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btn_bank_bri"
+                            style="@style/Widget.Material3.Button.OutlinedButton"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_columnWeight="1"
+                            android:layout_margin="6dp"
+                            app:cornerRadius="16dp"
+                            android:paddingVertical="16dp"
+                            android:paddingHorizontal="4dp"
+                            app:strokeColor="#EEEEEE"
+                            app:icon="@drawable/ic_bank"
+                            app:iconGravity="top"
+                            app:iconSize="28dp"
+                            app:iconTint="#FF7A1A"
+                            android:text="BRI"
+                            android:textSize="11sp"
+                            android:maxLines="1"
+                            android:ellipsize="end"
+                            android:textColor="#212121"
+                            android:insetTop="0dp"
+                            android:insetBottom="0dp"
+                            android:background="@drawable/bg_payment_option"
+                            app:backgroundTint="@null" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btn_bank_bni"
+                            style="@style/Widget.Material3.Button.OutlinedButton"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_columnWeight="1"
+                            android:layout_margin="6dp"
+                            app:cornerRadius="16dp"
+                            android:paddingVertical="16dp"
+                            android:paddingHorizontal="4dp"
+                            app:strokeColor="#EEEEEE"
+                            app:icon="@drawable/ic_bank"
+                            app:iconGravity="top"
+                            app:iconSize="28dp"
+                            app:iconTint="#FF7A1A"
+                            android:text="BNI"
+                            android:textSize="11sp"
+                            android:maxLines="1"
+                            android:ellipsize="end"
+                            android:textColor="#212121"
+                            android:insetTop="0dp"
+                            android:insetBottom="0dp"
+                            android:background="@drawable/bg_payment_option"
+                            app:backgroundTint="@null" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btn_bank_bsi"
+                            style="@style/Widget.Material3.Button.OutlinedButton"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_columnWeight="1"
+                            android:layout_margin="6dp"
+                            app:cornerRadius="16dp"
+                            android:paddingVertical="16dp"
+                            android:paddingHorizontal="4dp"
+                            app:strokeColor="#EEEEEE"
+                            app:icon="@drawable/ic_bank"
+                            app:iconGravity="top"
+                            app:iconSize="28dp"
+                            app:iconTint="#FF7A1A"
+                            android:text="BSI"
+                            android:textSize="11sp"
+                            android:maxLines="1"
+                            android:ellipsize="end"
+                            android:textColor="#212121"
+                            android:insetTop="0dp"
+                            android:insetBottom="0dp"
+                            android:background="@drawable/bg_payment_option"
+                            app:backgroundTint="@null" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btn_bank_mega"
+                            style="@style/Widget.Material3.Button.OutlinedButton"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_columnWeight="1"
+                            android:layout_margin="6dp"
+                            app:cornerRadius="16dp"
+                            android:paddingVertical="16dp"
+                            android:paddingHorizontal="4dp"
+                            app:strokeColor="#EEEEEE"
+                            app:icon="@drawable/ic_bank"
+                            app:iconGravity="top"
+                            app:iconSize="28dp"
+                            app:iconTint="#FF7A1A"
+                            android:text="Mega"
+                            android:textSize="11sp"
+                            android:maxLines="1"
+                            android:ellipsize="end"
+                            android:textColor="#212121"
+                            android:insetTop="0dp"
+                            android:insetBottom="0dp"
+                            android:background="@drawable/bg_payment_option"
+                            app:backgroundTint="@null" />
+                    </GridLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- E-Wallet Section -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_ewallet"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="20dp"
+                app:cardCornerRadius="24dp"
+                app:cardElevation="2dp"
+                app:strokeWidth="0dp"
+                app:cardBackgroundColor="#FFFFFF"
+                app:layout_constraintTop_toBottomOf="@id/card_bank">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="20dp">
+
+                    <TextView
+                        android:id="@+id/tv_ewallet_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="E-Wallet"
+                        android:textColor="#212121"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:letterSpacing="0.05" />
+
+                    <GridLayout
+                        android:id="@+id/grid_ewallet"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:columnCount="3"
+                        android:alignmentMode="alignMargins"
+                        android:columnOrderPreserved="false">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btn_wallet_shopee"
+                            style="@style/Widget.Material3.Button.OutlinedButton"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_columnWeight="1"
+                            android:layout_margin="6dp"
+                            app:cornerRadius="16dp"
+                            android:paddingVertical="16dp"
+                            android:paddingHorizontal="4dp"
+                            app:strokeColor="#EEEEEE"
+                            app:icon="@drawable/ic_wallet_sophisticated"
+                            app:iconGravity="top"
+                            app:iconSize="28dp"
+                            app:iconTint="#FF5722"
+                            android:text="ShopeePay"
+                            android:textSize="10sp"
+                            android:maxLines="1"
+                            android:ellipsize="end"
+                            android:textColor="#212121"
+                            android:insetTop="0dp"
+                            android:insetBottom="0dp"
+                            android:background="@drawable/bg_payment_option"
+                            app:backgroundTint="@null" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btn_wallet_gopay"
+                            style="@style/Widget.Material3.Button.OutlinedButton"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_columnWeight="1"
+                            android:layout_margin="6dp"
+                            app:cornerRadius="16dp"
+                            android:paddingVertical="16dp"
+                            android:paddingHorizontal="4dp"
+                            app:strokeColor="#EEEEEE"
+                            app:icon="@drawable/ic_wallet_sophisticated"
+                            app:iconGravity="top"
+                            app:iconSize="28dp"
+                            app:iconTint="#4CAF50"
+                            android:text="GoPay"
+                            android:textSize="10sp"
+                            android:maxLines="1"
+                            android:ellipsize="end"
+                            android:textColor="#212121"
+                            android:insetTop="0dp"
+                            android:insetBottom="0dp"
+                            android:background="@drawable/bg_payment_option"
+                            app:backgroundTint="@null" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btn_wallet_jago"
+                            style="@style/Widget.Material3.Button.OutlinedButton"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_columnWeight="1"
+                            android:layout_margin="6dp"
+                            app:cornerRadius="16dp"
+                            android:paddingVertical="16dp"
+                            android:paddingHorizontal="4dp"
+                            app:strokeColor="#EEEEEE"
+                            app:icon="@drawable/ic_wallet_sophisticated"
+                            app:iconGravity="top"
+                            app:iconSize="28dp"
+                            app:iconTint="#FFA000"
+                            android:text="Jago"
+                            android:textSize="10sp"
+                            android:maxLines="1"
+                            android:ellipsize="end"
+                            android:textColor="#212121"
+                            android:insetTop="0dp"
+                            android:insetBottom="0dp"
+                            android:background="@drawable/bg_payment_option"
+                            app:backgroundTint="@null" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btn_wallet_ovo"
+                            style="@style/Widget.Material3.Button.OutlinedButton"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_columnWeight="1"
+                            android:layout_margin="6dp"
+                            app:cornerRadius="16dp"
+                            android:paddingVertical="16dp"
+                            android:paddingHorizontal="4dp"
+                            app:strokeColor="#EEEEEE"
+                            app:icon="@drawable/ic_wallet_sophisticated"
+                            app:iconGravity="top"
+                            app:iconSize="28dp"
+                            app:iconTint="#4A148C"
+                            android:text="OVO"
+                            android:textSize="10sp"
+                            android:maxLines="1"
+                            android:ellipsize="end"
+                            android:textColor="#212121"
+                            android:insetTop="0dp"
+                            android:insetBottom="0dp"
+                            android:background="@drawable/bg_payment_option"
+                            app:backgroundTint="@null" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btn_wallet_dana"
+                            style="@style/Widget.Material3.Button.OutlinedButton"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_columnWeight="1"
+                            android:layout_margin="6dp"
+                            app:cornerRadius="16dp"
+                            android:paddingVertical="16dp"
+                            android:paddingHorizontal="4dp"
+                            app:strokeColor="#EEEEEE"
+                            app:icon="@drawable/ic_wallet_sophisticated"
+                            app:iconGravity="top"
+                            app:iconSize="28dp"
+                            app:iconTint="#1976D2"
+                            android:text="DANA"
+                            android:textSize="10sp"
+                            android:maxLines="1"
+                            android:ellipsize="end"
+                            android:textColor="#212121"
+                            android:insetTop="0dp"
+                            android:insetBottom="0dp"
+                            android:background="@drawable/bg_payment_option"
+                            app:backgroundTint="@null" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btn_wallet_linkaja"
+                            style="@style/Widget.Material3.Button.OutlinedButton"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_columnWeight="1"
+                            android:layout_margin="6dp"
+                            app:cornerRadius="16dp"
+                            android:paddingVertical="16dp"
+                            android:paddingHorizontal="4dp"
+                            app:strokeColor="#EEEEEE"
+                            app:icon="@drawable/ic_wallet_sophisticated"
+                            app:iconGravity="top"
+                            app:iconSize="28dp"
+                            app:iconTint="#D32F2F"
+                            android:text="LinkAja"
+                            android:textSize="10sp"
+                            android:maxLines="1"
+                            android:ellipsize="end"
+                            android:textColor="#212121"
+                            android:insetTop="0dp"
+                            android:insetBottom="0dp"
+                            android:background="@drawable/bg_payment_option"
+                            app:backgroundTint="@null" />
+                    </GridLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- QRIS Section -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/btn_payment_qris"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="20dp"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="2dp"
+                app:strokeColor="#EEEEEE"
+                app:strokeWidth="1dp"
+                app:cardBackgroundColor="#FFFFFF"
+                app:layout_constraintTop_toBottomOf="@id/card_ewallet">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp">
+
+                    <ImageView
+                        android:id="@+id/iv_qris_logo"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        app:srcCompat="@drawable/logo_qris"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginStart="16dp"
+                        app:layout_constraintStart_toEndOf="@id/iv_qris_logo"
+                        app:layout_constraintEnd_toStartOf="@id/iv_qris_arrow"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent">
+
+                        <TextView
+                            android:id="@+id/tv_qris_label"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Bayar dengan QRIS"
+                            android:textColor="#212121"
+                            android:textStyle="bold"
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Scan QR untuk pembayaran instan"
+                            android:textColor="#757575"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/iv_qris_arrow"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        app:srcCompat="@drawable/ic_chevron_right"
+                        app:tint="#BDBDBD"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <!-- Bottom Sticky Bar -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card_bottom_pay"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="20dp"
-        android:paddingBottom="24dp">
+        android:layout_margin="16dp"
+        app:cardBackgroundColor="#FFFFFF"
+        app:cardCornerRadius="32dp"
+        app:cardElevation="12dp"
+        app:strokeWidth="0dp"
+        app:layout_constraintBottom_toBottomOf="parent">
 
-        <!-- Top Navigation -->
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/layout_payment_header"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingHorizontal="20dp"
-            android:paddingBottom="16dp"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <ImageButton
-                android:id="@+id/btn_payment_back"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:contentDescription="Kembali"
-                app:srcCompat="@drawable/ic_arrow_back"
-                app:tint="#212121"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"/>
-
-            <TextView
-                android:id="@+id/tv_payment_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Pilih Metode Pembayaran"
-                android:textColor="#212121"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:layout_marginStart="16dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@id/btn_payment_back"
-                app:layout_constraintTop_toTopOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <!-- Bank Section -->
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/card_bank"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="20dp"
-            android:layout_marginTop="20dp"
-            app:cardCornerRadius="20dp"
-            app:cardElevation="4dp"
-            app:strokeWidth="0dp"
-            app:cardBackgroundColor="#FFFFFF"
-            app:layout_constraintTop_toBottomOf="@id/layout_payment_header">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="20dp">
-
-                <TextView
-                    android:id="@+id/tv_bank_label"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Bank Transfer"
-                    android:textColor="#212121"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-
-                <GridLayout
-                    android:id="@+id/grid_banks"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:columnCount="3"
-                    android:rowCount="2"
-                    android:useDefaultMargins="true"
-                    android:alignmentMode="alignMargins"
-                    android:columnOrderPreserved="false">
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btn_bank_mandiri"
-                        style="@style/Widget.Material3.Button.OutlinedButton"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_columnWeight="1"
-                        android:layout_margin="4dp"
-                        app:cornerRadius="12dp"
-                        android:paddingVertical="12dp"
-                        app:strokeColor="#EEEEEE"
-                        app:icon="@drawable/ic_bank"
-                        app:iconGravity="top"
-                        app:iconTint="#FF7A1A"
-                        android:text="Mandiri"
-                        android:textSize="12sp"
-                        android:textColor="#212121" />
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btn_bank_bca"
-                        style="@style/Widget.Material3.Button.OutlinedButton"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_columnWeight="1"
-                        android:layout_margin="4dp"
-                        app:cornerRadius="12dp"
-                        android:paddingVertical="12dp"
-                        app:strokeColor="#EEEEEE"
-                        app:icon="@drawable/ic_bank"
-                        app:iconGravity="top"
-                        app:iconTint="#FF7A1A"
-                        android:text="BCA"
-                        android:textSize="12sp"
-                        android:textColor="#212121" />
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btn_bank_bri"
-                        style="@style/Widget.Material3.Button.OutlinedButton"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_columnWeight="1"
-                        android:layout_margin="4dp"
-                        app:cornerRadius="12dp"
-                        android:paddingVertical="12dp"
-                        app:strokeColor="#EEEEEE"
-                        app:icon="@drawable/ic_bank"
-                        app:iconGravity="top"
-                        app:iconTint="#FF7A1A"
-                        android:text="BRI"
-                        android:textSize="12sp"
-                        android:textColor="#212121" />
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btn_bank_bni"
-                        style="@style/Widget.Material3.Button.OutlinedButton"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_columnWeight="1"
-                        android:layout_margin="4dp"
-                        app:cornerRadius="12dp"
-                        android:paddingVertical="12dp"
-                        app:strokeColor="#EEEEEE"
-                        app:icon="@drawable/ic_bank"
-                        app:iconGravity="top"
-                        app:iconTint="#FF7A1A"
-                        android:text="BNI"
-                        android:textSize="12sp"
-                        android:textColor="#212121" />
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btn_bank_bsi"
-                        style="@style/Widget.Material3.Button.OutlinedButton"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_columnWeight="1"
-                        android:layout_margin="4dp"
-                        app:cornerRadius="12dp"
-                        android:paddingVertical="12dp"
-                        app:strokeColor="#EEEEEE"
-                        app:icon="@drawable/ic_bank"
-                        app:iconGravity="top"
-                        app:iconTint="#FF7A1A"
-                        android:text="BSI"
-                        android:textSize="12sp"
-                        android:textColor="#212121" />
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btn_bank_mega"
-                        style="@style/Widget.Material3.Button.OutlinedButton"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_columnWeight="1"
-                        android:layout_margin="4dp"
-                        app:cornerRadius="12dp"
-                        android:paddingVertical="12dp"
-                        app:strokeColor="#EEEEEE"
-                        app:icon="@drawable/ic_bank"
-                        app:iconGravity="top"
-                        app:iconTint="#FF7A1A"
-                        android:text="Mega"
-                        android:textSize="12sp"
-                        android:textColor="#212121" />
-                </GridLayout>
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
-
-        <!-- E-Wallet Section -->
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/card_ewallet"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="20dp"
-            android:layout_marginTop="20dp"
-            app:cardCornerRadius="20dp"
-            app:cardElevation="4dp"
-            app:strokeWidth="0dp"
-            app:cardBackgroundColor="#FFFFFF"
-            app:layout_constraintTop_toBottomOf="@id/card_bank">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="20dp">
-
-                <TextView
-                    android:id="@+id/tv_ewallet_label"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="E-Wallet"
-                    android:textColor="#212121"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-
-                <GridLayout
-                    android:id="@+id/grid_ewallet"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:columnCount="3"
-                    android:rowCount="2"
-                    android:useDefaultMargins="true"
-                    android:alignmentMode="alignMargins"
-                    android:columnOrderPreserved="false">
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btn_wallet_shopee"
-                        style="@style/Widget.Material3.Button.OutlinedButton"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_columnWeight="1"
-                        android:layout_margin="4dp"
-                        app:cornerRadius="12dp"
-                        android:paddingVertical="12dp"
-                        app:strokeColor="#EEEEEE"
-                        app:icon="@drawable/ic_wallet"
-                        app:iconGravity="top"
-                        app:iconTint="#FF5722"
-                        android:text="ShopeePay"
-                        android:textSize="11sp"
-                        android:textColor="#212121" />
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btn_wallet_gopay"
-                        style="@style/Widget.Material3.Button.OutlinedButton"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_columnWeight="1"
-                        android:layout_margin="4dp"
-                        app:cornerRadius="12dp"
-                        android:paddingVertical="12dp"
-                        app:strokeColor="#EEEEEE"
-                        app:icon="@drawable/ic_wallet"
-                        app:iconGravity="top"
-                        app:iconTint="#4CAF50"
-                        android:text="GoPay"
-                        android:textSize="11sp"
-                        android:textColor="#212121" />
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btn_wallet_jago"
-                        style="@style/Widget.Material3.Button.OutlinedButton"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_columnWeight="1"
-                        android:layout_margin="4dp"
-                        app:cornerRadius="12dp"
-                        android:paddingVertical="12dp"
-                        app:strokeColor="#EEEEEE"
-                        app:icon="@drawable/ic_wallet"
-                        app:iconGravity="top"
-                        app:iconTint="#FFA000"
-                        android:text="Jago"
-                        android:textSize="11sp"
-                        android:textColor="#212121" />
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btn_wallet_ovo"
-                        style="@style/Widget.Material3.Button.OutlinedButton"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_columnWeight="1"
-                        android:layout_margin="4dp"
-                        app:cornerRadius="12dp"
-                        android:paddingVertical="12dp"
-                        app:strokeColor="#EEEEEE"
-                        app:icon="@drawable/ic_wallet"
-                        app:iconGravity="top"
-                        app:iconTint="#4A148C"
-                        android:text="OVO"
-                        android:textSize="11sp"
-                        android:textColor="#212121" />
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btn_wallet_dana"
-                        style="@style/Widget.Material3.Button.OutlinedButton"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_columnWeight="1"
-                        android:layout_margin="4dp"
-                        app:cornerRadius="12dp"
-                        android:paddingVertical="12dp"
-                        app:strokeColor="#EEEEEE"
-                        app:icon="@drawable/ic_wallet"
-                        app:iconGravity="top"
-                        app:iconTint="#1976D2"
-                        android:text="DANA"
-                        android:textSize="11sp"
-                        android:textColor="#212121" />
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btn_wallet_linkaja"
-                        style="@style/Widget.Material3.Button.OutlinedButton"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_columnWeight="1"
-                        android:layout_margin="4dp"
-                        app:cornerRadius="12dp"
-                        android:paddingVertical="12dp"
-                        app:strokeColor="#EEEEEE"
-                        app:icon="@drawable/ic_wallet"
-                        app:iconGravity="top"
-                        app:iconTint="#D32F2F"
-                        android:text="LinkAja"
-                        android:textSize="11sp"
-                        android:textColor="#212121" />
-                </GridLayout>
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
-
-        <!-- Divider and QRIS -->
-        <TextView
-            android:id="@+id/tv_or_payment"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:text="— Atau —"
-            android:textColor="#BDBDBD"
-            android:textSize="14sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/card_ewallet" />
-
-        <TextView
-            android:id="@+id/tv_qris_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="Bayar Dengan Qris"
-            android:textColor="#212121"
-            android:textStyle="bold"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_or_payment" />
-
-        <!-- Circular QRIS logo/button -->
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/btn_payment_qris"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_marginTop="16dp"
-            app:cardCornerRadius="40dp"
-            app:cardElevation="4dp"
-            app:strokeColor="#FF7A1A"
-            app:strokeWidth="2dp"
-            app:cardBackgroundColor="#FFFFFF"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_qris_label">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:orientation="vertical">
-                <ImageView
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    app:srcCompat="@drawable/ic_bank"
-                    app:tint="#FF7A1A" />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="QRIS"
-                    android:textColor="#FF7A1A"
-                    android:textStyle="bold"
-                    android:textSize="12sp"
-                    android:layout_marginTop="2dp" />
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
-
-        <!-- Bottom Action button: Bayar -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_action_pay"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:layout_marginTop="40dp"
-            android:layout_marginBottom="16dp"
+            android:layout_height="64dp"
+            android:layout_margin="8dp"
             android:backgroundTint="#FF7A1A"
             android:text="Lanjutkan Pembayaran"
             android:textColor="@color/white"
             android:textSize="16sp"
-            android:textStyle="bold"
+            android:fontFamily="sans-serif-bold"
             app:cornerRadius="28dp"
-            app:layout_constraintTop_toBottomOf="@id/btn_payment_qris"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            app:icon="@drawable/ic_wallet_sophisticated"
+            app:iconGravity="textStart"
+            app:iconPadding="12dp" />
+    </com.google.android.material.card.MaterialCardView>
 
-        <ProgressBar
-            android:id="@+id/progressBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:indeterminateTint="#FF7A1A"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:indeterminateTint="#FF7A1A"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-</androidx.core.widget.NestedScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -185,7 +185,7 @@ class RecommendationViewModel(
             }
 
             val prompt = """
-                Kamu adalah asisten rekomendasi camilan emosional yang hangat dan empati.
+                Kamu adalah asisten rekomendasi camilan emosional yang judes dan jahat tapi care.
                 
                 Informasi:
                 - Mood pengguna: $mood
@@ -197,8 +197,8 @@ class RecommendationViewModel(
                 Aturan pencocokan mood dengan camilan:
                 - Marah/Cemas ? pilih camilan berlabel "Pedas" (ID 1 atau 2 diutamakan)
                 - Sedih ? pilih camilan berlabel "Manis" (ID 5 atau 6 diutamakan)
-                - Senang ? pilih camilan berlabel "Crispy" (ID 3 atau 7 diutamakan)
-                - Bosan/Biasa aja ? pilih camilan berlabel "Crispy" atau "Gurih" (ID 7 atau 8)
+                - Senang ? pilih camilan berlabel "Crispy" (ID 7) atau "Gurih" (ID 8)
+                - Bosan/Biasa aja ? pilih camilan berlabel "Crispy" (ID 3) atau "Gurih" (ID 4)
                 
                 Kembalikan HANYA JSON valid berikut, tanpa teks lain:
                 {
@@ -242,15 +242,15 @@ class RecommendationViewModel(
         val m = mood.lowercase(java.util.Locale.ROOT)
         val filtered = when {
             m == "marah" || m == "cemas" ->
-                allSnacks.filter { it.name == "Basreng Stik" || it.name == "Tahu Walik" }
+                allSnacks.filter { it.name == "Basreng Stik" || it.name == "Makaroni Bantet" }
             m == "sedih" ->
                 allSnacks.filter { it.name == "Piscok Lumer Coklat" || it.name == "Bola Bola Coklat" }
             m == "senang" || m == "bahagia" ->
-                allSnacks.filter { it.name == "Cireng Sambal Rujak" || it.name == "Kerupuk Pangsit" }
+                allSnacks.filter { it.name == "Kulpi Balado" || it.name == "Kerupuk Pangsit" }
             m == "bosan" || m == "biasa aja" ->
-                allSnacks.filter { it.name == "Kulpi Balado" || it.name == "Makaroni Bantet" }
+                allSnacks.filter { it.name == "Cireng Sambal Rujak" || it.name == "Tahu Walik" }
             else ->
-                allSnacks.filter { it.name == "Kulpi Balado" || it.name == "Makaroni Bantet" }
+                allSnacks.filter { it.name == "Kulpi Balado" || it.name == "Kerupuk Pangsit" }
         }
         return filtered.take(2)
     }
