@@ -107,6 +107,11 @@
         <activity
             android:name=".OrderCompletedActivity"
             android:exported="false" />
+
+        <!-- User Profile Screen -->
+        <activity
+            android:name=".ProfileActivity"
+            android:exported="false" />
             
     </application>
 
